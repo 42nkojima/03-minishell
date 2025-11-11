@@ -1,0 +1,363 @@
+
+---
+
+## 🧭 目次
+
+1. **readline関連**
+2. **出力・メモリ**
+3. **ファイル操作**
+4. **プロセス管理**
+5. **シグナル処理**
+6. **パス・環境変数**
+7. **ファイルステータス**
+8. **exec 系**
+9. **パイプ・dup**
+10. **ディレクトリ操作**
+11. **TTY・端末関連**
+12. **termcap関連**
+
+---
+
+# 1️⃣ readline 系
+
+### `readline(const char *prompt)`
+
+* 標準入力から1行読み取る（プロンプト表示付き）
+* 結果は動的に確保され、`free()`が必要。
+
+```c
+#include <stdio.h>
+#include <readline/readline.h>
+#include <readline/history.h>
+
+int main(void) {
+    char *line = readline("minishell> ");
+    if (line && *line)
+        add_history(line);
+    printf("You typed: %s\n", line);
+    free(line);
+}
+```
+
+---
+
+### `rl_clear_history()`
+
+* readlineの履歴を全消去。
+
+```c
+rl_clear_history();
+```
+
+---
+
+### `rl_on_new_line()`
+
+* 新しい行に移動する準備（readlineの内部状態更新）
+
+```c
+rl_on_new_line();
+```
+
+---
+
+### `rl_replace_line(const char *text, int clear_undo)`
+
+* 現在の入力行を置き換える。
+
+```c
+rl_replace_line("new input", 1);
+rl_redisplay();
+```
+
+---
+
+### `rl_redisplay()`
+
+* 現在の入力行を再描画。
+
+```c
+rl_redisplay();
+```
+
+---
+
+### `add_history(const char *line)`
+
+* 入力行を履歴に追加。
+
+```c
+add_history(line);
+```
+
+---
+
+# 2️⃣ 出力・メモリ
+
+### `printf`, `write`
+
+```c
+printf("Hello %s\n", "world");
+write(1, "Hello\n", 6);  // 1 = stdout
+```
+
+---
+
+### `malloc`, `free`
+
+```c
+char *s = malloc(10);
+strcpy(s, "hi");
+free(s);
+```
+
+---
+
+# 3️⃣ ファイル操作
+
+### `open`, `read`, `write`, `close`
+
+```c
+#include <fcntl.h>
+#include <unistd.h>
+
+int fd = open("file.txt", O_RDONLY);
+char buf[100];
+int n = read(fd, buf, 100);
+write(1, buf, n);
+close(fd);
+```
+
+---
+
+### `access`
+
+ファイルの存在・権限をチェック。
+
+```c
+if (access("/bin/ls", X_OK) == 0)
+    printf("can execute ls\n");
+```
+
+---
+
+# 4️⃣ プロセス管理
+
+### `fork`, `wait`, `waitpid`
+
+```c
+pid_t pid = fork();
+if (pid == 0)
+    execlp("ls", "ls", NULL);
+else
+    waitpid(pid, NULL, 0);
+```
+
+---
+
+### `wait3`, `wait4`
+
+* `waitpid`の拡張版でリソース使用情報も取得できる。
+
+---
+
+# 5️⃣ シグナル関連
+
+### `signal`, `sigaction`
+
+```c
+#include <signal.h>
+#include <stdio.h>
+
+void handler(int sig) { printf("Got signal %d\n", sig); }
+
+int main() {
+    signal(SIGINT, handler);
+    while (1);
+}
+```
+
+---
+
+### `sigemptyset`, `sigaddset`
+
+```c
+sigset_t set;
+sigemptyset(&set);
+sigaddset(&set, SIGINT);
+```
+
+---
+
+### `kill`
+
+プロセスにシグナル送信。
+
+```c
+kill(pid, SIGTERM);
+```
+
+---
+
+# 6️⃣ パス・環境変数
+
+### `getcwd`, `chdir`
+
+```c
+char buf[1024];
+getcwd(buf, sizeof(buf));
+printf("Current dir: %s\n", buf);
+chdir("/tmp");
+```
+
+---
+
+### `getenv`
+
+環境変数を取得。
+
+```c
+printf("PATH=%s\n", getenv("PATH"));
+```
+
+---
+
+# 7️⃣ ファイルステータス
+
+### `stat`, `lstat`, `fstat`
+
+```c
+#include <sys/stat.h>
+struct stat s;
+stat("a.out", &s);
+printf("Size: %ld\n", s.st_size);
+```
+
+---
+
+### `unlink`
+
+ファイル削除。
+
+```c
+unlink("temp.txt");
+```
+
+---
+
+# 8️⃣ exec 系
+
+### `execve`
+
+```c
+char *argv[] = {"ls", "-l", NULL};
+char *envp[] = {NULL};
+execve("/bin/ls", argv, envp);
+```
+
+---
+
+# 9️⃣ パイプ・dup
+
+### `pipe`, `dup`, `dup2`
+
+```c
+int fd[2];
+pipe(fd);
+if (fork() == 0) {
+    dup2(fd[1], 1); // stdoutをpipeへ
+    execlp("ls", "ls", NULL);
+} else {
+    char buf[100];
+    read(fd[0], buf, 100);
+    printf("Output: %s\n", buf);
+}
+```
+
+---
+
+# 🔟 ディレクトリ操作
+
+### `opendir`, `readdir`, `closedir`
+
+```c
+#include <dirent.h>
+DIR *d = opendir(".");
+struct dirent *e;
+while ((e = readdir(d)))
+    printf("%s\n", e->d_name);
+closedir(d);
+```
+
+---
+
+# 11️⃣ TTY・端末関連
+
+### `isatty`
+
+```c
+if (isatty(0))
+    printf("Input is a terminal\n");
+```
+
+---
+
+### `ttyname`, `ttyslot`
+
+```c
+printf("tty: %s\n", ttyname(0));
+```
+
+---
+
+### `ioctl`
+
+デバイス制御（端末設定など）。
+
+```c
+#include <sys/ioctl.h>
+#include <unistd.h>
+
+int rows, cols;
+struct winsize ws;
+ioctl(0, TIOCGWINSZ, &ws);
+printf("%d x %d\n", ws.ws_row, ws.ws_col);
+```
+
+---
+
+# 12️⃣ termcap 系 (行編集関連)
+
+### `tgetent`, `tgetflag`, `tgetnum`, `tgetstr`, `tgoto`, `tputs`
+
+端末制御ライブラリ（カーソル移動など）。
+
+```c
+#include <term.h>
+#include <curses.h>
+
+tgetent(NULL, getenv("TERM"));
+char *cm = tgetstr("cm", NULL); // cursor move
+char *move = tgoto(cm, 10, 5);
+tputs(move, 1, putchar);
+```
+
+---
+
+# 🧩 まとめ表（カテゴリ別）
+
+| カテゴリ    | 主な関数                        |
+| ------- | --------------------------- |
+| 入力      | readline系                   |
+| 出力・メモリ  | printf, malloc, free, write |
+| ファイル    | open, read, close, access   |
+| プロセス    | fork, execve, wait系         |
+| シグナル    | signal, sigaction, kill     |
+| 環境      | getenv, getcwd, chdir       |
+| ファイル情報  | stat, unlink                |
+| パイプ     | pipe, dup, dup2             |
+| ディレクトリ  | opendir, readdir, closedir  |
+| 端末      | ioctl, isatty, ttyname      |
+| termcap | tgetent, tputs など           |
+
+---
