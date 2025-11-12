@@ -34,8 +34,10 @@ jobs:
             // 各コミットからGitHubユーザー名を取得
             const authors = new Set();  // Setで重複を自動削除
             for (const commit of commits) {
-              if (commit.author?.login) {
+              if (commit.author?.login && commit.author.type !== 'Bot') {
                 authors.add(commit.author.login);
+              } else if (commit.author?.type === 'Bot') {
+                console.log(`⚠️ コミット ${commit.sha} はスキップされました (Botのコミット)`);
               } else {
                 console.log(`⚠️ コミット ${commit.sha} はスキップされました (GitHubユーザーが紐付いていません)`);
               }
