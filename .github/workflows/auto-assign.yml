@@ -17,7 +17,7 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            // PRの全コミットを取得
+            // Fetch all commits and current PR info in parallel
             const [{ data: commits }, { data: currentPr }] = await Promise.all([
               github.rest.pulls.listCommits({
                 owner: context.repo.owner,
@@ -31,29 +31,32 @@ jobs:
               })
             ]);
 
-            // 各コミットからGitHubユーザー名を取得
-            const authors = new Set();  // Setで重複を自動削除
+            // Extract GitHub usernames from commits
+            const authors = new Set();  // Set automatically removes duplicates
             for (const commit of commits) {
               if (commit.author?.login && commit.author.type !== 'Bot') {
                 authors.add(commit.author.login);
               } else if (commit.author?.type === 'Bot') {
-                console.log(`⚠️ コミット ${commit.sha} はスキップされました (Botのコミット)`);
+                console.log(`⚠️ Skipping commit ${commit.sha} (Bot commit)`);
               } else {
-                console.log(`⚠️ コミット ${commit.sha} はスキップされました (GitHubユーザーが紐付いていません)`);
+                console.log(`⚠️ Skipping commit ${commit.sha} (No linked GitHub user)`);
               }
             }
 
             const currentAssignees = new Set(currentPr.assignees.map(a => a.login));
 
-            // 既にAssignされているユーザーを除外
+            // Filter out users who are already assigned
             const newAssignees = Array.from(authors).filter(a => !currentAssignees.has(a));
 
-            // 新しいAssigneeのみをPRに追加
+            // Add only new assignees to the PR
             if (newAssignees.length > 0) {
+              console.log(`✅ Adding assignees: ${newAssignees.join(', ')}`);
               await github.rest.issues.addAssignees({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: context.issue.number,
                 assignees: newAssignees
               });
+            } else {
+              console.log(`ℹ️ No new assignees to add`);
             }
