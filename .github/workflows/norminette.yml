@@ -1,0 +1,35 @@
+name: Norminette Check
+
+on: [push, pull_request]
+
+env:
+  PYTHON_VERSION: '3.10'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  norminette:
+    runs-on: ubuntu-slim
+    timeout-minutes: 5
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install norminette
+        run: python3 -m pip install -U norminette
+
+      - name: Run norminette
+        run: norminette
