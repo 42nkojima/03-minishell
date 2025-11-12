@@ -30,8 +30,7 @@ jobs:
               if (commit.author?.login) {
                 authors.add(commit.author.login);
               } else {
-                const email = commit.commit.author.email || '不明';
-                throw new Error(`コミット ${commit.sha} (メールアドレス: ${email}) にGitHubユーザーが紐付いていません。`);
+                console.log(`⚠️ コミット ${commit.sha} はスキップされました (GitHubユーザーが紐付いていません)`);
               }
             }
 
