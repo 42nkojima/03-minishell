@@ -1,0 +1,57 @@
+name: Auto Assign Commit Authors
+
+# This workflow automatically assigns PRs to the commit authors.
+# Triggered when a PR is opened and when new commits are pushed.
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  assign:
+    runs-on: ubuntu-slim
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Assign PR to all commit authors
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // PRの全コミットを取得
+            const { data: commits } = await github.rest.pulls.listCommits({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            });
+
+            // 各コミットからGitHubユーザー名を取得
+            const authors = new Set();  // Setで重複を自動削除
+            for (const commit of commits) {
+              if (commit.author?.login) {
+                authors.add(commit.author.login);
+              } else {
+                const email = commit.commit.author.email || '不明';
+                throw new Error(`コミット ${commit.sha} (メールアドレス: ${email}) にGitHubユーザーが紐付いていません。`);
+              }
+            }
+
+            // 現在のAssigneeを取得
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            });
+            const currentAssignees = new Set(pr.assignees.map(a => a.login));
+
+            // 既にAssignされているユーザーを除外
+            const newAssignees = Array.from(authors).filter(a => !currentAssignees.has(a));
+
+            // 新しいAssigneeのみをPRに追加
+            if (newAssignees.length > 0) {
+              await github.rest.issues.addAssignees({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                assignees: newAssignees
+              });
+            }
