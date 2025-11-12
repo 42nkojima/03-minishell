@@ -18,11 +18,18 @@ jobs:
         with:
           script: |
             // PRの全コミットを取得
-            const { data: commits } = await github.rest.pulls.listCommits({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.issue.number
-            });
+            const [{ data: commits }, { data: currentPr }] = await Promise.all([
+              github.rest.pulls.listCommits({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: context.issue.number
+              }),
+              github.rest.pulls.get({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: context.issue.number
+              })
+            ]);
 
             // 各コミットからGitHubユーザー名を取得
             const authors = new Set();  // Setで重複を自動削除
@@ -34,13 +41,7 @@ jobs:
               }
             }
 
-            // 現在のAssigneeを取得
-            const { data: pr } = await github.rest.pulls.get({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.issue.number
-            });
-            const currentAssignees = new Set(pr.assignees.map(a => a.login));
+            const currentAssignees = new Set(currentPr.assignees.map(a => a.login));
 
             // 既にAssignされているユーザーを除外
             const newAssignees = Array.from(authors).filter(a => !currentAssignees.has(a));
