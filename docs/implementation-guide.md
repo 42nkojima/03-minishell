@@ -10,6 +10,20 @@
 ## プロジェクト構成
 
 ```
+minishell
+  docs
+  libs
+    libft
+  tests
+  includes
+  src
+    utils
+    input
+    parse
+    exec
+    builtin
+  objs
+  Makefile
 
 ```
 
