@@ -10,24 +10,25 @@
 ## プロジェクト構成
 
 ```sh
-minishell
-  docs
-  libs
-    libft
-  tests
-    input
-    parse
-    exec
-    builtin
-  includes
-  src
-    utils
-    input
-    parse
-    exec
-    builtin
-  objs
-  Makefile
+.
+└── minishell/
+    ├── docs
+    ├── libs/
+    │   └── libft
+    ├── tests/
+    │   ├── input
+    │   ├── parse
+    │   ├── exec
+    │   └── builtin
+    ├── includes
+    ├── src/
+    │   ├── utils
+    │   ├── input
+    │   ├── parse
+    │   ├── exec
+    │   └── builtin
+    ├── objs
+    └── Makefile
 ```
 
 ---
