@@ -1,0 +1,22 @@
+# Object files
+*.o
+*.a
+objs/
+
+# Executable
+minishell
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Editor files
+.DS_Store
+*~
+*.swp
+*.swo
+
+# Test files
+*.log
