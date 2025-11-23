@@ -5,6 +5,7 @@ objs/
 
 # Executable
 minishell
+compile_commands.json
 
 # Debug files
 *.dSYM/
