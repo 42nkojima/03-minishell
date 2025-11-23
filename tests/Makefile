@@ -1,143 +1,99 @@
 
-CC = gcc
-CFLAGS = -Wall -Wextra -Werror -std=c99 -g
+# ===============================
+#             Color
+# ===============================
+GREEN   = \033[0;32m
+RED     = \033[0;31m
+YELLOW  = \033[0;33m
+RESET   = \033[0m
+
+# ===============================
+#        CONFIGURATION
+# ===============================
+
+CC      = cc
+CXX     = g++
+CFLAGS  = -Wall -Wextra -Werror -I../includes -g
+CXXFLAGS = -std=c++17 -Wall -Wextra -I../includes -g
+
+GTEST_DIR = ../libs/googletest
+GTEST_BUILD = $(GTEST_DIR)/build
+GTEST_LIB = $(GTEST_BUILD)/lib/libgtest.a
+GTEST_MAIN = $(GTEST_BUILD)/lib/libgtest_main.a
+
 LDFLAGS = -pthread
 
-ROOT_DIR = ..
-SRC_DIR = $(ROOT_DIR)/src
-INCLUDES_DIR = $(ROOT_DIR)/includes
-LIBFT_DIR = $(ROOT_DIR)/libs/libft
-TEST_BASE_DIR = .
-OBJS_DIR = $(ROOT_DIR)/objs
-BUILD_DIR = ./build
+SRC_DIR = ../src
+SRC  = $(shell find $(SRC_DIR) -name "*.c")
+OBJ  = $(SRC:../src/%.c=build/%.o)
 
-GTEST_DIR = /usr/include
-GTEST_LIB = -lgtest -lgtest_main
+LIBFT = ../libs/libft/libft.a
 
-INCLUDES = -I$(INCLUDES_DIR) -I$(LIBFT_DIR) -I$(GTEST_DIR)
+TEST_DIR = .
+TEST_SRC = $(shell find $(TEST_DIR) -name "*.cpp")
+TEST_OBJ = $(TEST_SRC:.cpp=.o)
 
-MODULES = utils input parse exec builtin
+TARGET = runTests
 
-SOURCES = 
-SOURCES += $(wildcard $(SRC_DIR)/utils/*.c)
-SOURCES += $(wildcard $(SRC_DIR)/input/*.c)
-SOURCES += $(wildcard $(SRC_DIR)/parse/*.c)
-SOURCES += $(wildcard $(SRC_DIR)/exec/*.c)
-SOURCES += $(wildcard $(SRC_DIR)/builtin/*.c)
+# ===============================
+#             TARGETS
+# ===============================
 
-SOURCES := $(filter-out $(SRC_DIR)/main.c, $(SOURCES))
+all: run
 
-TEST_DIRS = input parse exec builtin
-TEST_SOURCES = $(foreach dir, $(TEST_DIRS), $(wildcard $(TEST_BASE_DIR)/$(dir)/*_test.c))
+# ===========================
+# 		GoogleTest
+# ===========================
 
-OBJECTS = $(addprefix $(BUILD_DIR)/, $(notdir $(SOURCES:.c=.o)))
-TEST_OBJECTS = $(addprefix $(BUILD_DIR)/, $(notdir $(TEST_SOURCES:.c=.o)))
+$(GTEST_LIB) $(GTEST_MAIN):|$(GTEST_DIR)
+	mkdir -p $(GTEST_BUILD)
+	cd $(GTEST_BUILD) && cmake .. && make
 
-DEPS = $(OBJECTS:.o=.d) $(TEST_OBJECTS:.o=.d)
+$(GTEST_DIR):
+	@git clone git@github.com:google/googletest.git $(GTEST_DIR)
 
-TARGET = $(BUILD_DIR)/run_tests
 
-.PHONY: all run run-verbose run-filter clean rebuild help debug
+$(TARGET): $(OBJ) $(TEST_OBJ) $(LIBFT) $(GTEST_LIB) $(GTEST_MAIN)
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
-all: $(TARGET)
 
-$(BUILD_DIR):
-	@mkdir -p $(BUILD_DIR)
+build/%.o: ../src/%.c
+	mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -c -o $@ $<
 
-$(TARGET): $(BUILD_DIR) $(OBJECTS) $(TEST_OBJECTS)
-	@echo "Linking $@..."
-	$(CC) $(CFLAGS) $(INCLUDES) -o $@ $(OBJECTS) $(TEST_OBJECTS) \
-		-L$(LIBFT_DIR) -lft $(LDFLAGS) $(GTEST_LIB)
-	@echo "✓ Build successful: $@"
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-$(BUILD_DIR)/%.o: $(SRC_DIR)/utils/%.c
-	@echo "Compiling $<..."
-	$(CC) $(CFLAGS) $(INCLUDES) -MMD -MP -c $< -o $@
 
-$(BUILD_DIR)/%.o: $(SRC_DIR)/input/%.c
-	@echo "Compiling $<..."
-	$(CC) $(CFLAGS) $(INCLUDES) -MMD -MP -c $< -o $@
-
-$(BUILD_DIR)/%.o: $(SRC_DIR)/parse/%.c
-	@echo "Compiling $<..."
-	$(CC) $(CFLAGS) $(INCLUDES) -MMD -MP -c $< -o $@
-
-$(BUILD_DIR)/%.o: $(SRC_DIR)/exec/%.c
-	@echo "Compiling $<..."
-	$(CC) $(CFLAGS) $(INCLUDES) -MMD -MP -c $< -o $@
-
-$(BUILD_DIR)/%.o: $(SRC_DIR)/builtin/%.c
-	@echo "Compiling $<..."
-	$(CC) $(CFLAGS) $(INCLUDES) -MMD -MP -c $< -o $@
-
-$(BUILD_DIR)/%_test.o: $(TEST_BASE_DIR)/input/%_test.c
-	@echo "Compiling $<..."
-	$(CC) $(CFLAGS) $(INCLUDES) -MMD -MP -c $< -o $@
-
-$(BUILD_DIR)/%_test.o: $(TEST_BASE_DIR)/parse/%_test.c
-	@echo "Compiling $<..."
-	$(CC) $(CFLAGS) $(INCLUDES) -MMD -MP -c $< -o $@
-
-$(BUILD_DIR)/%_test.o: $(TEST_BASE_DIR)/exec/%_test.c
-	@echo "Compiling $<..."
-	$(CC) $(CFLAGS) $(INCLUDES) -MMD -MP -c $< -o $@
-
-$(BUILD_DIR)/%_test.o: $(TEST_BASE_DIR)/builtin/%_test.c
-	@echo "Compiling $<..."
-	$(CC) $(CFLAGS) $(INCLUDES) -MMD -MP -c $< -o $@
+# ===========================
+# 			Run
+# ===========================
 
 run: $(TARGET)
-	@echo "Running tests..."
-	@./$(TARGET)
+	./$(TARGET)
 
-run-verbose: $(TARGET)
-	@echo "Running tests (verbose)..."
-	@./$(TARGET) --gtest_print_time=1 --gtest_color=yes
+run_verbose: $(TARGET)
+	./$(TARGET) --gtest_color=yes --gtest_print_time=1
 
-run-filter: $(TARGET)
-	@if [ -z "$(FILTER)" ]; then \
-		echo "Usage: make run-filter FILTER=TestSuite.TestName"; \
-		exit 1; \
-	fi
-	@echo "Running tests matching: $(FILTER)"
-	@./$(TARGET) --gtest_filter="$(FILTER)"
+
+# ===========================
+# 			Clean
+# ===========================
 
 clean:
-	@echo "Cleaning build directory..."
-	@rm -rf $(BUILD_DIR)
-	@echo "✓ Cleaned"
+	rm -rf build
+	rm -f $(TEST_OBJ)
+	rm -f $(TARGET)
+	@echo "$(GREEN)🧹 Cleaned object files.$(RESET)"
 
-rebuild: clean all
+fclean: clean
+	rm -rf $(GTEST_BUILD)
+	@echo "$(GREEN)🧼 Cleaned executable and libft.$(RESET)"
 
-debug:
-	@echo "=== PROJECT STRUCTURE ==="
-	@echo "Root: $(ROOT_DIR)"
-	@echo "Source files: $(SOURCES)"
-	@echo "Test files: $(TEST_SOURCES)"
-	@echo ""
-	@echo "=== OBJECTS ==="
-	@echo "Source objects: $(OBJECTS)"
-	@echo ""
-	@echo "=== BUILD ==="
-	@echo "Build dir: $(BUILD_DIR)"
-	@echo "Target: $(TARGET)"
+re: fclean all
 
-help:
-	@echo "minishell Test Makefile"
-	@echo ""
-	@echo "Targets:"
-	@echo "  make all              - Build test executable (default)"
-	@echo "  make run              - Build and run all tests"
-	@echo "  make run-verbose      - Run tests with verbose output"
-	@echo "  make run-filter       - Run specific tests (FILTER=Suite.Test)"
-	@echo "  make clean            - Remove build directory"
-	@echo "  make rebuild          - Clean and rebuild"
-	@echo "  make debug            - Show build information"
-	@echo "  make help             - Show this help"
-	@echo ""
-	@echo "Examples:"
-	@echo "  make run"
-	@echo "  make run-filter FILTER=ParseTests.TokenTest"
-	@echo "  make run-verbose"
+# ===============================
+#             PHONY
+# ===============================
 
--include $(DEPS)
+.PHONY: all clean fclean re run run_verbose

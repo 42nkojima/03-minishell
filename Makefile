@@ -118,11 +118,11 @@ run: all
 
 test:
 	@echo "$(YELLOW)Running GoogleTest...$(RESET)"
-	@$(MAKE) -f tests/Makefile run
+	@$(MAKE) -C tests run
 
 test_verbose:
 	@echo "$(YELLOW)Running GoogleTest (verbose)...$(RESET)"
-	@$(MAKE) -f tests/Makefile run_verbose
+	@$(MAKE) -C tests run_verbose
 # ===============================
 #             CLEAN
 # ===============================

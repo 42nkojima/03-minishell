@@ -5,6 +5,7 @@ objs/
 
 # Executable
 minishell
+tests/runTests
 compile_commands.json
 
 # Debug files
@@ -21,3 +22,6 @@ compile_commands.json
 
 # Test files
 *.log
+
+# GoogleTEST
+libs/googletest
