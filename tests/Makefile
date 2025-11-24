@@ -8,9 +8,8 @@ YELLOW  = \033[0;33m
 RESET   = \033[0m
 
 # ===============================
-#        OS Detection
+#        Install ReadLine
 # ===============================
-UNAME_S := $(shell uname -s)
 READLINE_PATH := $(shell brew --prefix readline 2>/dev/null)
 
 ifeq ($(READLINE_PATH),)
@@ -26,8 +25,6 @@ LDFLAGS += -L$(READLINE_PATH)/lib -lreadline
 #        CONFIGURATION
 # ===============================
 
-CC      = cc
-CXX     = g++
 CFLAGS  += -Wall -Wextra -Werror -I../includes -g
 CXXFLAGS += -std=c++17 -Wall -Wextra -I../includes -I../libs/googletest/googletest/include -I../libs/googletest/googlemock/include -g
 
@@ -48,7 +45,7 @@ TEST_DIR = .
 TEST_SRC = $(shell find $(TEST_DIR) -name "*.cpp")
 TEST_OBJ = $(TEST_SRC:.cpp=.o)
 
-TARGET = runTests
+TARGET = run_tests
 
 # ===============================
 #             TARGETS

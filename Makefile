@@ -6,12 +6,11 @@
 #    By: tshimizu <tshimizu@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/22 17:42:12 by nkojima           #+#    #+#              #
-#    Updated: 2025/11/24 10:55:03 by tshimizu         ###   ########.fr        #
+#    Updated: 2025/11/24 17:33:58 by tshimizu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # ===============================
-#             Color
 #             Color
 # ===============================
 GREEN   = \033[0;32m
@@ -20,9 +19,8 @@ YELLOW  = \033[0;33m
 RESET   = \033[0m
 
 # ===============================
-#        OS Detection
+#        Install ReadLine
 # ===============================
-UNAME_S := $(shell uname -s)
 READLINE_PATH := $(shell brew --prefix readline 2>/dev/null)
 
 ifeq ($(READLINE_PATH),)
@@ -37,9 +35,7 @@ LDFLAGS += -L$(READLINE_PATH)/lib -lreadline
 # ===============================
 #        CONFIGURATION
 # ===============================
-# ===============================
 NAME        = minishell
-CC          = cc
 SRC_DIR     = src
 LIBFT_DIR   = libs/libft
 TEST_DIR    = tests
@@ -72,15 +68,8 @@ ALL_SRC = \
     $(SRC_EXEC) \
     $(SRC_BUILTIN) \
     $(SRC_MAIN)
-    $(SRC_UTILS) \
-    $(SRC_INPUT) \
-    $(SRC_PARSE) \
-    $(SRC_EXEC) \
-    $(SRC_BUILTIN) \
-    $(SRC_MAIN)
 
-SRCS        = $(addprefix $(SRC_DIR)/, $(ALL_SRC))
-OBJS        = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+
 SRCS        = $(addprefix $(SRC_DIR)/, $(ALL_SRC))
 OBJS        = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
@@ -90,9 +79,7 @@ RMDIR       = rm -rf
 # ===============================
 #             TARGETS
 # ===============================
-# ===============================
-#             TARGETS
-# ===============================
+
 all: $(LIBFT) $(NAME)
 
 $(LIBFT):
@@ -116,9 +103,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 # ===============================
 #       SANITIZER / DEBUG
 # ===============================
-# ===============================
-#       SANITIZER / DEBUG
-# ===============================
+
 asan: CFLAGS += -g -fsanitize=address
 asan: re
 	@echo "$(GREEN)🚀 AddressSanitizer Enabled$(RESET)"
@@ -133,9 +118,6 @@ debug: re
 valgrind: re
 	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME)
 
-# ===============================
-#          RUN / TEST
-# ===============================
 # ===============================
 #          RUN / TEST
 # ===============================
@@ -179,10 +161,6 @@ fclean: clean
 
 re: fclean all
 
-# ===============================
-#             PHONY
-# ===============================
-.PHONY: all clean fclean re asan debug valgrind run test $(LIBFT)
 # ===============================
 #             PHONY
 # ===============================
