@@ -13,11 +13,11 @@
 #ifndef REPL_H
 # define REPL_H
 
+# include <stdio.h>
+# include <stdlib.h>
 # include "types.h"
 # include <readline/history.h>
 # include <readline/readline.h>
-# include <stdio.h>
-# include <stdlib.h>
 
 t_bool	run_repl(void);
 
