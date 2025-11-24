@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 12:48:22 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/11/24 13:21:28 by tshimizu         ###   ########.fr       */
+/*   Updated: 2025/11/24 16:30:27 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,5 +17,6 @@
 # include "types.h"
 # include <stdio.h>
 # include <stdlib.h>
+#include "../libs/libft/libft.h"
 
 #endif // MINISHELL_H
