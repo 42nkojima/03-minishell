@@ -6,7 +6,7 @@
 #    By: tshimizu <tshimizu@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/22 17:42:12 by nkojima           #+#    #+#              #
-#    Updated: 2025/11/24 10:44:34 by tshimizu         ###   ########.fr        #
+#    Updated: 2025/11/24 12:46:22 by tshimizu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,7 +53,7 @@ LIBFT       = $(LIBFT_DIR)/libft.a
 # ===============================
 SRC_UTILS   =
 
-SRC_INPUT   =
+SRC_INPUT   = input/repl.c
 
 SRC_PARSE   =
 

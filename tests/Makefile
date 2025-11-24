@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: tshimizu <tshimizu@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2025/11/24 12:50:10 by tshimizu          #+#    #+#              #
+#    Updated: 2025/11/24 12:50:12 by tshimizu         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 
 # ===============================
 #             Color
@@ -14,8 +26,8 @@ UNAME_S := $(shell uname -s)
 READLINE_PATH := $(shell brew --prefix readline 2>/dev/null)
 
 ifeq ($(READLINE_PATH),)
-	$(warning $(YELLOW)>> readline が見つかりません。Homebrewでインストールしてください$(RESET))
-	$(warning $(YELLOW)>> brew install readline$(RESET))
+$(warning $(YELLOW)>> readline が見つかりません。Homebrewでインストールしてください$(RESET))
+$(warning $(YELLOW)>> brew install readline$(RESET))
 endif
 
 CFLAGS += -I$(READLINE_PATH)/include
@@ -39,7 +51,7 @@ GTEST_MAIN = $(GTEST_BUILD)/lib/libgtest_main.a
 LDFLAGS += -pthread
 
 SRC_DIR = ../src
-SRC  = $(shell find $(SRC_DIR) -name "*.c")
+SRC  = $(filter-out ../src/main.c, $(shell find $(SRC_DIR) -name "*.c"))
 OBJ  = $(SRC:../src/%.c=build/%.o)
 
 LIBFT = ../libs/libft/libft.a
@@ -60,17 +72,15 @@ all: run
 # 		GoogleTest
 # ===========================
 
+$(TARGET): $(GTEST_LIB) $(GTEST_MAIN) $(OBJ) $(TEST_OBJ) $(LIBFT)
+	$(CXX) $(CXXFLAGS) -o $@ $(OBJ) $(TEST_OBJ) $(GTEST_LIB) $(GTEST_MAIN) $(LIBFT) $(LDFLAGS)
+
 $(GTEST_LIB) $(GTEST_MAIN):|$(GTEST_DIR)
 	mkdir -p $(GTEST_BUILD)
-	cd $(GTEST_BUILD) && cmake .. && make
+	cd $(GTEST_BUILD) && cmake -DCMAKE_POSITION_INDEPENDENT_CODE=ON .. && make
 
 $(GTEST_DIR):
 	@git clone git@github.com:google/googletest.git $(GTEST_DIR)
-
-
-$(TARGET): $(OBJ) $(TEST_OBJ) $(LIBFT) $(GTEST_LIB) $(GTEST_MAIN)
-	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
-
 
 build/%.o: ../src/%.c
 	mkdir -p $(dir $@)
