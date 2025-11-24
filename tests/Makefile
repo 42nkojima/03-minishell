@@ -57,17 +57,15 @@ all: run
 # 		GoogleTest
 # ===========================
 
-$(GTEST_LIB) $(GTEST_MAIN):|$(GTEST_DIR)
+$(GTEST_LIB) $(GTEST_MAIN): | $(GTEST_DIR)
 	mkdir -p $(GTEST_BUILD)
 	cd $(GTEST_BUILD) && cmake .. && make
 
 $(GTEST_DIR):
 	@git clone git@github.com:google/googletest.git $(GTEST_DIR)
 
-
 $(TARGET): $(OBJ) $(TEST_OBJ) $(LIBFT) $(GTEST_LIB) $(GTEST_MAIN)
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
-
 
 build/%.o: ../src/%.c
 	mkdir -p $(dir $@)
@@ -100,7 +98,7 @@ clean:
 
 fclean: clean
 	rm -rf $(GTEST_BUILD)
-	@echo "$(GREEN)🧼 Cleaned executable and libft.$(RESET)"
+	@echo "$(GREEN)🧼 Cleaned executable.$(RESET)"
 
 re: fclean all
 
