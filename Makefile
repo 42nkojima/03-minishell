@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tshimizu <tshimizu@student.42.fr>          +#+  +:+       +#+         #
+#    By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/22 17:42:12 by nkojima           #+#    #+#              #
-#    Updated: 2025/11/24 17:33:58 by tshimizu         ###   ########.fr        #
+#    Updated: 2025/11/24 18:03:25 by nkojima          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,6 @@ ifeq ($(READLINE_PATH),)
 $(warning $(YELLOW)>> readline が見つかりません。Homebrewでインストールしてください$(RESET))
 $(warning $(YELLOW)>> brew install readline$(RESET))
 endif
-
 
 CFLAGS += -I$(READLINE_PATH)/include
 LDFLAGS += -L$(READLINE_PATH)/lib -lreadline
@@ -69,17 +68,14 @@ ALL_SRC = \
     $(SRC_BUILTIN) \
     $(SRC_MAIN)
 
-
 SRCS        = $(addprefix $(SRC_DIR)/, $(ALL_SRC))
 OBJS        = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
-RM          = rm -f
 RMDIR       = rm -rf
 
 # ===============================
 #             TARGETS
 # ===============================
-
 all: $(LIBFT) $(NAME)
 
 $(LIBFT):
@@ -89,28 +85,20 @@ $(LIBFT):
 $(NAME): $(OBJS)
 	@echo "$(YELLOW)[LD] Linking $(NAME)...$(RESET)"
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(LDFLAGS) -o $@
-	@echo "$(YELLOW)[LD] Linking $(NAME)...$(RESET)"
-	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(LDFLAGS) -o $@
-	@echo "$(GREEN)✅ Compiled: $(NAME)$(RESET)"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(dir $@)
-	@$(CC) $(CFLAGS) -c $< -o $@
-	@echo "$(GREEN)🔧 Compiled: $<$(RESET)"
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@echo "$(GREEN)🔧 Compiled: $<$(RESET)"
 
 # ===============================
 #       SANITIZER / DEBUG
 # ===============================
-
 asan: CFLAGS += -g -fsanitize=address
 asan: re
 	@echo "$(GREEN)🚀 AddressSanitizer Enabled$(RESET)"
-	@echo "$(GREEN)🚀 AddressSanitizer Enabled$(RESET)"
 	./$(NAME)
 
-debug: CFLAGS += -g -DDEBUG
 debug: CFLAGS += -g -DDEBUG
 debug: re
 	@echo "$(GREEN)🚀 Debug build ready$(RESET)"
@@ -131,10 +119,10 @@ test:
 test_verbose:
 	@echo "$(YELLOW)Running GoogleTest (verbose)...$(RESET)"
 	@$(MAKE) -C tests run_verbose
+
 # ===============================
 #             CLEAN
 # ===============================
-
 test:
 	@echo "$(YELLOW)Running GoogleTest...$(RESET)"
 	@$(MAKE) -C tests run
@@ -142,6 +130,7 @@ test:
 test_verbose:
 	@echo "$(YELLOW)Running GoogleTest (verbose)...$(RESET)"
 	@$(MAKE) -C tests run_verbose
+
 # ===============================
 #             CLEAN
 # ===============================
@@ -149,14 +138,11 @@ clean:
 	@$(RM) $(OBJS)
 	@$(MAKE) -C $(LIBFT_DIR) clean
 	@echo "$(GREEN)🧹 Cleaned object files.$(RESET)"
-	@echo "$(GREEN)🧹 Cleaned object files.$(RESET)"
 
 fclean: clean
 	@$(RMDIR) $(OBJ_DIR)
-	@$(RMDIR) $(OBJ_DIR)
 	@$(RM) $(NAME)
 	@$(MAKE) -C $(LIBFT_DIR) fclean
-	@echo "$(GREEN)🧼 Cleaned executable and libft.$(RESET)"
 	@echo "$(GREEN)🧼 Cleaned executable and libft.$(RESET)"
 
 re: fclean all
