@@ -1,19 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   repl.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tshimizu <tshimizu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/12 13:46:31 by nkojima           #+#    #+#             */
-/*   Updated: 2025/11/24 12:49:48 by tshimizu         ###   ########.fr       */
+/*   Created: 2025/11/24 12:48:38 by tshimizu          #+#    #+#             */
+/*   Updated: 2025/11/24 13:21:32 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#ifndef REPL_H
+# define REPL_H
 
-int	main(void)
-{
-	run_repl();
-	return (0);
-}
+# include "types.h"
+# include <readline/history.h>
+# include <readline/readline.h>
+# include <stdio.h>
+# include <stdlib.h>
+
+t_bool	run_repl(void);
+
+#endif // REPL_H
