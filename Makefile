@@ -6,7 +6,7 @@
 #    By: tshimizu <tshimizu@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/22 17:42:12 by nkojima           #+#    #+#              #
-#    Updated: 2025/11/24 12:46:22 by tshimizu         ###   ########.fr        #
+#    Updated: 2025/11/24 18:23:45 by nkojima          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,16 +19,14 @@ YELLOW  = \033[0;33m
 RESET   = \033[0m
 
 # ===============================
-#        OS Detection
+#        Install ReadLine
 # ===============================
-UNAME_S := $(shell uname -s)
 READLINE_PATH := $(shell brew --prefix readline 2>/dev/null)
 
 ifeq ($(READLINE_PATH),)
-$(warning $(YELLOW)>> readline が見つかりません。Homebrewでインストールしてください$(RESET))
-$(warning $(YELLOW)>> brew install readline$(RESET))
+$(error $(YELLOW)>> readline が見つかりません。Homebrewでインストールしてください$(RESET))
+$(error $(YELLOW)>> brew install readline$(RESET))
 endif
-
 
 CFLAGS += -I$(READLINE_PATH)/include
 LDFLAGS += -L$(READLINE_PATH)/lib -lreadline
@@ -37,7 +35,6 @@ LDFLAGS += -L$(READLINE_PATH)/lib -lreadline
 #        CONFIGURATION
 # ===============================
 NAME        = minishell
-CC          = cc
 SRC_DIR     = src
 LIBFT_DIR   = libs/libft
 TEST_DIR    = tests
@@ -45,8 +42,8 @@ OBJ_DIR     = objs
 INC_DIR     = includes
 INCFLAG     = -I$(INC_DIR) -I$(LIBFT_DIR)
 CFLAGS      += -Wall -Wextra -Werror $(INCFLAG)
-LDFLAGS     += -L$(READLINE_PATH)/lib -lreadline
 LIBFT       = $(LIBFT_DIR)/libft.a
+RMDIR       = rm -rf
 
 # ===============================
 #               SRC
@@ -73,9 +70,6 @@ ALL_SRC = \
 
 SRCS        = $(addprefix $(SRC_DIR)/, $(ALL_SRC))
 OBJS        = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
-
-RM          = rm -f
-RMDIR       = rm -rf
 
 # ===============================
 #             TARGETS
@@ -119,28 +113,31 @@ run: all
 
 test:
 	@echo "$(YELLOW)Running GoogleTest...$(RESET)"
-	@$(MAKE) -C tests run
+	@$(MAKE) -C $(TEST_DIR) run
 
 test_verbose:
 	@echo "$(YELLOW)Running GoogleTest (verbose)...$(RESET)"
-	@$(MAKE) -C tests run_verbose
+	@$(MAKE) -C $(TEST_DIR) run_verbose
+
 # ===============================
 #             CLEAN
 # ===============================
 clean:
 	@$(RM) $(OBJS)
 	@$(MAKE) -C $(LIBFT_DIR) clean
-	@echo "$(GREEN)🧹 Cleaned object files.$(RESET)"
+	@$(MAKE) -C $(TEST_DIR) clean
+	@echo "$(GREEN)🧹 Cleaned object files, libft, and tests.$(RESET)"
 
-fclean: clean
+fclean:
 	@$(RMDIR) $(OBJ_DIR)
 	@$(RM) $(NAME)
 	@$(MAKE) -C $(LIBFT_DIR) fclean
-	@echo "$(GREEN)🧼 Cleaned executable and libft.$(RESET)"
+	@$(MAKE) -C $(TEST_DIR) fclean
+	@echo "$(GREEN)🧼 Cleaned executable, libft, and tests.$(RESET)"
 
 re: fclean all
 
 # ===============================
 #             PHONY
 # ===============================
-.PHONY: all clean fclean re asan debug valgrind run test $(LIBFT)
+.PHONY: all clean fclean re asan debug valgrind run test test_verbose $(LIBFT)
