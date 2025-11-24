@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tshimizu <tshimizu@student.42.fr>          +#+  +:+       +#+         #
+#    By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/24 12:50:10 by tshimizu          #+#    #+#              #
-#    Updated: 2025/11/24 12:50:12 by tshimizu         ###   ########.fr        #
+#    Updated: 2025/11/29 11:14:46 by tshimizu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 

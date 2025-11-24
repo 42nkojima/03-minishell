@@ -344,6 +344,48 @@ tputs(move, 1, putchar);
 
 ---
 
+## termios構造体とは
+
+`termios`は、**端末（ターミナル）の動作を制御する設定を格納する構造体**です。端末の入出力の振る舞いを細かく設定できます。
+
+## 関数の解説
+
+### `tcgetattr(int fd, struct termios *term)`
+- 端末の**現在の設定を取得**する関数
+- `fd`: ファイルディスクリプタ（`STDIN_FILENO` = 標準入力 = 0）
+- `term`: 設定を格納する構造体へのポインタ
+
+### `tcsetattr(int fd, int optional_actions, const struct termios *term)`
+- 端末の**設定を変更**する関数
+- `TCSANOW`: 変更を**即座に**適用する
+  - 他のオプション: `TCSADRAIN`（出力完了後）、`TCSAFLUSH`（出力完了後+入力破棄）
+
+## termios構造体の主要メンバー
+
+```c
+struct termios {
+    tcflag_t c_iflag;   // 入力フラグ
+    tcflag_t c_oflag;   // 出力フラグ
+    tcflag_t c_cflag;   // 制御フラグ
+    tcflag_t c_lflag;   // ローカルフラグ ← 今回使用
+    cc_t c_cc[NCCS];    // 制御文字
+};
+```
+
+## `c_lflag`（ローカルフラグ）
+
+端末の**ローカルな振る舞い**を制御するフラグ群です。
+
+主なフラグ：
+- `ECHO`: 入力文字をエコー表示
+- `ECHOE`: バックスペースで文字削除
+- `ECHOK`: Killで行削除
+- **`ECHOCTL`**: **制御文字を`^C`形式で表示**
+- `ICANON`: カノニカルモード（行単位入力）
+- `ISIG`: シグナル生成を有効化
+
+
+---
 # 🧩 まとめ表（カテゴリ別）
 
 | カテゴリ    | 主な関数                        |
