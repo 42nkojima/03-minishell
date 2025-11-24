@@ -1,19 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   repl.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tshimizu <tshimizu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/12 13:46:31 by nkojima           #+#    #+#             */
-/*   Updated: 2025/11/24 12:49:48 by tshimizu         ###   ########.fr       */
+/*   Created: 2025/11/24 12:44:57 by tshimizu          #+#    #+#             */
+/*   Updated: 2025/11/24 12:59:40 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(void)
-{
-	run_repl();
-	return (0);
+t_bool run_repl(void) {
+    char *input;
+
+    while ((input = readline("minishell$ ")) != NULL) {
+        if (*input) {
+            add_history(input);
+        }
+        free(input);
+    }
+
+    return TRUE;
 }

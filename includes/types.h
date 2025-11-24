@@ -1,19 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   types.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tshimizu <tshimizu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/12 13:46:31 by nkojima           #+#    #+#             */
-/*   Updated: 2025/11/24 12:49:48 by tshimizu         ###   ########.fr       */
+/*   Created: 2025/11/24 12:48:22 by tshimizu          #+#    #+#             */
+/*   Updated: 2025/11/24 13:03:46 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#ifndef TYPES_H
+# define TYPES_H
 
-int	main(void)
+
+typedef enum e_bool
 {
-	run_repl();
-	return (0);
-}
+	FALSE = 0,
+	TRUE = 1
+}	t_bool;
+
+#endif // TYPES_H

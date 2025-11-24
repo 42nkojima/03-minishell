@@ -1,19 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tshimizu <tshimizu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/12 13:46:31 by nkojima           #+#    #+#             */
-/*   Updated: 2025/11/24 12:49:48 by tshimizu         ###   ########.fr       */
+/*   Created: 2025/11/24 12:48:22 by tshimizu          #+#    #+#             */
+/*   Updated: 2025/11/24 13:04:51 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
-int	main(void)
-{
-	run_repl();
-	return (0);
-}
+# include <stdio.h>
+# include <stdlib.h>
+#include "types.h"
+# include "repl.h"
+
+
+
+
+#endif // MINISHELL_H
