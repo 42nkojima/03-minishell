@@ -6,29 +6,33 @@
 /*   By: tshimizu <tshimizu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 12:44:57 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/11/24 20:46:18 by tshimizu         ###   ########.fr       */
+/*   Updated: 2025/11/24 21:53:45 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int noop(){ return 0;}
+static volatile sig_atomic_t	g_interrupt = 1;
 
-int g_interrupt = 1;
+int	noop(void)
+{
+	return (0);
+}
 
 t_bool	run_repl(void)
 {
 	char	*input;
 
-    rl_event_hook = noop;
+	rl_event_hook = noop;
 	while (TRUE)
 	{
-        g_interrupt = 0;
+		g_interrupt = 0;
 		input = readline("minishell$ ");
-        if (g_interrupt){
-            free(input);
-            continue;
-        }
+		if (g_interrupt)
+		{
+			free(input);
+			continue ;
+		}
 		if (input == NULL)
 			break ;
 		if (*input)
@@ -38,50 +42,24 @@ t_bool	run_repl(void)
 	return (TRUE);
 }
 
-
 void	sigint_handler(int signo)
 {
 	(void)signo;
-    // write(STDERR_FILENO, "\n", 1);
-    g_interrupt = 1;
-    rl_done = 1;
-    // rl_free_line_state();
-    // rl_cleanup_after_signal();
-	// rl_on_new_line();
-    // rl_replace_line("", 0);
-	// rl_redisplay();
+	g_interrupt = 1;
+	rl_done = 1;
 }
 
-t_bool assign_signal_handler(int signum, void (*handler)(int), int flags)
+t_bool	assign_signal_handler(int signum, void (*handler)(int), int flags)
 {
-    struct sigaction sa;
+	struct sigaction	sa;
 
-    sigemptyset(&sa.sa_mask);
-    sa.sa_handler = handler;
-    sa.sa_flags = flags;
-
-    if (sigaction(signum, &sa, NULL) == -1)
-    {
-        perror("Error setting up sigaction");
-        return FALSE;
-    }
-    return TRUE;
-}
-
-void setup_terminal(void)
-{
-   struct termios term;
-
-   tcgetattr(STDIN_FILENO, &term);
-   term.c_lflag &= ~ECHOCTL;
-   tcsetattr(STDIN_FILENO, TCSANOW, &term);
-}
-
-void restore_terminal(void)
-{
-    struct termios term;
-
-    tcgetattr(STDIN_FILENO, &term);
-    term.c_lflag |= ECHOCTL;
-    tcsetattr(STDIN_FILENO, TCSANOW, &term);
+	sa.sa_handler = handler;
+	sa.sa_flags = flags;
+	sigemptyset(&sa.sa_mask);
+	if (sigaction(signum, &sa, NULL) == -1)
+	{
+		perror("Error setting up sigaction");
+		return (FALSE);
+	}
+	return (TRUE);
 }

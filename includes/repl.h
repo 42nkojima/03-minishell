@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 12:48:38 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/11/24 17:17:02 by tshimizu         ###   ########.fr       */
+/*   Updated: 2025/11/24 21:33:08 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@
 t_bool	run_repl(void);
 void	sigint_handler(int signo);
 t_bool assign_signal_handler(int signum, void (*handler)(int), int flags);
-void setup_terminal(void);
-void restore_terminal(void);
+
 
 #endif // REPL_H
