@@ -6,61 +6,80 @@
 #    By: tshimizu <tshimizu@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/22 17:42:12 by nkojima           #+#    #+#              #
-#    Updated: 2025/11/22 19:37:52 by tshimizu         ###   ########.fr        #
+#    Updated: 2025/11/24 10:44:34 by tshimizu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # ===============================
-#             Color              #
+#             Color
 # ===============================
 GREEN   = \033[0;32m
 RED     = \033[0;31m
 YELLOW  = \033[0;33m
 RESET   = \033[0m
 
-# ========================
-#        CONFIGURATION
-# ========================
-NAME        = minishell
+# ===============================
+#        OS Detection
+# ===============================
+UNAME_S := $(shell uname -s)
+READLINE_PATH := $(shell brew --prefix readline 2>/dev/null)
 
+ifeq ($(READLINE_PATH),)
+$(warning $(YELLOW)>> readline が見つかりません。Homebrewでインストールしてください$(RESET))
+$(warning $(YELLOW)>> brew install readline$(RESET))
+endif
+
+
+CFLAGS += -I$(READLINE_PATH)/include
+LDFLAGS += -L$(READLINE_PATH)/lib -lreadline
+
+# ===============================
+#        CONFIGURATION
+# ===============================
+NAME        = minishell
 CC          = cc
-SRC_DIR		= src
+SRC_DIR     = src
 LIBFT_DIR   = libs/libft
+TEST_DIR    = tests
 OBJ_DIR     = objs
 INC_DIR     = includes
-
 INCFLAG     = -I$(INC_DIR) -I$(LIBFT_DIR)
-CFLAGS      = -Wall -Wextra -Werror $(INCFLAG)
+CFLAGS      += -Wall -Wextra -Werror $(INCFLAG)
+LDFLAGS     += -L$(READLINE_PATH)/lib -lreadline
 LIBFT       = $(LIBFT_DIR)/libft.a
-LIBS        = -lreadline
 
-# ========================
-#        SOURCES
-# ========================
+# ===============================
+#               SRC
+# ===============================
 SRC_UTILS   =
+
 SRC_INPUT   =
+
 SRC_PARSE   =
+
 SRC_EXEC    =
+
 SRC_BUILTIN =
+
 SRC_MAIN    = main.c
 
 ALL_SRC = \
-	$(SRC_UTILS) \
-	$(SRC_INPUT) \
-	$(SRC_PARSE) \
-	$(SRC_EXEC) \
-	$(SRC_BUILTIN) \
-	$(SRC_MAIN)
+    $(SRC_UTILS) \
+    $(SRC_INPUT) \
+    $(SRC_PARSE) \
+    $(SRC_EXEC) \
+    $(SRC_BUILTIN) \
+    $(SRC_MAIN)
 
-SRCS 		= $(addprefix $(SRC_DIR)/, $(ALL_SRC))
-OBJS        = $(SRCS:%.c=$(OBJ_DIR)/%.o)
+SRCS        = $(addprefix $(SRC_DIR)/, $(ALL_SRC))
+OBJS        = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
 RM          = rm -f
 RMDIR       = rm -rf
 
-# ========================
-#        TARGETS
-# ========================
+# ===============================
+#             TARGETS
+# ===============================
 all: $(LIBFT) $(NAME)
 
 $(LIBFT):
@@ -68,54 +87,60 @@ $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(LIBS) -o $@
+	@echo "$(YELLOW)[LD] Linking $(NAME)...$(RESET)"
+	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(LDFLAGS) -o $@
 	@echo "$(GREEN)✅ Compiled: $(NAME)$(RESET)"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -c $< -o $@
-	@echo "$(YELLOW)🔧 Compiled: $<$(RESET)"
+	@$(CC) $(CFLAGS) -c $< -o $@
+	@echo "$(GREEN)🔧 Compiled: $<$(RESET)"
 
-# ========================
-#     DEBUG/SANITIZER
-# ========================
+# ===============================
+#       SANITIZER / DEBUG
+# ===============================
 asan: CFLAGS += -g -fsanitize=address
 asan: re
-	@echo "$(YELLOW)🚀 Running with AddressSanitizer$(RESET)"
+	@echo "$(GREEN)🚀 AddressSanitizer Enabled$(RESET)"
 	./$(NAME)
 
-debug: CFLAGS += -g
+debug: CFLAGS += -g -DDEBUG
 debug: re
-	@echo "$(YELLOW)🚀 Debug build ready (use gdb/lldb)$(RESET)"
+	@echo "$(GREEN)🚀 Debug build ready$(RESET)"
 
 valgrind: re
 	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME)
 
-# ========================
-#        TEST/RUN
-# ========================
+# ===============================
+#          RUN / TEST
+# ===============================
 run: all
 	./$(NAME)
-# TODO
-test: all
-	./test/test
 
-# ========================
-#        CLEANING
-# ========================
+test:
+	@echo "$(YELLOW)Running GoogleTest...$(RESET)"
+	@$(MAKE) -C tests run
+
+test_verbose:
+	@echo "$(YELLOW)Running GoogleTest (verbose)...$(RESET)"
+	@$(MAKE) -C tests run_verbose
+# ===============================
+#             CLEAN
+# ===============================
 clean:
 	@$(RM) $(OBJS)
 	@$(MAKE) -C $(LIBFT_DIR) clean
-	@echo "$(YELLOW)🧹 Cleaned object files.$(RESET)"
+	@echo "$(GREEN)🧹 Cleaned object files.$(RESET)"
 
 fclean: clean
+	@$(RMDIR) $(OBJ_DIR)
 	@$(RM) $(NAME)
 	@$(MAKE) -C $(LIBFT_DIR) fclean
-	@echo "$(RED)🧼 Cleaned executable and libft.$(RESET)"
+	@echo "$(GREEN)🧼 Cleaned executable and libft.$(RESET)"
 
 re: fclean all
 
-# ========================
-#        PHONY
-# ========================
-.PHONY: all clean fclean re asan debug run test valgrind $(LIBFT)
+# ===============================
+#             PHONY
+# ===============================
+.PHONY: all clean fclean re asan debug valgrind run test $(LIBFT)
