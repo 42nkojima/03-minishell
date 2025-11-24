@@ -6,7 +6,7 @@
 #    By: tshimizu <tshimizu@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/22 17:42:12 by nkojima           #+#    #+#              #
-#    Updated: 2025/11/22 20:30:00 by tshimizu         ###   ########.fr        #
+#    Updated: 2025/11/24 10:44:34 by tshimizu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,9 +25,10 @@ UNAME_S := $(shell uname -s)
 READLINE_PATH := $(shell brew --prefix readline 2>/dev/null)
 
 ifeq ($(READLINE_PATH),)
-	$(warning $(YELLOW)>> readline が見つかりません。Homebrewでインストールしてください$(RESET))
-	$(warning $(YELLOW)>> brew install readline$(RESET))
+$(warning $(YELLOW)>> readline が見つかりません。Homebrewでインストールしてください$(RESET))
+$(warning $(YELLOW)>> brew install readline$(RESET))
 endif
+
 
 CFLAGS += -I$(READLINE_PATH)/include
 LDFLAGS += -L$(READLINE_PATH)/lib -lreadline
@@ -50,15 +51,15 @@ LIBFT       = $(LIBFT_DIR)/libft.a
 # ===============================
 #               SRC
 # ===============================
-SRC_UTILS   = 
+SRC_UTILS   =
 
 SRC_INPUT   =
 
-SRC_PARSE   = 
+SRC_PARSE   =
 
-SRC_EXEC    = 
+SRC_EXEC    =
 
-SRC_BUILTIN = 
+SRC_BUILTIN =
 
 SRC_MAIN    = main.c
 
