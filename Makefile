@@ -6,7 +6,7 @@
 #    By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/22 17:42:12 by nkojima           #+#    #+#              #
-#    Updated: 2025/11/24 18:06:42 by nkojima          ###   ########.fr        #
+#    Updated: 2025/11/24 18:09:14 by nkojima          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -112,17 +112,6 @@ valgrind: re
 run: all
 	./$(NAME)
 
-test:
-	@echo "$(YELLOW)Running GoogleTest...$(RESET)"
-	@$(MAKE) -C $(TEST_DIR) run
-
-test_verbose:
-	@echo "$(YELLOW)Running GoogleTest (verbose)...$(RESET)"
-	@$(MAKE) -C $(TEST_DIR) run_verbose
-
-# ===============================
-#             CLEAN
-# ===============================
 test:
 	@echo "$(YELLOW)Running GoogleTest...$(RESET)"
 	@$(MAKE) -C $(TEST_DIR) run
