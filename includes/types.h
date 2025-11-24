@@ -6,13 +6,12 @@
 /*   By: tshimizu <tshimizu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 12:48:22 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/11/24 13:03:46 by tshimizu         ###   ########.fr       */
+/*   Updated: 2025/11/24 13:21:36 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TYPES_H
 # define TYPES_H
-
 
 typedef enum e_bool
 {
