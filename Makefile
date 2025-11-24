@@ -6,11 +6,12 @@
 #    By: tshimizu <tshimizu@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/22 17:42:12 by nkojima           #+#    #+#              #
-#    Updated: 2025/11/24 10:44:34 by tshimizu         ###   ########.fr        #
+#    Updated: 2025/11/24 10:55:03 by tshimizu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # ===============================
+#             Color
 #             Color
 # ===============================
 GREEN   = \033[0;32m
@@ -35,6 +36,7 @@ LDFLAGS += -L$(READLINE_PATH)/lib -lreadline
 
 # ===============================
 #        CONFIGURATION
+# ===============================
 # ===============================
 NAME        = minishell
 CC          = cc
@@ -70,13 +72,24 @@ ALL_SRC = \
     $(SRC_EXEC) \
     $(SRC_BUILTIN) \
     $(SRC_MAIN)
+    $(SRC_UTILS) \
+    $(SRC_INPUT) \
+    $(SRC_PARSE) \
+    $(SRC_EXEC) \
+    $(SRC_BUILTIN) \
+    $(SRC_MAIN)
 
+SRCS        = $(addprefix $(SRC_DIR)/, $(ALL_SRC))
+OBJS        = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 SRCS        = $(addprefix $(SRC_DIR)/, $(ALL_SRC))
 OBJS        = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
 RM          = rm -f
 RMDIR       = rm -rf
 
+# ===============================
+#             TARGETS
+# ===============================
 # ===============================
 #             TARGETS
 # ===============================
@@ -89,21 +102,30 @@ $(LIBFT):
 $(NAME): $(OBJS)
 	@echo "$(YELLOW)[LD] Linking $(NAME)...$(RESET)"
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(LDFLAGS) -o $@
+	@echo "$(YELLOW)[LD] Linking $(NAME)...$(RESET)"
+	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(LDFLAGS) -o $@
 	@echo "$(GREEN)✅ Compiled: $(NAME)$(RESET)"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@echo "$(GREEN)🔧 Compiled: $<$(RESET)"
+	@$(CC) $(CFLAGS) -c $< -o $@
+	@echo "$(GREEN)🔧 Compiled: $<$(RESET)"
 
+# ===============================
+#       SANITIZER / DEBUG
+# ===============================
 # ===============================
 #       SANITIZER / DEBUG
 # ===============================
 asan: CFLAGS += -g -fsanitize=address
 asan: re
 	@echo "$(GREEN)🚀 AddressSanitizer Enabled$(RESET)"
+	@echo "$(GREEN)🚀 AddressSanitizer Enabled$(RESET)"
 	./$(NAME)
 
+debug: CFLAGS += -g -DDEBUG
 debug: CFLAGS += -g -DDEBUG
 debug: re
 	@echo "$(GREEN)🚀 Debug build ready$(RESET)"
@@ -111,6 +133,9 @@ debug: re
 valgrind: re
 	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME)
 
+# ===============================
+#          RUN / TEST
+# ===============================
 # ===============================
 #          RUN / TEST
 # ===============================
@@ -127,19 +152,37 @@ test_verbose:
 # ===============================
 #             CLEAN
 # ===============================
+
+test:
+	@echo "$(YELLOW)Running GoogleTest...$(RESET)"
+	@$(MAKE) -C tests run
+
+test_verbose:
+	@echo "$(YELLOW)Running GoogleTest (verbose)...$(RESET)"
+	@$(MAKE) -C tests run_verbose
+# ===============================
+#             CLEAN
+# ===============================
 clean:
 	@$(RM) $(OBJS)
 	@$(MAKE) -C $(LIBFT_DIR) clean
 	@echo "$(GREEN)🧹 Cleaned object files.$(RESET)"
+	@echo "$(GREEN)🧹 Cleaned object files.$(RESET)"
 
 fclean: clean
+	@$(RMDIR) $(OBJ_DIR)
 	@$(RMDIR) $(OBJ_DIR)
 	@$(RM) $(NAME)
 	@$(MAKE) -C $(LIBFT_DIR) fclean
 	@echo "$(GREEN)🧼 Cleaned executable and libft.$(RESET)"
+	@echo "$(GREEN)🧼 Cleaned executable and libft.$(RESET)"
 
 re: fclean all
 
+# ===============================
+#             PHONY
+# ===============================
+.PHONY: all clean fclean re asan debug valgrind run test $(LIBFT)
 # ===============================
 #             PHONY
 # ===============================
