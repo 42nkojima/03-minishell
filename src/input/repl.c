@@ -6,26 +6,33 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 12:44:57 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/11/29 11:17:18 by tshimizu         ###   ########.fr       */
+/*   Updated: 2025/11/29 11:19:52 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static volatile sig_atomic_t g_interrupt = 1;
+static volatile sig_atomic_t	g_interrupt = 1;
+
+int	noop(void)
+{
+	return (0);
+}
 
 bool	run_repl(void)
 {
 	char	*input;
 
-	while (true)
+	rl_event_hook = noop;
+	while (TRUE)
 	{
-        g_interrupt = 0;
+		g_interrupt = 0;
 		input = readline("minishell$ ");
-        if (g_interrupt){
-            free(input);
-            continue;
-        }
+		if (g_interrupt)
+		{
+			free(input);
+			continue ;
+		}
 		if (input == NULL)
 			break ;
 		if (*input)
@@ -35,23 +42,16 @@ bool	run_repl(void)
 	return (true);
 }
 
-
 void	sigint_handler(int signo)
 {
 	(void)signo;
-    // write(STDERR_FILENO, "\n", 1);
-    g_interrupt = 1;
-    rl_done = 1;
-    // rl_free_line_state();
-    // rl_cleanup_after_signal();
-	// rl_on_new_line();
-    // rl_replace_line("", 0);
-	// rl_redisplay();
+	g_interrupt = 1;
+	rl_done = 1;
 }
 
 bool assign_signal_handler(int signum, void (*handler)(int), int flags)
 {
-    struct sigaction sa;
+	struct sigaction	sa;
 
     sigemptyset(&sa.sa_mask);
     sa.sa_handler = handler;
