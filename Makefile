@@ -6,7 +6,7 @@
 #    By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/22 17:42:12 by nkojima           #+#    #+#              #
-#    Updated: 2025/11/24 18:09:14 by nkojima          ###   ########.fr        #
+#    Updated: 2025/11/24 18:13:04 by nkojima          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,6 @@ OBJ_DIR     = objs
 INC_DIR     = includes
 INCFLAG     = -I$(INC_DIR) -I$(LIBFT_DIR)
 CFLAGS      += -Wall -Wextra -Werror $(INCFLAG)
-LDFLAGS     += -L$(READLINE_PATH)/lib -lreadline
 LIBFT       = $(LIBFT_DIR)/libft.a
 
 # ===============================
@@ -139,4 +138,4 @@ re: fclean all
 # ===============================
 #             PHONY
 # ===============================
-.PHONY: all clean fclean re asan debug valgrind run test $(LIBFT)
+.PHONY: all clean fclean re asan debug valgrind run test test_verbose $(LIBFT)
