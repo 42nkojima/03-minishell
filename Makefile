@@ -6,7 +6,7 @@
 #    By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/22 17:42:12 by nkojima           #+#    #+#              #
-#    Updated: 2025/11/24 18:18:19 by nkojima          ###   ########.fr        #
+#    Updated: 2025/11/24 18:19:46 by nkojima          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,8 +24,8 @@ RESET   = \033[0m
 READLINE_PATH := $(shell brew --prefix readline 2>/dev/null)
 
 ifeq ($(READLINE_PATH),)
-$(warning $(YELLOW)>> readline が見つかりません。Homebrewでインストールしてください$(RESET))
-$(warning $(YELLOW)>> brew install readline$(RESET))
+$(error $(YELLOW)>> readline が見つかりません。Homebrewでインストールしてください$(RESET))
+$(error $(YELLOW)>> brew install readline$(RESET))
 endif
 
 CFLAGS += -I$(READLINE_PATH)/include
