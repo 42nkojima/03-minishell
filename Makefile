@@ -6,7 +6,7 @@
 #    By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/22 17:42:12 by nkojima           #+#    #+#              #
-#    Updated: 2025/11/24 18:13:04 by nkojima          ###   ########.fr        #
+#    Updated: 2025/11/24 18:18:19 by nkojima          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -125,13 +125,15 @@ test_verbose:
 clean:
 	@$(RM) $(OBJS)
 	@$(MAKE) -C $(LIBFT_DIR) clean
-	@echo "$(GREEN)🧹 Cleaned object files.$(RESET)"
+	@$(MAKE) -C $(TEST_DIR) clean
+	@echo "$(GREEN)🧹 Cleaned object files, libft, and tests.$(RESET)"
 
-fclean: clean
+fclean:
 	@$(RMDIR) $(OBJ_DIR)
 	@$(RM) $(NAME)
 	@$(MAKE) -C $(LIBFT_DIR) fclean
-	@echo "$(GREEN)🧼 Cleaned executable and libft.$(RESET)"
+	@$(MAKE) -C $(TEST_DIR) fclean
+	@echo "$(GREEN)🧼 Cleaned executable, libft, and tests.$(RESET)"
 
 re: fclean all
 
