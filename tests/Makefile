@@ -14,8 +14,8 @@ UNAME_S := $(shell uname -s)
 READLINE_PATH := $(shell brew --prefix readline 2>/dev/null)
 
 ifeq ($(READLINE_PATH),)
-	$(warning $(YELLOW)>> readline が見つかりません。Homebrewでインストールしてください$(RESET))
-	$(warning $(YELLOW)>> brew install readline$(RESET))
+$(warning $(YELLOW)>> readline が見つかりません。Homebrewでインストールしてください$(RESET))
+$(warning $(YELLOW)>> brew install readline$(RESET))
 endif
 
 CFLAGS += -I$(READLINE_PATH)/include
