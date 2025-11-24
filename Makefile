@@ -6,7 +6,7 @@
 #    By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/22 17:42:12 by nkojima           #+#    #+#              #
-#    Updated: 2025/11/24 18:19:46 by nkojima          ###   ########.fr        #
+#    Updated: 2025/11/24 18:23:45 by nkojima          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,6 +43,7 @@ INC_DIR     = includes
 INCFLAG     = -I$(INC_DIR) -I$(LIBFT_DIR)
 CFLAGS      += -Wall -Wextra -Werror $(INCFLAG)
 LIBFT       = $(LIBFT_DIR)/libft.a
+RMDIR       = rm -rf
 
 # ===============================
 #               SRC
@@ -69,8 +70,6 @@ ALL_SRC = \
 
 SRCS        = $(addprefix $(SRC_DIR)/, $(ALL_SRC))
 OBJS        = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
-
-RMDIR       = rm -rf
 
 # ===============================
 #             TARGETS
