@@ -6,11 +6,13 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 12:44:57 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/11/29 11:14:14 by tshimizu         ###   ########.fr       */
+/*   Updated: 2025/11/29 11:17:18 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static volatile sig_atomic_t g_interrupt = 1;
 
 bool	run_repl(void)
 {
@@ -18,7 +20,12 @@ bool	run_repl(void)
 
 	while (true)
 	{
+        g_interrupt = 0;
 		input = readline("minishell$ ");
+        if (g_interrupt){
+            free(input);
+            continue;
+        }
 		if (input == NULL)
 			break ;
 		if (*input)
@@ -32,9 +39,14 @@ bool	run_repl(void)
 void	sigint_handler(int signo)
 {
 	(void)signo;
-	printf("\n");
-	rl_on_new_line();
-	rl_redisplay();
+    // write(STDERR_FILENO, "\n", 1);
+    g_interrupt = 1;
+    rl_done = 1;
+    // rl_free_line_state();
+    // rl_cleanup_after_signal();
+	// rl_on_new_line();
+    // rl_replace_line("", 0);
+	// rl_redisplay();
 }
 
 bool assign_signal_handler(int signum, void (*handler)(int), int flags)
@@ -55,11 +67,11 @@ bool assign_signal_handler(int signum, void (*handler)(int), int flags)
 
 void setup_terminal(void)
 {
-    struct termios term;
+   struct termios term;
 
-    tcgetattr(STDIN_FILENO, &term);
-    term.c_lflag &= ~ECHOCTL;
-    tcsetattr(STDIN_FILENO, TCSANOW, &term);
+   tcgetattr(STDIN_FILENO, &term);
+   term.c_lflag &= ~ECHOCTL;
+   tcsetattr(STDIN_FILENO, TCSANOW, &term);
 }
 
 void restore_terminal(void)
