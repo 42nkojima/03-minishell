@@ -15,10 +15,11 @@
 
 # include <stdio.h>
 # include <stdlib.h>
-# include "types.h"
+#include <stdbool.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 
-t_bool	run_repl(void);
+
+bool	run_repl(void);
 
 #endif // REPL_H

@@ -42,22 +42,22 @@ extern "C" void add_history(const char *line)
 
 TEST(ReplTest, BasicLoopWithEOF)
 {
-	t_bool	result;
+	bool	result;
 
 	mock_index = 0; // 入力の初期化
 	result = run_repl();
 	// TRUEが返されることを確認
-	EXPECT_EQ(result, TRUE);
+	EXPECT_EQ(result, true);
 	// すべての入力が処理されたことを確認
 	EXPECT_EQ(mock_index, 4); // hello, world, "", nullptr
 }
 
 TEST(ReplTest, EmptyInputNotAddedToHistory)
 {
-	t_bool	result;
+	bool	result;
 
 	// 空文字列が履歴に追加されないことを確認したい場合
 	mock_index = 2; // "" から開始
 	result = run_repl();
-	EXPECT_EQ(result, TRUE);
+	EXPECT_EQ(result, true);
 }

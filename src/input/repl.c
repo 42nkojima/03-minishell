@@ -12,11 +12,11 @@
 
 #include "minishell.h"
 
-t_bool	run_repl(void)
+bool	run_repl(void)
 {
 	char	*input;
 
-	while (TRUE)
+	while (true)
 	{
 		input = readline("minishell$ ");
 		if (input == NULL)
@@ -25,5 +25,5 @@ t_bool	run_repl(void)
 			add_history(input);
 		free(input);
 	}
-	return (TRUE);
+	return (true);
 }

@@ -19,6 +19,7 @@ compile_commands.json
 *~
 *.swp
 *.swo
+.cache
 
 # Test files
 *.log

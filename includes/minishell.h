@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tshimizu <tshimizu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: taiga <taiga@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 12:48:22 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/11/24 13:21:28 by tshimizu         ###   ########.fr       */
+/*   Updated: 2025/11/25 23:11:17 by taiga            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define MINISHELL_H
 
 # include "repl.h"
-# include "types.h"
+include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
 
