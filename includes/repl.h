@@ -3,22 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   repl.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tshimizu <tshimizu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: taiga <taiga@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 12:48:38 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/11/24 13:21:32 by tshimizu         ###   ########.fr       */
+/*   Updated: 2025/11/25 23:20:22 by taiga            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef REPL_H
 # define REPL_H
 
-# include <stdio.h>
-# include <stdlib.h>
-#include <stdbool.h>
 # include <readline/history.h>
 # include <readline/readline.h>
-
+# include <stdbool.h>
+# include <stdio.h>
+# include <stdlib.h>
 
 bool	run_repl(void);
 
