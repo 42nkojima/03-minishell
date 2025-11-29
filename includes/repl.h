@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 12:48:38 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/11/29 11:18:25 by tshimizu         ###   ########.fr       */
+/*   Updated: 2025/11/29 11:20:30 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@
 # include <stdlib.h>
 # include <signal.h>
 #include <termios.h>
+# include <stdbool.h>
 
+bool	run_repl(void);
 bool	run_repl(void);
 void	sigint_handler(int signo);
 bool assign_signal_handler(int signum, void (*handler)(int), int flags);
