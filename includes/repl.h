@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   repl.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tshimizu <tshimizu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 12:48:38 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/11/24 21:33:08 by tshimizu         ###   ########.fr       */
+/*   Updated: 2025/11/29 10:52:37 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,11 @@
 # include <stdlib.h>
 # include <signal.h>
 #include <termios.h>
+# include <stdbool.h>
 
-t_bool	run_repl(void);
+bool	run_repl(void);
 void	sigint_handler(int signo);
-t_bool assign_signal_handler(int signum, void (*handler)(int), int flags);
+bool assign_signal_handler(int signum, void (*handler)(int), int flags);
 
 
 #endif // REPL_H
