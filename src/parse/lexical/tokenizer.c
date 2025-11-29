@@ -1,25 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/24 12:48:22 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/11/29 15:51:58 by tshimizu         ###   ########.fr       */
+/*   Created: 2025/11/29 15:51:04 by tshimizu          #+#    #+#             */
+/*   Updated: 2025/11/29 16:39:48 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "minishell.h"
 
-# include "../libs/libft/libft.h"
-# include "repl.h"
-# include "lexical.h"
-# include <stdbool.h>
-# include <stdio.h>
-# include <stdlib.h>
+char	**tokenizer(char *input)
+{
+	if (!input)
+		return (NULL);
+	return (ft_split(input, ' '));
+}
 
-bool							init_signal_handlers(void);
+// Todo:milestone4で削除
+// void print_tokens(char **tokens)
+// {
+//     int i = 0;
 
-#endif // MINISHELL_H
+//     while (tokens && tokens[i])
+//     {
+//         printf("tokens[%d] = \"%s\"\n", i, tokens[i]);
+//         i++;
+//     }
+// }

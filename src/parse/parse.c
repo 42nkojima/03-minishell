@@ -1,25 +1,13 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/24 12:48:22 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/11/29 15:51:58 by tshimizu         ###   ########.fr       */
+/*   Created: 2025/11/29 16:11:40 by tshimizu          #+#    #+#             */
+/*   Updated: 2025/11/29 16:40:03 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
-
-# include "../libs/libft/libft.h"
-# include "repl.h"
-# include "lexical.h"
-# include <stdbool.h>
-# include <stdio.h>
-# include <stdlib.h>
-
-bool							init_signal_handlers(void);
-
-#endif // MINISHELL_H
+#include "minishell.h"
