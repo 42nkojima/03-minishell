@@ -83,6 +83,33 @@ minishell$ (新しいプロンプト)
 
 Bash と同じ動きをすること。
 
+`ctrl+\`も対策しないといけなそう。`ctrl+\`を押すとコアダンプして強制終了する。bashだと強制終了しない。
+
+## 今の実装でテストした結果
+```shell
+ make run
+[LIBFT] Compiling libft...
+make[1]: ディレクトリ '/home/taiga/practice/42/03-minishell/libs/libft' に入ります
+make[1]: 'all' に対して行うべき事はありません.
+make[1]: ディレクトリ '/home/taiga/practice/42/03-minishell/libs/libft' から出ます
+./minishell
+make: *** [Makefile:118: run] 終了 (コアダンプしました)
+```
+
+docsにも追記する。
+## 実装手順
+SIGQUITに`ctrl+\`が割り当てられているので、それをIGNしてあげる。
+```c
+assign_signal_handler(SIGQUIT, SIG_IGN, SA_RESTART)
+```
+
+## 注意点
+後々、コマンド (ls,cat,...)などを実装する場合に、そのコマンド群に対しては、`ctrl+c`などで中断できるようにしないといけないので、SIG_DFLでデフォルトの挙動にする必要がある。
+
+```c
+assign_signal_handler(SIGINT, SIG_DFL, 0);
+assign_signal_handler(SIGQUIT, SIG_DFL, 0);
+```
 ---
 
 # **📌 Milestone 3 — 最小のパーサ（スペース区切りだけ）**
