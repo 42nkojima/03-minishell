@@ -6,7 +6,7 @@
 #    By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/24 12:50:10 by tshimizu          #+#    #+#              #
-#    Updated: 2025/11/29 11:14:46 by tshimizu         ###   ########.fr        #
+#    Updated: 2025/11/29 11:39:41 by tshimizu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@ LDFLAGS += -L$(READLINE_PATH)/lib -lreadline
 # ===============================
 
 CFLAGS  += -Wall -Wextra -Werror -I../includes -g
-CXXFLAGS += -std=c++17 -Wall -Wextra -I../includes -I../libs/googletest/googletest/include -I../libs/googletest/googlemock/include -g
+CXXFLAGS += -std=c++17 -Wall -Wextra -I../includes -I../libs/googletest/googletest/include -I../libs/googletest/googlemock/include -g -no-pie
 
 GTEST_DIR = ../libs/googletest
 GTEST_BUILD = $(GTEST_DIR)/build

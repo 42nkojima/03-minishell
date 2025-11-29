@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 12:48:38 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/11/29 11:20:30 by tshimizu         ###   ########.fr       */
+/*   Updated: 2025/11/29 11:32:05 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,15 @@
 
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <signal.h>
 # include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <signal.h>
-#include <termios.h>
-# include <stdbool.h>
+# include <termios.h>
 
 bool	run_repl(void);
 bool	run_repl(void);
 void	sigint_handler(int signo);
-bool assign_signal_handler(int signum, void (*handler)(int), int flags);
-void setup_terminal(void);
-void restore_terminal(void);
+bool	assign_signal_handler(int signum, void (*handler)(int), int flags);
 
 #endif // REPL_H

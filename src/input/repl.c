@@ -6,18 +6,19 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 12:44:57 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/11/29 11:21:35 by tshimizu         ###   ########.fr       */
+/*   Updated: 2025/11/29 12:53:07 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static volatile sig_atomic_t	g_interrupt = 1;
+volatile sig_atomic_t	g_interrupt = 1;
 
 int	noop(void)
 {
 	return (0);
 }
+
 bool	run_repl(void)
 {
 	char	*input;
