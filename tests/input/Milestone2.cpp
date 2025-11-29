@@ -4,13 +4,14 @@
 
 extern "C"
 {
-#include "minishell.h"
+	#include "minishell.h"
 }
 
 
 TEST(SignalTest, SigintHandlerTest)
 {
 	rl_done = 0;
+	extern volatile sig_atomic_t g_interrupt;
 	g_interrupt = 0;
 	sigint_handler(SIGINT);
 	EXPECT_EQ(g_interrupt, 1);
