@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+         #
+#    By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/11/22 17:42:12 by nkojima           #+#    #+#              #
-#    Updated: 2025/11/24 18:23:45 by nkojima          ###   ########.fr        #
+#    Created: 2025/11/29 10:14:46 by tshimizu          #+#    #+#              #
+#    Updated: 2025/11/29 10:14:49 by tshimizu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,7 +50,7 @@ RMDIR       = rm -rf
 # ===============================
 SRC_UTILS   =
 
-SRC_INPUT   =
+SRC_INPUT   = input/repl.c
 
 SRC_PARSE   =
 
@@ -83,6 +83,7 @@ $(LIBFT):
 $(NAME): $(OBJS)
 	@echo "$(YELLOW)[LD] Linking $(NAME)...$(RESET)"
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(LDFLAGS) -o $@
+	@echo "$(GREEN)✅ Compiled: $(NAME)$(RESET)"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(dir $@)
