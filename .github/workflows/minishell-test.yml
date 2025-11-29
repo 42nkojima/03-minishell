@@ -1,4 +1,6 @@
-name: "Run Make test [${{ github.event.pull_request.title }}]"
+name: "Run Make test"
+
+run-name: "Run Make test for PR: ${{ github.event.pull_request.title }}"
 
 on: [push, pull_request]
 
@@ -32,4 +34,3 @@ jobs:
 
       - name: Run Make test
         run: make test
-
