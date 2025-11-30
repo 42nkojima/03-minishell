@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 12:48:38 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/11/29 11:32:05 by tshimizu         ###   ########.fr       */
+/*   Updated: 2025/11/30 17:01:22 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 # define REPL_H
 # define _GNU_SOURCE
 
+# include <signal.h>
 # include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
-#include <signal.h>
-# include <readline/history.h>
+# include <readline/histdiory.h>
 # include <readline/readline.h>
 
 bool	run_repl(void);
