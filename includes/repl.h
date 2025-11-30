@@ -18,7 +18,7 @@
 # include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <readline/histdiory.h>
+# include <readline/history.h>
 # include <readline/readline.h>
 
 bool	run_repl(void);
