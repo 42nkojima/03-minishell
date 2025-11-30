@@ -1,4 +1,6 @@
-name: "Run Make test [${{ github.event.pull_request.title }}]"
+name: "Run Make test"
+
+run-name: "Run Make test for PR: ${{ github.event.pull_request.title }}"
 
 on: [push, pull_request]
 
@@ -8,7 +10,7 @@ concurrency:
 
 jobs:
   minishell-test:
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-latest
     timeout-minutes: 10
 
     permissions:
@@ -20,16 +22,18 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Install dependencies (readline / build-essential / pkg-config)
+      - name: Install dependencies (build-essential / pkg-config)
         run: |
           sudo apt-get update
           sudo apt-get install -y \
-            libreadline-dev \
-            build-essential \
-            pkg-config \
-            cmake \
-            g++
+
+
+      - name: Set up Homebrew
+        id: set-up-homebrew
+        uses: Homebrew/actions/setup-homebrew@main
+
+      - name: Install readline
+        run: brew install readline
 
       - name: Run Make test
         run: make test
-

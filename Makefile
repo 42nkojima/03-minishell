@@ -111,11 +111,11 @@ valgrind: re
 run: all
 	./$(NAME)
 
-test:
+test: all
 	@echo "$(YELLOW)Running GoogleTest...$(RESET)"
 	@$(MAKE) -C $(TEST_DIR) run
 
-test_verbose:
+test_verbose: all
 	@echo "$(YELLOW)Running GoogleTest (verbose)...$(RESET)"
 	@$(MAKE) -C $(TEST_DIR) run_verbose
 
