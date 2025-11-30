@@ -13,9 +13,10 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+
+# include <stdio.h>
 # include "repl.h"
 # include <stdbool.h>
-# include <stdio.h>
 # include <stdlib.h>
 
 #endif // MINISHELL_H
