@@ -76,7 +76,7 @@ $(GTEST_LIB) $(GTEST_MAIN):|$(GTEST_DIR)
 	cd $(GTEST_BUILD) && cmake -DCMAKE_POSITION_INDEPENDENT_CODE=ON .. && make
 
 $(GTEST_DIR):
-	@git clone git@github.com:google/googletest.git $(GTEST_DIR)
+	@git clone https://github.com/google/googletest.git $(GTEST_DIR)
 
 build/%.o: ../src/%.c
 	mkdir -p $(dir $@)
