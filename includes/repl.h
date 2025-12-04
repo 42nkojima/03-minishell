@@ -22,7 +22,6 @@
 # include <readline/readline.h>
 
 bool	run_repl(void);
-bool	run_repl(void);
 void	sigint_handler(int signo);
 bool	assign_signal_handler(int signum, void (*handler)(int), int flags);
 
