@@ -5,14 +5,16 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/29 10:15:30 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/11/30 10:44:39 by tshimizu         ###   ########.fr       */
+/*   Created: 2025/11/24 12:48:38 by tshimizu          #+#    #+#             */
+/*   Updated: 2025/11/30 17:01:22 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef REPL_H
 # define REPL_H
+# define _GNU_SOURCE
 
+# include <signal.h>
 # include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -20,5 +22,7 @@
 # include <readline/readline.h>
 
 bool	run_repl(void);
+void	sigint_handler(int signo);
+bool	assign_signal_handler(int signum, void (*handler)(int), int flags);
 
 #endif // REPL_H
