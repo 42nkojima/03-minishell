@@ -11,3 +11,14 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char **parse(char *input)
+{
+    char **result;
+
+    result = tokenizer(input);
+    if (!result)
+        return(free(result),NULL);
+    
+    return result;
+}

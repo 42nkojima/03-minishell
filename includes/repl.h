@@ -14,15 +14,15 @@
 # define REPL_H
 # define _GNU_SOURCE
 
-# include <readline/history.h>
-# include <readline/readline.h>
 # include <signal.h>
 # include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <termios.h>
+# include <readline/history.h>
+# include <readline/readline.h>
 
-bool	run_repl(void);
+
 bool	run_repl(void);
 void	sigint_handler(int signo);
 bool	assign_signal_handler(int signum, void (*handler)(int), int flags);

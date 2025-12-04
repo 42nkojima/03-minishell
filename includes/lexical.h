@@ -13,7 +13,26 @@
 #ifndef LEXICAL_H
 # define LEXICAL_H
 
-char	**tokenizer(char *input);
+#include <stdio.h>
+
+typedef enum s_tokentype {
+    WORD,
+    PIPE,
+    REDIR_IN,
+    REDIR_OUT,
+} t_tokentype;
+
+typedef struct s_token {
+    t_tokentype type;
+    char      *value;
+} t_token;
+
+typedef struct s_tokenlist {
+    t_token  *tokens;
+    size_t count;
+} t_token_list;
+
+t_token_list	*tokenizer(char *input);
 
 void	print_tokens(char **tokens);
 

@@ -22,4 +22,6 @@
 
 bool							init_signal_handlers(void);
 
+void free_token_list(t_token_list *list);
+
 #endif // MINISHELL_H
