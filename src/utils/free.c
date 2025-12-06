@@ -1,33 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/29 10:15:12 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/12/06 17:00:26 by tshimizu         ###   ########.fr       */
+/*   Created: 2025/12/06 11:21:28 by tshimizu          #+#    #+#             */
+/*   Updated: 2025/12/06 11:27:08 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "minishell.h"
 
-# include "../libs/libft/libft.h"
-# include "lexical.h"
-# include "repl.h"
-# include <stdbool.h>
-# include <stdio.h>
-# include <stdlib.h>
-
-typedef struct s_parse_result
+void	free_token_list(t_token_list *list)
 {
-	t_token_list	*token_list;
-}					t_parse_result;
+	size_t	i;
 
-bool				init_signal_handlers(void);
+	if (!list)
+		return ;
+	i = 0;
+	while (i < list->count)
+	{
+		free(list->tokens[i].value);
+		i++;
+	}
+	free(list->tokens);
+	free(list);
+}
 
-void				free_token_list(t_token_list *list);
-void				free_split(char **arr);
+void	free_split(char **arr)
+{
+	size_t	i;
 
-#endif // MINISHELL_H
+	i = 0;
+	if (!arr)
+		return ;
+	while (arr[i])
+		free(arr[i++]);
+	free(arr);
+}

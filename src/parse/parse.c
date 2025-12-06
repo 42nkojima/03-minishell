@@ -1,33 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/29 10:15:12 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/12/06 17:00:26 by tshimizu         ###   ########.fr       */
+/*   Created: 2025/11/29 16:11:40 by tshimizu          #+#    #+#             */
+/*   Updated: 2025/12/06 16:36:49 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "minishell.h"
 
-# include "../libs/libft/libft.h"
-# include "lexical.h"
-# include "repl.h"
-# include <stdbool.h>
-# include <stdio.h>
-# include <stdlib.h>
-
-typedef struct s_parse_result
+t_parse_result	*parse(char *input)
 {
 	t_token_list	*token_list;
-}					t_parse_result;
+	t_parse_result	*parse_result;
 
-bool				init_signal_handlers(void);
-
-void				free_token_list(t_token_list *list);
-void				free_split(char **arr);
-
-#endif // MINISHELL_H
+	token_list = tokenizer(input);
+	if (!token_list)
+		return (NULL);
+	parse_result = malloc(sizeof(t_parse_result));
+	parse_result->token_list = token_list;
+	return (parse_result);
+}

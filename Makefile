@@ -6,7 +6,7 @@
 #    By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/29 10:14:46 by tshimizu          #+#    #+#              #
-#    Updated: 2025/11/29 10:14:49 by tshimizu         ###   ########.fr        #
+#    Updated: 2025/11/29 16:26:59 by tshimizu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,11 +48,13 @@ RMDIR       = rm -rf
 # ===============================
 #               SRC
 # ===============================
-SRC_UTILS   =
+SRC_UTILS   =utils/free.c
 
 SRC_INPUT   = input/repl.c
 
-SRC_PARSE   =
+SRC_PARSE   = \
+			parse/lexical/tokenizer.c \
+			parse/parse.c
 
 SRC_EXEC    =
 
