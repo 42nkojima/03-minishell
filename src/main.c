@@ -25,7 +25,7 @@ int	main(void)
 {
 	if (!init_signal_handlers())
 	{
-		ft_putstr_fd("Error: sigint_handler assign failed\n", 2);
+		ft_putstr_fd("Error: init_signal_handlers failed\n", 2);
 		return (1);
 	}
 	run_repl();
