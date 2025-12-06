@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 13:46:31 by nkojima           #+#    #+#             */
-/*   Updated: 2025/11/29 11:32:45 by tshimizu         ###   ########.fr       */
+/*   Updated: 2025/12/04 22:39:44 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	main(void)
 {
 	if (!init_signal_handlers())
 	{
-		ft_putstr_fd("Error: sigint_handler assign failed\n", 2);
+		ft_putstr_fd("Error: init_signal_handlers failed\n", 2);
 		return (1);
 	}
 	run_repl();
