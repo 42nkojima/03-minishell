@@ -18,7 +18,6 @@
 # include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <termios.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 
