@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/29 15:51:41 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/11/29 16:39:55 by tshimizu         ###   ########.fr       */
+/*   Updated: 2025/12/06 11:27:51 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,5 @@ typedef struct s_tokenlist {
 } t_token_list;
 
 t_token_list	*tokenizer(char *input);
-
-void	print_tokens(char **tokens);
 
 #endif // LEXICAL_H

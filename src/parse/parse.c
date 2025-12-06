@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/29 16:11:40 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/11/29 16:40:03 by tshimizu         ###   ########.fr       */
+/*   Updated: 2025/12/06 11:35:17 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 char **parse(char *input)
 {
-    char **result;
+    t_token_list *token_list;
 
-    result = tokenizer(input);
-    if (!result)
-        return(free(result),NULL);
-    
-    return result;
+    token_list = tokenizer(input);
+
+    if (!token_list)
+        return NULL;
+
 }
