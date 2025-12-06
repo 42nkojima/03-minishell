@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 12:48:38 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/11/29 11:32:05 by tshimizu         ###   ########.fr       */
+/*   Updated: 2025/12/06 16:43:08 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 # include <termios.h>
 # include <readline/history.h>
 # include <readline/readline.h>
-
 
 bool	run_repl(void);
 void	sigint_handler(int signo);
