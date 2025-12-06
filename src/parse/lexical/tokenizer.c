@@ -22,7 +22,7 @@ static size_t	count_split(char **arr)
 	return (i);
 }
 
-static t_tokentype	validate_token_type(char *token)
+static t_token_type	validate_token_type(char *token)
 {
 	if (ft_strcmp(token, "|") == 0)
 		return (PIPE);

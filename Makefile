@@ -48,7 +48,7 @@ RMDIR       = rm -rf
 # ===============================
 #               SRC
 # ===============================
-SRC_UTILS   =utils/free.c
+SRC_UTILS   = utils/free.c
 
 SRC_INPUT   = input/repl.c
 

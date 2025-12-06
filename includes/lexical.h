@@ -15,21 +15,21 @@
 
 # include <stdio.h>
 
-typedef enum s_tokentype
+typedef enum s_token_type
 {
 	WORD,
 	PIPE,
 	REDIR_IN,
 	REDIR_OUT,
-}				t_tokentype;
+}				t_token_type;
 
 typedef struct s_token
 {
-	t_tokentype	type;
+	t_token_type	type;
 	char		*value;
 }				t_token;
 
-typedef struct s_tokenlist
+typedef struct s_token_list
 {
 	t_token		*tokens;
 	size_t		count;
