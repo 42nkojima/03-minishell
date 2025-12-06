@@ -1,33 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   lexical.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/24 12:48:22 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/12/06 16:41:23 by tshimizu         ###   ########.fr       */
+/*   Created: 2025/11/29 15:51:41 by tshimizu          #+#    #+#             */
+/*   Updated: 2025/12/06 17:46:29 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#ifndef LEXICAL_H
+# define LEXICAL_H
 
-# include "../libs/libft/libft.h"
-# include "lexical.h"
-# include "repl.h"
-# include <stdbool.h>
 # include <stdio.h>
-# include <stdlib.h>
 
-typedef struct s_parse_result
+typedef enum s_token_type
 {
-	t_token_list	*token_list;
-}					t_parse_result;
+	WORD,
+	PIPE,
+	REDIR_IN,
+	REDIR_OUT,
+}					t_token_type;
 
-bool				init_signal_handlers(void);
+typedef struct s_token
+{
+	t_token_type	type;
+	char			*value;
+}					t_token;
 
-void				free_token_list(t_token_list *list);
-void				free_split(char **arr);
+typedef struct s_token_list
+{
+	t_token			*tokens;
+	size_t			count;
+}					t_token_list;
 
-#endif // MINISHELL_H
+t_token_list		*tokenizer(char *input);
+
+#endif // LEXICAL_H
