@@ -3,16 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   repl.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 12:48:38 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/12/06 16:43:08 by tshimizu         ###   ########.fr       */
+/*   Updated: 2025/12/14 17:37:10 by nkojima          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef REPL_H
 # define REPL_H
-# define _GNU_SOURCE
+
+# ifndef _GNU_SOURCE
+#  define _GNU_SOURCE
+# endif
 
 # include <signal.h>
 # include <stdbool.h>
