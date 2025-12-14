@@ -56,7 +56,9 @@ SRC_PARSE   = \
 			parse/lexical/tokenizer.c \
 			parse/parse.c
 
-SRC_EXEC    =
+SRC_EXEC    = \
+			exec/executor.c \
+			exec/command.c
 
 SRC_BUILTIN =
 
