@@ -25,6 +25,12 @@ typedef struct s_parse_result
 	t_token_list	*token_list;
 }					t_parse_result;
 
+typedef struct s_command
+{
+	char			**argv;
+	char			**envp;
+}					t_command;
+
 bool				init_signal_handlers(void);
 
 void				free_token_list(t_token_list *list);
