@@ -105,7 +105,7 @@ debug: re
 	@echo "$(GREEN)🚀 Debug build ready$(RESET)"
 
 valgrind: re
-	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME)
+	valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes ./$(NAME)
 
 # ===============================
 #          RUN / TEST

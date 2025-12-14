@@ -91,7 +91,7 @@ build/%.o: ../src/%.c
 # ===========================
 
 run: $(TARGET)
-	./$(TARGET)
+	valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes ./$(TARGET)
 
 run_verbose: $(TARGET)
 	./$(TARGET) --gtest_color=yes --gtest_print_time=1
