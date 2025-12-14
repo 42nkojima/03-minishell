@@ -142,4 +142,4 @@ re: fclean all
 # ===============================
 #             PHONY
 # ===============================
-.PHONY: all clean fclean re asan debug valgrind run test test_verbose $(LIBFT)
+.PHONY: all clean fclean re asan debug valgrind run test test_verbose
