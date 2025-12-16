@@ -1,31 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   repl.h                                             :+:      :+:    :+:   */
+/*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/24 12:48:38 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/12/16 22:46:51 by nkojima          ###   ########.fr       */
+/*   Created: 2025/12/14 00:00:00 by nkojima           #+#    #+#             */
+/*   Updated: 2025/12/14 20:42:14 by nkojima          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef REPL_H
-# define REPL_H
+#ifndef EXECUTOR_H
+# define EXECUTOR_H
 
-# ifndef _GNU_SOURCE
-#  define _GNU_SOURCE
-# endif
+# include "minishell.h"
+# include "constants.h"
+# include <sys/wait.h>
+# include <unistd.h>
 
-# include <stdio.h>
-# include <signal.h>
-# include <stdbool.h>
-# include <stdlib.h>
-# include <readline/history.h>
-# include <readline/readline.h>
+// executor.c
+int		execute_command(t_command *cmd);
 
-bool	run_repl(void);
-void	sigint_handler(int signo);
-bool	assign_signal_handler(int signum, void (*handler)(int), int flags);
+// command.c
+char	*find_command(char *cmd, char **envp);
 
-#endif // REPL_H
+#endif
