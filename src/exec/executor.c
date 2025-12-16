@@ -6,14 +6,14 @@
 /*   By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/14 00:00:00 by nkojima           #+#    #+#             */
-/*   Updated: 2025/12/14 00:00:00 by nkojima          ###   ########.fr       */
+/*   Updated: 2025/12/16 22:47:01 by nkojima          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/executor.h"
 #include "../../libs/libft/libft.h"
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 static int	cmd_not_found(char *cmd_name)
 {
@@ -39,7 +39,7 @@ static int	wait_and_get_status(pid_t pid, char *cmd_path)
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
-	return (EXIT_GENERAL_ERROR);
+	return (EXIT_FAILURE);
 }
 
 /*
@@ -59,7 +59,7 @@ int	execute_command(t_command *cmd)
 	if (pid == SYSCALL_ERROR)
 	{
 		free(cmd_path);
-		return (EXIT_GENERAL_ERROR);
+		return (EXIT_FAILURE);
 	}
 	if (pid == SYSCALL_SUCCESS)
 		exec_child(cmd_path, cmd);
