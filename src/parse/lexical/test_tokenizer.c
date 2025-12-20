@@ -1,16 +1,7 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   tokenizer.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/29 15:51:04 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/12/06 11:28:22 by tshimizu         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "minishell.h"
+#include "libht.h"
+#include "lexical.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 bool	add_token(
 	t_token_list *list,
@@ -74,3 +65,57 @@ t_token_list	*tokenizer(char *input)
 
     return (list);
 }
+
+const char *token_type_to_str(t_token_type type)
+{
+	if (type == WORD) return "WORD";
+	if (type == PIPE) return "PIPE";
+	if (type == REDIR_IN) return "REDIR_IN";
+	if (type == REDIR_OUT) return "REDIR_OUT";
+	if (type == REDIR_APPEND) return "REDIR_APPEND";
+	if (type == HEREDOC) return "HEREDOC";
+	return "UNKNOWN";
+}
+
+void	print_tokens(t_token_list *list)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < list->count)
+	{
+		printf(
+			"[%zu] type=%s, value=\"%s\", has_env=%d, single_quoted=%d\n",
+			i,
+			token_type_to_str(list->tokens[i].type),
+			list->tokens[i].value,
+			list->tokens[i].has_env,
+			list->tokens[i].single_quoted
+		);
+		i++;
+	}
+}
+
+int	main(void)
+{
+	char *inputs[] = {
+		"ls -l",
+		"echo hello | grep h",
+		"echo \"hello world\"",
+		"echo '$HOME'",
+		"cat << EOF",
+		"echo $HOME >> out.txt",
+		NULL
+	};
+
+	for (int i = 0; inputs[i]; i++)
+	{
+		printf("\nINPUT: %s\n", inputs[i]);
+		t_token_list *list = tokenizer(inputs[i]);
+		print_tokens(list);
+		// free_token_list(list); ← 後で必ず
+	}
+}
+
+
+
