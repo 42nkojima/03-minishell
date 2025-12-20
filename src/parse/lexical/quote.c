@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   quote.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/20 11:48:07 by tshimizu          #+#    #+#             */
+/*   Updated: 2025/12/20 11:48:39 by tshimizu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-bool is_quote(char c)
+bool	is_quote(char c)
 {
-    return (c == '\'' || c == '"');
+	return (c == '\'' || c == '"');
 }
 
 size_t	handle_quoted_word(t_token_list *list, char *s, size_t i)
@@ -16,25 +28,15 @@ size_t	handle_quoted_word(t_token_list *list, char *s, size_t i)
 	i++;
 	start = i;
 	has_env = false;
-
 	while (s[i] && s[i] != quote)
 	{
 		if (quote == '"' && s[i] == '$')
 			has_env = true;
 		i++;
 	}
-
 	if (!s[i])
 		return (start);
-
 	word = ft_substr(s, start, i - start);
-	add_token(
-		list,
-		WORD,
-		word,
-		has_env,
-		quote == '\''
-	);
+	add_token(list, WORD, word, has_env, quote == '\'');
 	return (i + 1);
 }
-
