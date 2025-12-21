@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/29 15:51:04 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/12/20 12:29:16 by tshimizu         ###   ########.fr       */
+/*   Updated: 2025/12/21 12:23:16 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,13 @@ t_token_list	*token_list_init(size_t count)
 	if (!list->tokens)
 		return (free(list), NULL);
 	list->count = 0;
+	list->error = ERR_NONE;
 	return (list);
 }
 
 static size_t	skip_spaces(char *s, size_t i)
 {
-	while (s[i] == ' ')
+	while (s[i] && ft_isspace(s[i]))
 		i++;
 	return (i);
 }
@@ -58,8 +59,8 @@ t_token_list	*tokenizer(char *input)
 	while (input[i])
 	{
 		i = skip_spaces(input, i);
-		if (!input[i])
-			break ;
+		if (!input[i] || list->error)
+			break;
 		if (is_quote(input[i]))
 			i = handle_quoted_word(list, input, i);
 		else if (is_operator(input[i]))

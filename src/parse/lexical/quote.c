@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/20 11:48:07 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/12/20 11:48:39 by tshimizu         ###   ########.fr       */
+/*   Updated: 2025/12/21 12:15:35 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,16 @@ size_t	handle_quoted_word(t_token_list *list, char *s, size_t i)
 	has_env = false;
 	while (s[i] && s[i] != quote)
 	{
-		if (quote == '"' && s[i] == '$')
+		if (quote == '"' && s[i] == '$' && (ft_isalpha(s[i + 1]) || s[i
+				+ 1] == '?'))
 			has_env = true;
 		i++;
 	}
 	if (!s[i])
-		return (start);
+	{
+		list->error = ERR_UNCLOSED_QUOTE;
+		return (i);
+	}
 	word = ft_substr(s, start, i - start);
 	add_token(list, WORD, word, has_env, quote == '\'');
 	return (i + 1);

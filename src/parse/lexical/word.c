@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/20 11:49:28 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/12/20 11:49:31 by tshimizu         ###   ########.fr       */
+/*   Updated: 2025/12/21 12:26:00 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ size_t	handle_word(t_token_list *list, char *s, size_t i)
 
 	start = i;
 	has_env = false;
-	while (s[i] && s[i] != ' ' && !is_operator(s[i]) && !is_quote(s[i]))
+	while (s[i] && !ft_isspace(s[i]) && !is_operator(s[i]) && !is_quote(s[i]))
 	{
-		if (s[i] == '$')
+		if (s[i] == '$' && (ft_isalpha(s[i + 1]) || s[i + 1] == '?'))
 			has_env = true;
 		i++;
 	}
