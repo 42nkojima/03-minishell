@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/20 11:49:28 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/12/21 12:26:00 by tshimizu         ###   ########.fr       */
+/*   Updated: 2025/12/21 14:19:51 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ size_t	handle_word(t_token_list *list, char *s, size_t i)
 		i++;
 	}
 	word = ft_substr(s, start, i - start);
-	add_token(list, WORD, word, has_env, false);
+	add_token(list, (t_token_init){.type = WORD, .value = word,
+		.has_env = has_env, .single_quoted = false});
 	return (i);
 }

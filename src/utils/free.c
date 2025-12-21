@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 11:21:28 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/12/21 12:38:24 by tshimizu         ###   ########.fr       */
+/*   Updated: 2025/12/21 12:52:09 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,3 @@ void	free_split(char **arr)
 		free(arr[i++]);
 	free(arr);
 }
-

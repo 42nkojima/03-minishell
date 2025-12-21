@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/29 15:51:41 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/12/21 12:03:57 by tshimizu         ###   ########.fr       */
+/*   Updated: 2025/12/21 14:08:16 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,20 @@ typedef enum e_quote_state
 	Q_DOUBLE
 }					t_quote_state;
 
+typedef struct s_token_init
+{
+	t_token_type	type;
+	char			*value;
+	bool			has_env;
+	bool			single_quoted;
+}					t_token_init;
+
 bool				is_quote(char c);
 bool				is_operator(char c);
 size_t				handle_quoted_word(t_token_list *list, char *s, size_t i);
 size_t				handle_operator(t_token_list *list, char *s, size_t i);
 size_t				handle_word(t_token_list *list, char *s, size_t i);
 t_token_list		*tokenizer(char *input);
-bool				add_token(t_token_list *list, t_token_type type,
-						char *value, bool has_env, bool single_quoted);
+bool				add_token(t_token_list *list, t_token_init init);
 
 #endif // LEXICAL_H

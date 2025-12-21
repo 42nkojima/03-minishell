@@ -6,9 +6,8 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/14 11:14:22 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/12/14 11:15:54 by tshimizu         ###   ########.fr       */
+/*   Updated: 2025/12/21 12:58:40 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-

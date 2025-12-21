@@ -6,19 +6,18 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/29 15:51:04 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/12/21 12:23:16 by tshimizu         ###   ########.fr       */
+/*   Updated: 2025/12/21 14:23:40 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-bool	add_token(t_token_list *list, t_token_type type, char *value,
-		bool has_env, bool single_quoted)
+bool	add_token(t_token_list *list, t_token_init init)
 {
-	list->tokens[list->count].type = type;
-	list->tokens[list->count].value = value;
-	list->tokens[list->count].has_env = has_env;
-	list->tokens[list->count].single_quoted = single_quoted;
+	list->tokens[list->count].type = init.type;
+	list->tokens[list->count].value = init.value;
+	list->tokens[list->count].has_env = init.has_env;
+	list->tokens[list->count].single_quoted = init.single_quoted;
 	list->count++;
 	return (true);
 }
@@ -60,7 +59,7 @@ t_token_list	*tokenizer(char *input)
 	{
 		i = skip_spaces(input, i);
 		if (!input[i] || list->error)
-			break;
+			break ;
 		if (is_quote(input[i]))
 			i = handle_quoted_word(list, input, i);
 		else if (is_operator(input[i]))
