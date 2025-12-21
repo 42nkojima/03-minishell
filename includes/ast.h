@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/14 11:14:34 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/12/21 14:02:16 by tshimizu         ###   ########.fr       */
+/*   Updated: 2025/12/21 17:49:59 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 typedef struct s_ast_node
 {
 	t_node_type			type;
-	union u_node_data	data;
+	t_node_data	data;
 	struct s_ast_node	*left;
 	struct s_ast_node	*right;
 }						t_ast_node;
@@ -33,6 +33,7 @@ typedef enum e_node_type
 typedef union u_node_data
 {
 	t_cmd_data			*cmd;
+	t_ast_node			*subshell;
 }						t_node_data;
 
 typedef struct s_cmd_data
@@ -55,5 +56,8 @@ typedef enum e_redir_type
 	REDIR_APPEND,
 	HEREDOC,
 }						t_redir_type;
+
+
+t_ast_node *parse_pipeline(t_token *t, int l, int r);
 
 #endif // AST_H

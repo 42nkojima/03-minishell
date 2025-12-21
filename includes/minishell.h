@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 12:48:22 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/12/21 12:58:55 by tshimizu         ###   ########.fr       */
+/*   Updated: 2025/12/21 17:47:38 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,10 @@
 # include "../libs/libft/libft.h"
 # include "lexical.h"
 # include "repl.h"
+#include "ast.h"
 # include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
-
-typedef struct s_parse_result
-{
-	t_token_list	*token_list;
-}					t_parse_result;
 
 bool				init_signal_handlers(void);
 
