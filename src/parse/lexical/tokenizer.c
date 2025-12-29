@@ -6,31 +6,20 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/29 15:51:04 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/12/06 11:28:22 by tshimizu         ###   ########.fr       */
+/*   Updated: 2025/12/21 14:23:40 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static size_t	count_split(char **arr)
+bool	add_token(t_token_list *list, t_token_init init)
 {
-	size_t	i;
-
-	i = 0;
-	while (arr[i])
-		i++;
-	return (i);
-}
-
-static t_token_type	validate_token_type(char *token)
-{
-	if (ft_strcmp(token, "|") == 0)
-		return (PIPE);
-	if (ft_strcmp(token, "<") == 0)
-		return (REDIR_IN);
-	if (ft_strcmp(token, ">") == 0)
-		return (REDIR_OUT);
-	return (WORD);
+	list->tokens[list->count].type = init.type;
+	list->tokens[list->count].value = init.value;
+	list->tokens[list->count].has_env = init.has_env;
+	list->tokens[list->count].single_quoted = init.single_quoted;
+	list->count++;
+	return (true);
 }
 
 t_token_list	*token_list_init(size_t count)
@@ -43,41 +32,40 @@ t_token_list	*token_list_init(size_t count)
 	list->tokens = malloc(sizeof(t_token) * count);
 	if (!list->tokens)
 		return (free(list), NULL);
-	list->count = count;
+	list->count = 0;
+	list->error = ERR_NONE;
 	return (list);
 }
 
-bool	fill_tokens(t_token_list *list, char **split)
+static size_t	skip_spaces(char *s, size_t i)
 {
-	size_t	i;
-
-	i = 0;
-	while (i < list->count)
-	{
-		list->tokens[i].type = validate_token_type(split[i]);
-		list->tokens[i].value = split[i];
+	while (s[i] && ft_isspace(s[i]))
 		i++;
-	}
-	return (true);
+	return (i);
 }
 
 t_token_list	*tokenizer(char *input)
 {
-	char			**split;
 	t_token_list	*list;
-	size_t			count;
+	size_t			i;
 
 	if (!input)
 		return (NULL);
-	split = ft_split(input, ' ');
-	if (!split)
-		return (NULL);
-	count = count_split(split);
-	list = token_list_init(count);
+	list = token_list_init(ft_strlen(input) + 1);
 	if (!list)
-		return (free_split(split), NULL);
-	if (!fill_tokens(list, split))
-		return (free_token_list(list), free_split(split), NULL);
-	free(split);
+		return (NULL);
+	i = 0;
+	while (input[i])
+	{
+		i = skip_spaces(input, i);
+		if (!input[i] || list->error)
+			break ;
+		if (is_quote(input[i]))
+			i = handle_quoted_word(list, input, i);
+		else if (is_operator(input[i]))
+			i = handle_operator(list, input, i);
+		else
+			i = handle_word(list, input, i);
+	}
 	return (list);
 }

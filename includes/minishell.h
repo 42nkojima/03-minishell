@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 12:48:22 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/12/06 16:41:23 by tshimizu         ###   ########.fr       */
+/*   Updated: 2025/12/21 12:58:55 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,6 @@ bool				init_signal_handlers(void);
 
 void				free_token_list(t_token_list *list);
 void				free_split(char **arr);
+int					ft_isspace(int c);
 
 #endif // MINISHELL_H
