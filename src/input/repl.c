@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 12:44:57 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/12/06 16:39:10 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/01/11 23:04:33 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	process_input(char *input)
 	ast = parse(input);
 	if (!ast)
 		return ;
-	//ToDo: execute(ast);
+	// execute(ast);
 	free_ast(ast);
 }
 
@@ -56,7 +56,7 @@ bool	run_repl(void)
 	{
 		input = read_prompt();
 		if (!input)
-			continue;
+			continue ;
 		if (input == NULL)
 			break ;
 		process_input(input);
@@ -65,25 +65,9 @@ bool	run_repl(void)
 	return (true);
 }
 
-
 void	sigint_handler(int signo)
 {
 	(void)signo;
 	g_interrupt = 1;
 	rl_done = 1;
-}
-
-bool	assign_signal_handler(int signum, void (*handler)(int), int flags)
-{
-	struct sigaction	sa;
-
-	sa.sa_handler = handler;
-	sa.sa_flags = flags;
-	sigemptyset(&sa.sa_mask);
-	if (sigaction(signum, &sa, NULL) == -1)
-	{
-		perror("Error setting up sigaction");
-		return (false);
-	}
-	return (true);
 }

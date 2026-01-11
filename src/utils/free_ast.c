@@ -1,17 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free.c                                             :+:      :+:    :+:   */
+/*   free_ast.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 11:21:28 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/12/21 12:52:09 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/01/11 23:05:13 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 void	free_argv(char **argv)
 {
@@ -28,7 +27,6 @@ void	free_argv(char **argv)
 	free(argv);
 }
 
-
 void	free_redirects(t_redirect *redir)
 {
 	t_redirect	*next;
@@ -42,7 +40,6 @@ void	free_redirects(t_redirect *redir)
 	}
 }
 
-
 void	free_cmd_data(t_cmd_data *cmd)
 {
 	if (!cmd)
@@ -51,7 +48,6 @@ void	free_cmd_data(t_cmd_data *cmd)
 	free_redirects(cmd->redirects);
 	free(cmd);
 }
-
 
 void	free_ast(t_ast_node *node)
 {

@@ -1,33 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.c                                            :+:      :+:    :+:   */
+/*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/29 16:11:40 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/01/11 23:02:57 by tshimizu         ###   ########.fr       */
+/*   Created: 2026/01/11 23:37:22 by tshimizu          #+#    #+#             */
+/*   Updated: 2026/01/11 23:37:25 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_ast_node	*parse(char *input)
+bool	assign_signal_handler(int signum, void (*handler)(int), int flags)
 {
-	t_token_list	*token_list;
-	t_ast_node		*ast_root;
+	struct sigaction	sa;
 
-	token_list = tokenizer(input);
-	if (!token_list)
-		return (NULL);
-	if (token_list->error != ERR_NONE)
+	sa.sa_handler = handler;
+	sa.sa_flags = flags;
+	sigemptyset(&sa.sa_mask);
+	if (sigaction(signum, &sa, NULL) == -1)
 	{
-		free_token_list(token_list);
-		return (NULL);
+		perror("Error setting up sigaction");
+		return (false);
 	}
-	ast_root = list_to_ast(token_list);
-	free_token_list(token_list);
-	if (!ast_root)
-		return (NULL);
-	return (ast_root);
+	return (true);
 }
