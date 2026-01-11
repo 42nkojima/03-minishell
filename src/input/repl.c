@@ -19,6 +19,34 @@ int	noop(void)
 	return (0);
 }
 
+static void	process_input(char *input)
+{
+	t_ast_node	*ast;
+
+	if (!*input)
+		return ;
+	add_history(input);
+	ast = parse(input);
+	if (!ast)
+		return ;
+	//ToDo: execute(ast);
+	free_ast(ast);
+}
+
+static char	*read_prompt(void)
+{
+	char	*input;
+
+	g_interrupt = 0;
+	input = readline("minishell$ ");
+	if (g_interrupt)
+	{
+		free(input);
+		return (NULL);
+	}
+	return (input);
+}
+
 bool	run_repl(void)
 {
 	char	*input;
@@ -26,21 +54,17 @@ bool	run_repl(void)
 	rl_event_hook = noop;
 	while (true)
 	{
-		g_interrupt = 0;
-		input = readline("minishell$ ");
-		if (g_interrupt)
-		{
-			free(input);
-			continue ;
-		}
+		input = read_prompt();
+		if (!input)
+			continue;
 		if (input == NULL)
 			break ;
-		if (*input)
-			add_history(input);
+		process_input(input);
 		free(input);
 	}
 	return (true);
 }
+
 
 void	sigint_handler(int signo)
 {

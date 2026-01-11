@@ -23,8 +23,13 @@
 
 bool				init_signal_handlers(void);
 
+t_ast_node *parse_pipeline(t_token *t, int l, int r);
+
 void				free_token_list(t_token_list *list);
 void				free_split(char **arr);
 int					ft_isspace(int c);
+void	free_ast(t_ast_node *node);
+t_ast_node *list_to_ast(t_token_list *token_list);
+t_ast_node	*parse(char *input);
 
 #endif // MINISHELL_H
