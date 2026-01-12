@@ -49,9 +49,11 @@ RMDIR       = rm -rf
 #               SRC
 # ===============================
 SRC_UTILS   = utils/free.c\
-			utils/utils.c
+			utils/utils.c\
+			utils/free_ast.c
 
-SRC_INPUT   = input/repl.c
+SRC_INPUT   = input/repl.c\
+			  input/signal.c
 
 SRC_PARSE   = \
 			parse/lexical/word.c \
@@ -59,7 +61,10 @@ SRC_PARSE   = \
 			parse/lexical/quote.c \
 			parse/lexical/tokenizer.c \
 			parse/parse.c\
-			parse/syntax/ast.c
+			parse/syntax/ast_build.c\
+			parse/syntax/ast_cmd.c\
+			parse/syntax/ast_redirect.c\
+			parse/syntax/ast_utils.c
 
 SRC_EXEC    =
 

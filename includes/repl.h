@@ -21,6 +21,13 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 
+typedef enum e_prompt_status
+{
+	PROMPT_OK,
+	PROMPT_INTERRUPT,
+	PROMPT_EOF
+}	t_prompt_status;
+
 bool	run_repl(void);
 void	sigint_handler(int signo);
 bool	assign_signal_handler(int signum, void (*handler)(int), int flags);

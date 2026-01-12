@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 12:44:57 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/01/11 23:04:33 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/01/12 11:34:11 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,22 @@ static void	process_input(char *input)
 	free_ast(ast);
 }
 
-static char	*read_prompt(void)
+char	*read_prompt(t_prompt_status *status)
 {
 	char	*input;
 
+	*status = PROMPT_OK;
 	g_interrupt = 0;
 	input = readline("minishell$ ");
 	if (g_interrupt)
 	{
+		*status = PROMPT_INTERRUPT;
 		free(input);
+		return (NULL);
+	}
+	if (input == NULL)
+	{
+		*status = PROMPT_EOF;
 		return (NULL);
 	}
 	return (input);
@@ -49,15 +56,16 @@ static char	*read_prompt(void)
 
 bool	run_repl(void)
 {
-	char	*input;
+	char			*input;
+	t_prompt_status	status;
 
 	rl_event_hook = noop;
 	while (true)
 	{
-		input = read_prompt();
-		if (!input)
+		input = read_prompt(&status);
+		if (status == PROMPT_INTERRUPT)
 			continue ;
-		if (input == NULL)
+		if (status == PROMPT_EOF)
 			break ;
 		process_input(input);
 		free(input);
