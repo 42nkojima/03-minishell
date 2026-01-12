@@ -38,5 +38,16 @@ t_redirect		*extract_redirects(t_token *t, int l, int r);
 bool			has_redir_in_range(t_token *t, int l, int r);
 t_ast_node		*new_ast_node(t_node_type type);
 t_ast_node		*parse_cmd(t_token *t, int l, int r);
+typedef struct s_command
+{
+	char			**argv;
+	char			**envp;
+}					t_command;
+
+bool				init_signal_handlers(void);
+
+void				free_token_list(t_token_list *list);
+void				free_split(char **arr);
+int					ft_isspace(int c);
 
 #endif // MINISHELL_H

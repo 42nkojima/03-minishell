@@ -11,8 +11,10 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "executor.h"
 
 volatile sig_atomic_t	g_interrupt = 1;
+extern char				**environ;
 
 int	noop(void)
 {
@@ -30,7 +32,25 @@ static void	process_input(char *input)
 	if (!ast)
 		return ;
 	// execute(ast);
+  // execute_simple_command(ast);
 	free_ast(ast);
+}
+
+static void	execute_simple_command(char *input)
+{
+	t_command	cmd;
+	char		**argv;
+
+	argv = ft_split(input, ' ');
+	if (!argv || !argv[0])
+	{
+		free_split(argv);
+		return ;
+	}
+	cmd.argv = argv;
+	cmd.envp = environ;
+	execute_command(&cmd);
+	free_split(argv);
 }
 
 char	*read_prompt(t_prompt_status *status)

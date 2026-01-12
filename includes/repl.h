@@ -3,20 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   repl.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 12:48:38 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/12/06 16:43:08 by tshimizu         ###   ########.fr       */
+/*   Updated: 2025/12/16 22:46:51 by nkojima          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef REPL_H
 # define REPL_H
-# define _GNU_SOURCE
 
+# ifndef _GNU_SOURCE
+#  define _GNU_SOURCE
+# endif
+
+# include <stdio.h>
 # include <signal.h>
 # include <stdbool.h>
-# include <stdio.h>
 # include <stdlib.h>
 # include <readline/history.h>
 # include <readline/readline.h>
