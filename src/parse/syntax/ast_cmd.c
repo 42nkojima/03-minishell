@@ -14,16 +14,14 @@
 
 int	count_words_excluding_redirs(t_token *t, int l, int r)
 {
-	int	i;
 	int	count;
 
 	count = 0;
-	i = l;
-	while (i <= r)
+	while (l <= r)
 	{
-		if (t[i].type == WORD && !is_redir_target(t, i))
+		if (t[l].type == WORD && !is_redir_target(t, l))
 			count++;
-		i++;
+		l++;
 	}
 	return (count);
 }
@@ -31,20 +29,18 @@ int	count_words_excluding_redirs(t_token *t, int l, int r)
 char	**extract_argv(t_token *t, int l, int r)
 {
 	char	**argv;
-	int		i;
 	int		count;
 
 	count = count_words_excluding_redirs(t, l, r);
 	argv = malloc(sizeof(char *) * (count + 1));
 	if (!argv)
 		return (NULL);
-	i = l;
 	count = 0;
-	while (i <= r)
+	while (l <= r)
 	{
-		if (t[i].type == WORD && !is_redir_target(t, i))
-			argv[count++] = ft_strdup(t[i].value);
-		i++;
+		if (t[l].type == WORD && !is_redir_target(t, l))
+			argv[count++] = ft_strdup(t[l].value);
+		l++;
 	}
 	argv[count] = NULL;
 	return (argv);
