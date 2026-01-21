@@ -70,7 +70,7 @@ SRC_EXEC    = \
 			exec/executor.c \
 			exec/command.c
 
-SRC_BUILTIN =
+SRC_BUILTIN =builtin/echo.c\
 
 SRC_MAIN    = main.c
 

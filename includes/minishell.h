@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 12:48:22 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/01/21 23:08:45 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/01/24 14:56:30 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "../libs/libft/libft.h"
 # include "ast.h"
 # include "lexical.h"
+# include "builtin.h"
 # include "repl.h"
 # include <stdbool.h>
 # include <stdio.h>
