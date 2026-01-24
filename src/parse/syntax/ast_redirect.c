@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/11 23:20:08 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/01/11 23:33:45 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/01/24 10:29:17 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,22 +51,20 @@ t_redirect	*extract_redirects(t_token *t, int l, int r)
 	t_redirect	*head;
 	t_redirect	*cur;
 	t_redirect	*new;
-	int			i;
 
 	head = NULL;
 	cur = NULL;
-	i = l;
-	while (i <= r)
+	while (l <= r)
 	{
-		if (is_redirection(t[i].type))
+		if (is_redirection(t[l].type))
 		{
-			new = parse_one_redirect(t, &i, r);
+			new = parse_one_redirect(t, &l, r);
 			if (!new)
 				return (NULL);
 			append_redirect(&head, &cur, new);
 		}
 		else
-			i++;
+			l++;
 	}
 	return (head);
 }
