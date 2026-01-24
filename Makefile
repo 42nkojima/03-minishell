@@ -6,7 +6,7 @@
 #    By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/29 10:14:46 by tshimizu          #+#    #+#              #
-#    Updated: 2025/12/21 12:46:09 by tshimizu         ###   ########.fr        #
+#    Updated: 2026/01/24 15:43:01 by tshimizu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -71,6 +71,7 @@ SRC_EXEC    = \
 			exec/command.c
 
 SRC_BUILTIN =builtin/echo.c\
+			 builtin/pwd.c\
 
 SRC_MAIN    = main.c
 
