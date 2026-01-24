@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 12:44:57 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/12/06 16:39:10 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/01/12 11:34:11 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,21 @@ extern char				**environ;
 int	noop(void)
 {
 	return (0);
+}
+
+static void	process_input(char *input)
+{
+	t_ast_node	*ast;
+
+	if (!*input)
+		return ;
+	add_history(input);
+	ast = parse(input);
+	if (!ast)
+		return ;
+	// execute(ast);
+  // execute_simple_command(ast);
+	free_ast(ast);
 }
 
 static void	execute_simple_command(char *input)
@@ -38,27 +53,41 @@ static void	execute_simple_command(char *input)
 	free_split(argv);
 }
 
-bool	run_repl(void)
+char	*read_prompt(t_prompt_status *status)
 {
 	char	*input;
+
+	*status = PROMPT_OK;
+	g_interrupt = 0;
+	input = readline("minishell$ ");
+	if (g_interrupt)
+	{
+		*status = PROMPT_INTERRUPT;
+		free(input);
+		return (NULL);
+	}
+	if (input == NULL)
+	{
+		*status = PROMPT_EOF;
+		return (NULL);
+	}
+	return (input);
+}
+
+bool	run_repl(void)
+{
+	char			*input;
+	t_prompt_status	status;
 
 	rl_event_hook = noop;
 	while (true)
 	{
-		g_interrupt = 0;
-		input = readline("minishell$ ");
-		if (g_interrupt)
-		{
-			free(input);
+		input = read_prompt(&status);
+		if (status == PROMPT_INTERRUPT)
 			continue ;
-		}
-		if (input == NULL)
+		if (status == PROMPT_EOF)
 			break ;
-		if (*input)
-		{
-			add_history(input);
-			execute_simple_command(input);
-		}
+		process_input(input);
 		free(input);
 	}
 	return (true);
@@ -69,19 +98,4 @@ void	sigint_handler(int signo)
 	(void)signo;
 	g_interrupt = 1;
 	rl_done = 1;
-}
-
-bool	assign_signal_handler(int signum, void (*handler)(int), int flags)
-{
-	struct sigaction	sa;
-
-	sa.sa_handler = handler;
-	sa.sa_flags = flags;
-	sigemptyset(&sa.sa_mask);
-	if (sigaction(signum, &sa, NULL) == -1)
-	{
-		perror("Error setting up sigaction");
-		return (false);
-	}
-	return (true);
 }
