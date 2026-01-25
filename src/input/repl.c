@@ -6,14 +6,14 @@
 /*   By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 12:44:57 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/01/25 23:03:05 by nkojima          ###   ########.fr       */
+/*   Updated: 2026/01/25 23:06:27 by nkojima          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "executor.h"
 #include "minishell.h"
 
 volatile sig_atomic_t	g_interrupt = 1;
-extern char				**environ;
 
 int	noop(void)
 {
@@ -30,8 +30,7 @@ static void	process_input(char *input)
 	ast = parse(input);
 	if (!ast)
 		return ;
-	// execute(ast);
-  // execute_simple_command(ast);
+	execute_ast(ast);
 	free_ast(ast);
 }
 

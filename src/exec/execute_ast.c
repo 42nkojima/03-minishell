@@ -1,30 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   executor.h                                         :+:      :+:    :+:   */
+/*   execute_ast.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/14 00:00:00 by nkojima           #+#    #+#             */
-/*   Updated: 2026/01/25 22:46:51 by nkojima          ###   ########.fr       */
+/*   Created: 2026/01/25 22:42:34 by nkojima           #+#    #+#             */
+/*   Updated: 2026/01/25 23:06:32 by nkojima          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXECUTOR_H
-# define EXECUTOR_H
+#include "executor.h"
+#include "minishell.h"
 
-# include "minishell.h"
-# include "constants.h"
-# include <sys/wait.h>
-# include <unistd.h>
+extern char	**environ;
 
-// executor.c
-int		execute_command(t_command *cmd);
+static int	execute_cmd_node(t_ast_node *node)
+{
+	t_command	cmd;
 
-// command.c
-char	*find_command(char *cmd, char **envp);
+	cmd.argv = node->data.cmd->argv;
+	cmd.envp = environ;
+	return (execute_command(&cmd));
+}
 
-// execute_ast.c
-int	execute_ast(t_ast_node *node);
-
-#endif
+int	execute_ast(t_ast_node *node)
+{
+	if (!node)
+		return (0);
+	if (node->type == NODE_CMD)
+		return (execute_cmd_node(node));
+	return (1);
+}
