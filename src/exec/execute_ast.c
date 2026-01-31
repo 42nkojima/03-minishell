@@ -6,7 +6,7 @@
 /*   By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/25 22:42:34 by nkojima           #+#    #+#             */
-/*   Updated: 2026/01/25 23:35:12 by nkojima          ###   ########.fr       */
+/*   Updated: 2026/02/01 00:54:06 by nkojima          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,10 @@ static int	execute_pipe_node(t_ast_node *node)
 		return (pipe_fork_fail(fd, left));
 	close(fd[0]);
 	close(fd[1]);
-	waitpid(left, NULL, 0);
 	waitpid(right, &status_right, 0);
+	if (left > 0)
+		kill(left, SIGTERM);
+	waitpid(left, NULL, 0);
 	if (WIFEXITED(status_right))
 		return (WEXITSTATUS(status_right));
 	return (EXIT_FAILURE);
