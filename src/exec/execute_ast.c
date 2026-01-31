@@ -44,6 +44,8 @@ static int	execute_cmd_node(t_ast_node *node)
 {
 	t_command	cmd;
 
+	if (!node->data.cmd->argv[0])
+		return (EXIT_SUCCESS);
 	cmd.argv = node->data.cmd->argv;
 	cmd.envp = environ;
 	return (execute_command(&cmd));
