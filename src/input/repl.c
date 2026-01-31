@@ -3,18 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   repl.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 12:44:57 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/01/12 11:34:11 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/01/25 23:06:27 by nkojima          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "executor.h"
+#include "minishell.h"
 
 volatile sig_atomic_t	g_interrupt = 1;
-extern char				**environ;
 
 int	noop(void)
 {
@@ -31,26 +30,8 @@ static void	process_input(char *input)
 	ast = parse(input);
 	if (!ast)
 		return ;
-	// execute(ast);
-  // execute_simple_command(ast);
+	execute_ast(ast);
 	free_ast(ast);
-}
-
-static void	execute_simple_command(char *input)
-{
-	t_command	cmd;
-	char		**argv;
-
-	argv = ft_split(input, ' ');
-	if (!argv || !argv[0])
-	{
-		free_split(argv);
-		return ;
-	}
-	cmd.argv = argv;
-	cmd.envp = environ;
-	execute_command(&cmd);
-	free_split(argv);
 }
 
 char	*read_prompt(t_prompt_status *status)

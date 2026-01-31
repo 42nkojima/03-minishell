@@ -6,7 +6,7 @@
 #    By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/29 10:14:46 by tshimizu          #+#    #+#              #
-#    Updated: 2026/01/31 18:13:02 by nkojima          ###   ########.fr        #
+#    Updated: 2026/01/31 18:18:35 by nkojima          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,7 +68,8 @@ SRC_PARSE   = \
 
 SRC_EXEC    = \
 			exec/executor.c \
-			exec/command.c
+			exec/command.c \
+			exec/execute_ast.c
 
 SRC_BUILTIN = builtin/echo.c\
 
