@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+         #
+#    By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/29 10:14:46 by tshimizu          #+#    #+#              #
-#    Updated: 2025/12/21 12:46:09 by tshimizu         ###   ########.fr        #
+#    Updated: 2026/01/25 22:53:57 by nkojima          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,7 +68,8 @@ SRC_PARSE   = \
 
 SRC_EXEC    = \
 			exec/executor.c \
-			exec/command.c
+			exec/command.c \
+			exec/execute_ast.c
 
 SRC_BUILTIN =
 
