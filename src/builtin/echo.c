@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 18:20:39 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/01/31 19:04:08 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/01/31 19:06:26 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static bool	is_n_flag(const char *str)
 	}
 	return (true);
 }
+
 int	builtin_echo(char **argv)
 {
 	int		i;
