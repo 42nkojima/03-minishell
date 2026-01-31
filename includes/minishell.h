@@ -6,7 +6,7 @@
 /*   By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 12:48:22 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/01/24 11:40:01 by nkojima          ###   ########.fr       */
+/*   Updated: 2026/01/31 18:18:46 by nkojima          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "../libs/libft/libft.h"
 # include "ast.h"
 # include "lexical.h"
+# include "builtin.h"
 # include "repl.h"
 # include <stdbool.h>
 # include <stdio.h>
