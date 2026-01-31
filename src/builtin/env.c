@@ -1,35 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin.h                                          :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/21 23:11:17 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/02/01 14:35:03 by tshimizu         ###   ########.fr       */
+/*   Created: 2026/01/24 15:47:13 by tshimizu          #+#    #+#             */
+/*   Updated: 2026/01/31 18:24:43 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILTIN_H
-# define BUILTIN_H
+#include "minishell.h"
 
-typedef enum e_unset_type
+int	builtin_env(char **argv, t_env *env)
 {
-    VISIBLE,
-    HIDDEN,
-}							t_unset_type;
-
-typedef struct s_env
-{
-	char *key;
-	char *value;
-	t_unset_type is_show;
-	struct s_env *next;
-}							t_env;
-
-
-int	builtin_echo(char **argv);
-int	builtin_pwd(void);
-int builtin_env(char **argv, t_env *env);
-
-#endif // BUILTIN_H
+	if (!argv[1])
+	{
+		while (env)
+		{
+			if (env->value != NULL)
+				printf("%s=%s\n", env->key, env->value);
+			env = env->next;
+		}
+		return (0);
+	}
+	ft_putstr_fd("env: ‘", 2);
+	ft_putstr_fd(argv[1], 2);
+	ft_putstr_fd("’: No such file or directory\n", 2);
+	return (127);
+}
