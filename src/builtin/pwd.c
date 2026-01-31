@@ -1,19 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin.h                                          :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/21 23:11:17 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/01/21 23:11:21 by tshimizu         ###   ########.fr       */
+/*   Created: 2026/01/12 18:20:39 by tshimizu          #+#    #+#             */
+/*   Updated: 2026/01/24 15:18:34 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILTIN_H
-# define BUILTIN_H
+#include "minishell.h"
 
-int	builtin_echo(char **argv);
-int	builtin_pwd(void);
+int	builtin_pwd(void)
+{
+	char	*cwd;
 
-#endif // BUILTIN_H
+	cwd = getcwd(NULL, 0);
+	if (!cwd)
+	{
+		perror("pwd");
+		return (1);
+	}
+	printf("%s\n", cwd);
+	free(cwd);
+	return (0);
+}

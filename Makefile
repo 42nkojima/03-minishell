@@ -72,6 +72,7 @@ SRC_EXEC    = \
 			exec/execute_ast.c
 
 SRC_BUILTIN = builtin/echo.c\
+			        builtin/pwd.c\
 
 SRC_MAIN    = main.c
 
