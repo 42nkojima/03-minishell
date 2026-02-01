@@ -69,8 +69,6 @@ static int	execute_pipe_node(t_ast_node *node)
 	close(fd[0]);
 	close(fd[1]);
 	waitpid(right, &status_right, 0);
-	if (left > 0)
-		kill(left, SIGTERM);
 	waitpid(left, NULL, 0);
 	if (WIFEXITED(status_right))
 		return (WEXITSTATUS(status_right));
