@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 12:48:22 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/02/01 14:35:08 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/02/01 15:15:43 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "../libs/libft/libft.h"
 # include "ast.h"
 # include "builtin.h"
+# include "constants.h"
 # include "lexical.h"
 # include "repl.h"
 # include <stdbool.h>
@@ -33,6 +34,8 @@ bool			init_signal_handlers(void);
 void			free_token_list(t_token_list *list);
 void			free_split(char **arr);
 void			free_env_list(t_env *env);
+void			free_string_array(char **arr);
+void			free_redirects(t_redirect *redir);
 int				ft_isspace(int c);
 void			free_ast(t_ast_node *node);
 t_ast_node		*list_to_ast(t_token_list *token_list);

@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 13:46:31 by nkojima           #+#    #+#             */
-/*   Updated: 2026/01/31 14:53:47 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/02/01 15:06:26 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ t_env	*init_env_node(char *env_str)
 		if (!node->value)
 			return (free(node->key), free(node), NULL);
 	}
+	node->is_show = VISIBLE;
 	node->next = NULL;
 	return (node);
 }
