@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/11 23:19:55 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/02/01 15:16:23 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/02/01 16:09:14 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,6 @@ t_ast_node	*parse_cmd(t_token *t, int l, int r)
 		return (NULL);
 	node->data.cmd = build_cmd_data(t, l, r);
 	if (!node->data.cmd)
-		return (free(node),NULL);
+		return (free(node), NULL);
 	return (node);
 }

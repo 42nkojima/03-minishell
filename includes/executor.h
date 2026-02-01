@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/14 00:00:00 by nkojima           #+#    #+#             */
-/*   Updated: 2026/01/31 15:09:08 by nkojima          ###   ########.fr       */
+/*   Updated: 2026/02/01 16:55:53 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@
 # include <unistd.h>
 
 // executor.c
-int		execute_command(t_command *cmd);
+int		execute_command(t_command *cmd, t_env **env);
 
 // command.c
 char	*find_command(char *cmd, char **envp);
 
 // execute_ast.c
-int		execute_ast(t_ast_node *node);
+int		execute_ast(t_ast_node *node, t_env **env);
 
 #endif
