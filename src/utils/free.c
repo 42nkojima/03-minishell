@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 11:21:28 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/12/21 12:52:09 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/02/01 15:15:16 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,45 @@ void	free_split(char **arr)
 	while (arr[i])
 		free(arr[i++]);
 	free(arr);
+}
+
+void	free_env_list(t_env *env)
+{
+	t_env	*tmp;
+
+	while (env)
+	{
+		tmp = env->next;
+		free(env->key);
+		free(env->value);
+		free(env);
+		env = tmp;
+	}
+}
+
+void	free_string_array(char **arr)
+{
+	int	i;
+
+	if (!arr)
+		return ;
+	i = 0;
+	while (arr[i])
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
+}
+void	free_redirects(t_redirect *redir)
+{
+	t_redirect	*tmp;
+
+	while (redir)
+	{
+		tmp = redir->next;
+		free(redir->file);
+		free(redir);
+		redir = tmp;
+	}
 }
