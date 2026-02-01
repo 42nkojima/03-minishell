@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/14 00:00:00 by nkojima           #+#    #+#             */
-/*   Updated: 2026/02/01 15:56:23 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/02/01 16:34:14 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,27 @@ static int	wait_and_get_status(pid_t pid, char *cmd_path)
 	return (EXIT_FAILURE);
 }
 
+static int	execute_builtin_command(t_command *cmd, t_env **env)
+{
+	if (!cmd || !cmd->argv || !cmd->argv[0])
+		return (-1);
+	if (ft_strcmp(cmd->argv[0], "echo") == 0)
+		return (builtin_echo(cmd->argv));
+	if (ft_strcmp(cmd->argv[0], "cd") == 0)
+		return (1);
+	if (ft_strcmp(cmd->argv[0], "pwd") == 0)
+		return (builtin_pwd());
+	if (ft_strcmp(cmd->argv[0], "export") == 0)
+		return (1);
+	if (ft_strcmp(cmd->argv[0], "unset") == 0)
+		return (1);
+	if (ft_strcmp(cmd->argv[0], "env") == 0)
+		return (builtin_env(cmd->argv, *env));
+	if (ft_strcmp(cmd->argv[0], "exit") == 0)
+		return (1);
+	return (-1);
+}
+
 /*
 ** Execute external command with fork and execve
 ** @param cmd: Command structure with argv and envp
@@ -51,9 +72,11 @@ int	execute_command(t_command *cmd, t_env *env)
 {
 	pid_t	pid;
 	char	*cmd_path;
+	int		status;
 
-	if (is_builtin_command(cmd))
-		return (execute_builtin_command(cmd, &env));
+	status = execute_builtin_command(cmd, &env);
+	if (status != -1)
+		return (status);
 	cmd_path = find_command(cmd->argv[0], cmd->envp);
 	if (!cmd_path)
 		return (cmd_not_found(cmd->argv[0]));
