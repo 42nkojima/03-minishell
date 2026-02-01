@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   repl.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 12:44:57 by tshimizu          #+#    #+#             */
 /*   Updated: 2026/02/01 16:57:11 by tshimizu         ###   ########.fr       */
@@ -24,6 +24,7 @@ static void	process_input(char *input, t_env **env)
 {
 	t_ast_node	*ast;
 
+	(void)env;
 	if (!*input)
 		return ;
 	add_history(input);
