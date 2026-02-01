@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/14 00:00:00 by nkojima           #+#    #+#             */
-/*   Updated: 2025/12/16 22:47:01 by nkojima          ###   ########.fr       */
+/*   Updated: 2026/02/01 15:56:23 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,13 @@ static int	wait_and_get_status(pid_t pid, char *cmd_path)
 ** @param cmd: Command structure with argv and envp
 ** @return: Exit status of the command
 */
-int	execute_command(t_command *cmd)
+int	execute_command(t_command *cmd, t_env *env)
 {
 	pid_t	pid;
 	char	*cmd_path;
 
+	if (is_builtin_command(cmd))
+		return (execute_builtin_command(cmd, &env));
 	cmd_path = find_command(cmd->argv[0], cmd->envp);
 	if (!cmd_path)
 		return (cmd_not_found(cmd->argv[0]));
