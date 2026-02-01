@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/14 00:00:00 by nkojima           #+#    #+#             */
-/*   Updated: 2026/02/01 16:30:52 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/02/01 16:55:53 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@
 # include <unistd.h>
 
 // executor.c
-int		execute_command(t_command *cmd, t_env *env);
+int		execute_command(t_command *cmd, t_env **env);
 
 // command.c
 char	*find_command(char *cmd, char **envp);
 
 // execute_ast.c
-int		execute_ast(t_ast_node *node, t_env *env);
+int		execute_ast(t_ast_node *node, t_env **env);
 
 #endif

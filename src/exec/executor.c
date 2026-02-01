@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/14 00:00:00 by nkojima           #+#    #+#             */
-/*   Updated: 2026/02/01 16:34:14 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/02/01 16:59:01 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,13 +68,13 @@ static int	execute_builtin_command(t_command *cmd, t_env **env)
 ** @param cmd: Command structure with argv and envp
 ** @return: Exit status of the command
 */
-int	execute_command(t_command *cmd, t_env *env)
+int	execute_command(t_command *cmd, t_env **env)
 {
 	pid_t	pid;
 	char	*cmd_path;
 	int		status;
 
-	status = execute_builtin_command(cmd, &env);
+	status = execute_builtin_command(cmd, env);
 	if (status != -1)
 		return (status);
 	cmd_path = find_command(cmd->argv[0], cmd->envp);

@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/25 22:42:34 by nkojima           #+#    #+#             */
-/*   Updated: 2026/02/01 16:08:09 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/02/01 16:58:28 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	pipe_fork_fail(int fd[2], pid_t left)
 }
 
 static pid_t	fork_pipe_child(t_ast_node *node, int fd[2], int is_left,
-		t_env *env)
+		t_env **env)
 {
 	pid_t	pid;
 
@@ -41,7 +41,7 @@ static pid_t	fork_pipe_child(t_ast_node *node, int fd[2], int is_left,
 	exit(execute_ast(node, env));
 }
 
-static int	execute_cmd_node(t_ast_node *node, t_env *env)
+static int	execute_cmd_node(t_ast_node *node, t_env **env)
 {
 	t_command	cmd;
 
@@ -52,7 +52,7 @@ static int	execute_cmd_node(t_ast_node *node, t_env *env)
 	return (execute_command(&cmd, env));
 }
 
-static int	execute_pipe_node(t_ast_node *node, t_env *env)
+static int	execute_pipe_node(t_ast_node *node, t_env **env)
 {
 	int		fd[2];
 	pid_t	left;
@@ -78,7 +78,7 @@ static int	execute_pipe_node(t_ast_node *node, t_env *env)
 	return (EXIT_FAILURE);
 }
 
-int	execute_ast(t_ast_node *node, t_env *env)
+int	execute_ast(t_ast_node *node, t_env **env)
 {
 	if (!node)
 		return (0);
