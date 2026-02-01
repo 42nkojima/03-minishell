@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 11:21:28 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/02/01 15:15:16 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/02/01 16:55:57 by nkojima          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,16 +67,4 @@ void	free_string_array(char **arr)
 		i++;
 	}
 	free(arr);
-}
-void	free_redirects(t_redirect *redir)
-{
-	t_redirect	*tmp;
-
-	while (redir)
-	{
-		tmp = redir->next;
-		free(redir->file);
-		free(redir);
-		redir = tmp;
-	}
 }
