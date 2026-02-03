@@ -88,149 +88,61 @@ emit_report() {
 
 run_case() {
 	# ケース用の一時ディレクトリを作って実行する
-	local fn="$1"
+	local name="$1"
+	local desc_in="$2"
+	local setup_fn="$3"
+	local exec_fn="$4"
+	local files_str="$5"
+	local cmd_in="$6"
 
-	id="$fn"
-	desc=""
-	cmd=""
+	id="$name"
+	desc="$desc_in"
+	cmd="$cmd_in"
 	files=()
+	if [ -n "$files_str" ]; then
+		IFS=',' read -r -a files <<< "$files_str"
+	fi
 	status=0
-	case_dir="$WORKDIR/$fn"
+	case_dir="$WORKDIR/$name"
 	mkdir -p "$case_dir"
 	pushd "$case_dir" >/dev/null || exit 1
-	"$fn"
+	"$setup_fn"
+	"$exec_fn"
 	emit_report
 	popd >/dev/null || exit 1
 }
 
 # ------------------------------------------------------------
-# ケース定義
+# 準備関数
 # ------------------------------------------------------------
 
-create_truncate() {
-	desc="`>` による作成・切り詰め"
-	cmd='echo one > out_trunc.txt'
-	files=("out_trunc.txt")
-	run_cmd bash -c "$cmd"
-}
-
-append_existing() {
-	desc="`>>` による既存ファイルへの追記"
-	cmd='printf "A\n" > out_app.txt; echo B >> out_app.txt'
-	files=("out_app.txt")
-	run_cmd bash -c "$cmd"
-}
-
-append_new() {
-	desc="追記で新規作成される"
-	cmd='echo C >> out_new.txt'
-	files=("out_new.txt")
-	run_cmd bash -c "$cmd"
-}
-
-input_basic() {
-	desc="入力リダイレクトの基本"
-	printf "in1\n" > in1.txt
-	cmd='cat < in1.txt'
-	files=("in1.txt")
-	run_cmd bash -c "$cmd"
-}
-
-input_last_wins() {
-	desc="入力の多重指定（最後が有効）"
+setup_none() { :; }
+setup_in1() { printf "in1\n" > in1.txt; }
+setup_in1_in2() {
 	printf "first\n" > in1.txt
 	printf "second\n" > in2.txt
-	cmd='cat < in1.txt < in2.txt'
-	files=("in1.txt" "in2.txt")
-	run_cmd bash -c "$cmd"
 }
-
-output_last_wins() {
-	desc="出力の多重指定（最後が有効、先は空作成）"
-	cmd='echo X > out1.txt > out2.txt'
-	files=("out1.txt" "out2.txt")
-	run_cmd bash -c "$cmd"
-}
-
-input_output_together() {
-	desc="入出力の同時指定"
-	printf "mix\n" > in1.txt
-	cmd='cat < in1.txt > out_mix.txt'
-	files=("in1.txt" "out_mix.txt")
-	run_cmd bash -c "$cmd"
-}
-
-output_then_input_fail() {
-	desc="出力作成→入力失敗の順序"
-	cmd='cat > out_order.txt < missing.txt'
-	files=("out_order.txt" "missing.txt")
-	run_cmd bash -c "$cmd"
-}
-
-input_fail_then_output_missing() {
-	desc="入力失敗→出力未作成の順序"
-	cmd='cat < missing.txt > out_order.txt'
-	files=("out_order.txt" "missing.txt")
-	run_cmd bash -c "$cmd"
-}
-
-output_path_missing_dir() {
-	desc="出力先ディレクトリが存在しない"
-	cmd='echo HI > no_such_dir/out.txt'
-	files=("no_such_dir/out.txt")
-	run_cmd bash -c "$cmd"
-}
-
-cmd_not_found_but_redir() {
-	desc="コマンド未発見でもリダイレクト処理"
-	cmd='nosuchcmd > out_nf.txt'
-	files=("out_nf.txt")
-	run_cmd bash -c "$cmd"
-}
-
-output_target_directory() {
-	desc="出力先がディレクトリ"
-	mkdir dir
-	cmd='echo hi > dir'
-	files=("dir")
-	run_cmd bash -c "$cmd"
-}
-
-input_source_directory() {
-	desc="入力元がディレクトリ"
-	mkdir dir
-	cmd='cat < dir'
-	files=("dir")
-	run_cmd bash -c "$cmd"
-}
-
-output_readonly() {
-	desc="出力先が書き込み不可"
+setup_mix() { printf "mix\n" > in1.txt; }
+setup_dir() { mkdir dir; }
+setup_readonly() {
 	printf "orig\n" > readonly.txt
 	chmod 444 readonly.txt
-	cmd='echo hi > readonly.txt'
-	files=("readonly.txt")
-	run_cmd bash -c "$cmd"
 }
-
-input_unreadable() {
-	desc="入力元が読み取り不可"
+setup_noread() {
 	printf "secret\n" > noread.txt
 	chmod 000 noread.txt
-	cmd='cat < noread.txt'
-	files=("noread.txt")
+}
+setup_in1_file() { printf "FILE\n" > in1.txt; }
+
+# ------------------------------------------------------------
+# 実行関数
+# ------------------------------------------------------------
+
+exec_bash_cmd() {
 	run_cmd bash -c "$cmd"
 }
 
-filename_with_spaces() {
-	desc="空白を含むファイル名"
-	cmd='echo hi > "spaced name.txt"'
-	files=("spaced name.txt")
-	run_cmd bash -c "$cmd"
-}
-
-heredoc_unquoted_expands() {
-	desc="heredoc（未クォート）で変数展開"
+exec_heredoc_unquoted() {
 	cat > cmd.sh <<'EOS'
 VAR=HELLO
 cat <<EOF
@@ -244,12 +156,10 @@ $VAR
 EOF
 EOS
 )
-	files=()
 	run_cmd bash cmd.sh
 }
 
-heredoc_quoted_no_expand() {
-	desc="heredoc（クォート）で変数展開なし"
+exec_heredoc_quoted() {
 	cat > cmd.sh <<'EOS'
 VAR=HELLO
 cat <<'EOF'
@@ -263,12 +173,10 @@ $VAR
 EOF
 EOS
 )
-	files=()
 	run_cmd bash cmd.sh
 }
 
-heredoc_with_output() {
-	desc="heredoc + 出力リダイレクト"
+exec_heredoc_with_output() {
 	cat > cmd.sh <<'EOS'
 cat <<EOF > out_heredoc.txt
 line1
@@ -282,13 +190,10 @@ line2
 EOF
 EOS
 )
-	files=("out_heredoc.txt")
 	run_cmd bash cmd.sh
 }
 
-heredoc_and_input_precedence() {
-	desc="heredoc + 入力リダイレクトの優先"
-	printf "FILE\n" > in1.txt
+exec_heredoc_input_precedence() {
 	cat > cmd.sh <<'EOS'
 cat <<EOF < in1.txt
 HEREDOC
@@ -300,35 +205,38 @@ HEREDOC
 EOF
 EOS
 )
-	files=("in1.txt")
 	run_cmd bash cmd.sh
 }
 
-redir_without_command() {
-	desc="コマンドなしのリダイレクト"
-	cmd='> out_only.txt'
-	files=("out_only.txt")
-	run_cmd bash -c "$cmd"
-}
+# ------------------------------------------------------------
+# テーブル（name|desc|setup|exec|files(comma)|cmd）
+# ------------------------------------------------------------
 
-run_case create_truncate
-run_case append_existing
-run_case append_new
-run_case input_basic
-run_case input_last_wins
-run_case output_last_wins
-run_case input_output_together
-run_case output_then_input_fail
-run_case input_fail_then_output_missing
-run_case output_path_missing_dir
-run_case cmd_not_found_but_redir
-run_case output_target_directory
-run_case input_source_directory
-run_case output_readonly
-run_case input_unreadable
-run_case filename_with_spaces
-run_case heredoc_unquoted_expands
-run_case heredoc_quoted_no_expand
-run_case heredoc_with_output
-run_case heredoc_and_input_precedence
-run_case redir_without_command
+cases=(
+	"create_truncate|`>` による作成・切り詰め|setup_none|exec_bash_cmd|out_trunc.txt|echo one > out_trunc.txt"
+	"append_existing|`>>` による既存ファイルへの追記|setup_none|exec_bash_cmd|out_app.txt|printf \"A\\n\" > out_app.txt; echo B >> out_app.txt"
+	"append_new|追記で新規作成される|setup_none|exec_bash_cmd|out_new.txt|echo C >> out_new.txt"
+	"input_basic|入力リダイレクトの基本|setup_in1|exec_bash_cmd|in1.txt|cat < in1.txt"
+	"input_last_wins|入力の多重指定（最後が有効）|setup_in1_in2|exec_bash_cmd|in1.txt,in2.txt|cat < in1.txt < in2.txt"
+	"output_last_wins|出力の多重指定（最後が有効、先は空作成）|setup_none|exec_bash_cmd|out1.txt,out2.txt|echo X > out1.txt > out2.txt"
+	"input_output_together|入出力の同時指定|setup_mix|exec_bash_cmd|in1.txt,out_mix.txt|cat < in1.txt > out_mix.txt"
+	"output_then_input_fail|出力作成→入力失敗の順序|setup_none|exec_bash_cmd|out_order.txt,missing.txt|cat > out_order.txt < missing.txt"
+	"input_fail_then_output_missing|入力失敗→出力未作成の順序|setup_none|exec_bash_cmd|out_order.txt,missing.txt|cat < missing.txt > out_order.txt"
+	"output_path_missing_dir|出力先ディレクトリが存在しない|setup_none|exec_bash_cmd|no_such_dir/out.txt|echo HI > no_such_dir/out.txt"
+	"cmd_not_found_but_redir|コマンド未発見でもリダイレクト処理|setup_none|exec_bash_cmd|out_nf.txt|nosuchcmd > out_nf.txt"
+	"output_target_directory|出力先がディレクトリ|setup_dir|exec_bash_cmd|dir|echo hi > dir"
+	"input_source_directory|入力元がディレクトリ|setup_dir|exec_bash_cmd|dir|cat < dir"
+	"output_readonly|出力先が書き込み不可|setup_readonly|exec_bash_cmd|readonly.txt|echo hi > readonly.txt"
+	"input_unreadable|入力元が読み取り不可|setup_noread|exec_bash_cmd|noread.txt|cat < noread.txt"
+	"filename_with_spaces|空白を含むファイル名|setup_none|exec_bash_cmd|spaced name.txt|echo hi > \"spaced name.txt\""
+	"heredoc_unquoted_expands|heredoc（未クォート）で変数展開|setup_none|exec_heredoc_unquoted||"
+	"heredoc_quoted_no_expand|heredoc（クォート）で変数展開なし|setup_none|exec_heredoc_quoted||"
+	"heredoc_with_output|heredoc + 出力リダイレクト|setup_none|exec_heredoc_with_output|out_heredoc.txt|"
+	"heredoc_and_input_precedence|heredoc + 入力リダイレクトの優先|setup_in1_file|exec_heredoc_input_precedence|in1.txt|"
+	"redir_without_command|コマンドなしのリダイレクト|setup_none|exec_bash_cmd|out_only.txt|> out_only.txt"
+)
+
+for row in "${cases[@]}"; do
+	IFS='|' read -r name desc_in setup_fn exec_fn files_str cmd_in <<< "$row"
+	run_case "$name" "$desc_in" "$setup_fn" "$exec_fn" "$files_str" "$cmd_in"
+done
