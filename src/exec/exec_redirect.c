@@ -11,7 +11,12 @@
 /* ************************************************************************** */
 
 #include "executor.h"
+#include "repl.h"
 #include <fcntl.h>
+
+#define HEREDOC_INTERRUPTED -2
+
+extern volatile sig_atomic_t	g_interrupt;
 
 static int	print_redir_error(char *file)
 {
@@ -29,16 +34,15 @@ static int	create_heredoc_fd(char *delimiter)
 		return (SYSCALL_ERROR);
 	while (true)
 	{
+		g_interrupt = 0;
 		line = readline("> ");
-		if (!line)
-			break ;
-		if (ft_strcmp(line, delimiter) == 0)
+		if (g_interrupt)
+			return (free(line), close(fd[0]), close(fd[1]), HEREDOC_INTERRUPTED);
+		if (!line || ft_strcmp(line, delimiter) == 0)
 			return (free(line), close(fd[1]), fd[0]);
 		ft_putendl_fd(line, fd[1]);
 		free(line);
 	}
-	close(fd[1]);
-	return (fd[0]);
 }
 
 static int	open_redir_fd(t_redirect *redir)
@@ -61,6 +65,8 @@ static int	apply_one_redirect(t_redirect *redir)
 	int	fd;
 
 	fd = open_redir_fd(redir);
+	if (fd == HEREDOC_INTERRUPTED)
+		return (EXIT_SIGNAL_BASE + SIGINT);
 	if (fd == SYSCALL_ERROR)
 	{
 		if (redir->type != AST_HEREDOC)
