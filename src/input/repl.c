@@ -13,7 +13,7 @@
 #include "executor.h"
 #include "minishell.h"
 
-volatile sig_atomic_t	g_interrupt = 1;
+volatile sig_atomic_t	g_signal_status = 0;
 
 int	noop(void)
 {
@@ -43,9 +43,9 @@ char	*read_prompt(t_prompt_status *status)
 	char	*input;
 
 	*status = PROMPT_OK;
-	g_interrupt = 0;
+	g_signal_status = 0;
 	input = readline("minishell$ ");
-	if (g_interrupt)
+	if (g_signal_status == SIGINT)
 	{
 		*status = PROMPT_INTERRUPT;
 		free(input);
@@ -80,7 +80,6 @@ bool	run_repl(t_env *env)
 
 void	sigint_handler(int signo)
 {
-	(void)signo;
-	g_interrupt = 1;
+	g_signal_status = signo;
 	rl_done = 1;
 }

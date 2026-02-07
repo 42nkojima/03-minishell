@@ -15,8 +15,6 @@
 
 #define INTERRUPTED -2
 
-extern volatile sig_atomic_t	g_interrupt;
-
 static int	create_heredoc_fd(char *delimiter)
 {
 	int		fd[2];
@@ -26,9 +24,9 @@ static int	create_heredoc_fd(char *delimiter)
 		return (SYSCALL_ERROR);
 	while (true)
 	{
-		g_interrupt = 0;
+		g_signal_status = 0;
 		line = readline("> ");
-		if (g_interrupt)
+		if (g_signal_status == SIGINT)
 			return (free(line), close(fd[0]), close(fd[1]), INTERRUPTED);
 		if (!line || ft_strcmp(line, delimiter) == 0)
 			return (free(line), close(fd[1]), fd[0]);
