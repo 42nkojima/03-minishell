@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 13:46:31 by nkojima           #+#    #+#             */
-/*   Updated: 2026/02/01 16:16:16 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/02/07 11:29:55 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,23 +47,6 @@ t_env	*init_env_node(char *env_str)
 			return (free(node->key), free(node), NULL);
 	}
 	return (node->is_show = VISIBLE, node->next = NULL, node);
-}
-
-void	env_add_back(t_env **list, t_env *new_node)
-{
-	t_env	*tmp;
-
-	if (!list || !new_node)
-		return ;
-	if (*list == NULL)
-	{
-		*list = new_node;
-		return ;
-	}
-	tmp = *list;
-	while (tmp->next)
-		tmp = tmp->next;
-	tmp->next = new_node;
 }
 
 t_env	*init_env(char *envp[])

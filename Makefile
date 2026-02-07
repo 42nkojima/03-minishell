@@ -74,6 +74,7 @@ SRC_EXEC    = \
 SRC_BUILTIN = builtin/echo.c\
 			        builtin/pwd.c\
 			        builtin/env.c\
+			        builtin/cd.c\
 
 SRC_MAIN    = main.c
 
