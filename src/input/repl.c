@@ -6,7 +6,7 @@
 /*   By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 12:44:57 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/01/25 23:06:27 by nkojima          ###   ########.fr       */
+/*   Updated: 2026/02/01 16:57:11 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	noop(void)
 	return (0);
 }
 
-static void	process_input(char *input)
+static void	process_input(char *input, t_env **env)
 {
 	t_ast_node	*ast;
 	int			status;
@@ -33,7 +33,7 @@ static void	process_input(char *input)
 		return ;
 	status = prepare_heredocs(ast);
 	if (status == EXIT_SUCCESS)
-		execute_ast(ast);
+		execute_ast(ast, env);
 	close_prepared_heredocs(ast);
 	free_ast(ast);
 }
@@ -59,7 +59,7 @@ char	*read_prompt(t_prompt_status *status)
 	return (input);
 }
 
-bool	run_repl(void)
+bool	run_repl(t_env *env)
 {
 	char			*input;
 	t_prompt_status	status;
@@ -72,7 +72,7 @@ bool	run_repl(void)
 			continue ;
 		if (status == PROMPT_EOF)
 			break ;
-		process_input(input);
+		process_input(input, &env);
 		free(input);
 	}
 	return (true);

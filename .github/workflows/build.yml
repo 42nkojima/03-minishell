@@ -1,6 +1,6 @@
-name: "Run Make test"
+name: Build (make)
 
-run-name: "Run Make test for PR: ${{ github.event.pull_request.title }}"
+run-name: "Build for PR: ${{ github.event.pull_request.title }}"
 
 on: [push, pull_request]
 
@@ -9,9 +9,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  minishell-test:
-    if: false
-    runs-on: ubuntu-latest
+  build:
+    runs-on: ubuntu-slim
     timeout-minutes: 10
 
     permissions:
@@ -20,21 +19,12 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
-        with:
-          persist-credentials: false
-
-      - name: Install dependencies (build-essential / pkg-config)
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y valgrind
-
 
       - name: Set up Homebrew
-        id: set-up-homebrew
         uses: Homebrew/actions/setup-homebrew@main
 
       - name: Install readline
         run: brew install readline
 
-      - name: Run Make test
-        run: make test
+      - name: Build (make)
+        run: make

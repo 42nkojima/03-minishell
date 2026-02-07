@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   repl.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 12:48:38 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/12/16 22:46:51 by nkojima          ###   ########.fr       */
+/*   Updated: 2026/01/31 14:54:07 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ typedef enum e_prompt_status
 	PROMPT_EOF
 }	t_prompt_status;
 
-bool	run_repl(void);
+bool	run_repl(t_env *env);
 void	sigint_handler(int signo);
 bool	assign_signal_handler(int signum, void (*handler)(int), int flags);
 
