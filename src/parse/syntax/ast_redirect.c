@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "constants.h"
 
 t_redirect	*new_redirect(t_redir_type type, char *value)
 {
@@ -21,6 +22,7 @@ t_redirect	*new_redirect(t_redir_type type, char *value)
 		return (NULL);
 	redir->type = type;
 	redir->file = ft_strdup(value);
+	redir->heredoc_fd = HEREDOC_FD_UNSET;
 	redir->next = NULL;
 	return (redir);
 }

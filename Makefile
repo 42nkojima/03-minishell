@@ -67,9 +67,12 @@ SRC_PARSE   = \
 			parse/syntax/ast_utils.c
 
 SRC_EXEC    = \
-			exec/executor.c \
-			exec/command.c \
-			exec/execute_ast.c
+				exec/executor.c \
+				exec/command.c \
+				exec/exec_heredoc.c \
+				exec/exec_redirect.c \
+				exec/exec_stdio.c \
+				exec/execute_ast.c
 
 SRC_BUILTIN = builtin/echo.c\
 			        builtin/pwd.c\

@@ -26,11 +26,11 @@ echo one > out_trunc.txt
 ## 2. `>>` による既存ファイルへの追記
 - `Setup`:
 ```bash
-: # なし
+printf "A\n" > out_app.txt
 ```
 - `Command`:
 ```bash
-printf "A\n" > out_app.txt; echo B >> out_app.txt
+echo B >> out_app.txt
 ```
 - `bash`:
   - `stdout`: 空
@@ -244,22 +244,9 @@ cat < noread.txt
   - `exit status`: `1`
   - `files`: `noread.txt` は内容不変、権限 `000` のまま
 
-## 16. 空白を含むファイル名
-- `Setup`:
-```bash
-: # なし
-```
-- `Command`:
-```bash
-echo hi > "spaced name.txt"
-```
-- `bash`:
-  - `stdout`: 空
-  - `stderr`: 空
-  - `exit status`: `0`
-  - `files`: `spaced name.txt` が作成され、内容は `hi\n`
+### これは `\` だから要件外
 
-## 17. heredoc（未クォート）で変数展開
+## 16. heredoc（未クォート）で変数展開
 - `Setup`:
 ```bash
 : # なし
@@ -277,7 +264,7 @@ EOF
   - `exit status`: `0`
   - `files`: なし
 
-## 18. heredoc（クォート）で変数展開なし
+## 17. heredoc（クォート）で変数展開なし
 - `Setup`:
 ```bash
 : # なし
@@ -295,7 +282,7 @@ EOF
   - `exit status`: `0`
   - `files`: なし
 
-## 19. heredoc + 出力リダイレクト
+## 18. heredoc + 出力リダイレクト
 - `Setup`:
 ```bash
 : # なし
@@ -313,7 +300,7 @@ EOF
   - `exit status`: `0`
   - `files`: `out_heredoc.txt` の内容は `line1\nline2\n`
 
-## 20. heredoc + 入力リダイレクトの優先順位
+## 19. heredoc + 入力リダイレクトの優先順位
 - `Setup`:
 ```bash
 printf "FILE\n" > in1.txt
@@ -330,7 +317,7 @@ EOF
   - `exit status`: `0`
   - `files`: `in1.txt` は内容不変
 
-## 21. コマンドなしのリダイレクト
+## 20. コマンドなしのリダイレクト
 - `Setup`:
 ```bash
 : # なし
@@ -344,3 +331,145 @@ EOF
   - `stderr`: 空
   - `exit status`: `0`
   - `files`: `out_only.txt` が作成され、サイズ 0
+
+## 21. `printf "EOF\n" | cat <<"EOF"`（heredoc が優先）
+- `Setup`:
+```bash
+: # なし
+```
+- `Command`:
+```bash
+printf "EOF\n" | cat <<"EOF"
+EOF
+```
+- `bash`:
+  - `stdout`: 空
+  - `stderr`: 空
+  - `exit status`: `0`
+  - `files`: なし
+
+## 22. `yes X | cat <<'EOF'`（heredoc が優先）
+- `Setup`:
+```bash
+: # なし
+```
+- `Command`:
+```bash
+yes X | cat <<'EOF'
+EOF
+```
+- `bash`:
+  - `stdout`: 空
+  - `stderr`: 空
+  - `exit status`: `0`
+  - `files`: なし
+
+## 23. `cat <<EOF` 入力中に `Ctrl-C`
+- `Setup`:
+```bash
+: # なし
+```
+- `Command`:
+```bash
+cat <<EOF
+abc
+# ここで Ctrl-C
+```
+- `bash`:
+  - `stdout`: 空（`cat` は実行されない）
+  - `stderr`: 空
+  - `exit status`: `130`
+  - `files`: なし
+
+## 24. 複数 heredoc（最後が有効）
+- `Setup`:
+```bash
+: # なし
+```
+- `Command`:
+```bash
+cat <<A <<B
+from-A
+A
+from-B
+B
+```
+- `bash`:
+  - `stdout`: `from-B\n`
+  - `stderr`: 空
+  - `exit status`: `0`
+  - `files`: なし
+
+## 25. `<<` と `<` の混在（最後が heredoc）
+- `Setup`:
+```bash
+printf "FILE\n" > in_mix.txt
+```
+- `Command`:
+```bash
+cat <<A < in_mix.txt <<B
+from-A
+A
+from-B
+B
+```
+- `bash`:
+  - `stdout`: `from-B\n`
+  - `stderr`: 空
+  - `exit status`: `0`
+  - `files`: `in_mix.txt` は内容不変
+
+## 26. `<` の後に `<<`（heredoc が上書き）
+- `Setup`:
+```bash
+printf "FILE\n" > in_mix.txt
+```
+- `Command`:
+```bash
+cat < in_mix.txt <<A
+from-A
+A
+```
+- `bash`:
+  - `stdout`: `from-A\n`
+  - `stderr`: 空
+  - `exit status`: `0`
+  - `files`: `in_mix.txt` は内容不変
+
+## 27. 複数 `<<` の後に `<`（最後が `<`）
+- `Setup`:
+```bash
+printf "FILE\n" > in_mix.txt
+```
+- `Command`:
+```bash
+cat <<A <<B < in_mix.txt
+from-A
+A
+from-B
+B
+```
+- `bash`:
+  - `stdout`: `FILE\n`
+  - `stderr`: 空
+  - `exit status`: `0`
+  - `files`: `in_mix.txt` は内容不変
+
+## 28. パイプ + 複数 heredoc（heredoc が優先、最後が有効）
+- `Setup`:
+```bash
+: # なし
+```
+- `Command`:
+```bash
+printf "pipe\n" | cat <<A <<B
+from-A
+A
+from-B
+B
+```
+- `bash`:
+  - `stdout`: `from-B\n`
+  - `stderr`: 空
+  - `exit status`: `0`
+  - `files`: なし
