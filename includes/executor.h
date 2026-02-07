@@ -27,4 +27,11 @@ char	*find_command(char *cmd, char **envp);
 // execute_ast.c
 int		execute_ast(t_ast_node *node);
 
+// exec_redirect.c
+int		apply_redirects(t_redirect *redir);
+
+// exec_stdio.c
+int		save_stdio_fds(int saved[2]);
+void	restore_stdio_fds(int saved[2]);
+
 #endif
