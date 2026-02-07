@@ -35,5 +35,6 @@ typedef enum e_fd
 // システムコール戻り値
 # define SYSCALL_ERROR -1
 # define SYSCALL_SUCCESS 0
+# define HEREDOC_FD_UNSET -1
 
 #endif

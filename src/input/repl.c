@@ -23,6 +23,7 @@ int	noop(void)
 static void	process_input(char *input)
 {
 	t_ast_node	*ast;
+	int			status;
 
 	if (!*input)
 		return ;
@@ -30,7 +31,10 @@ static void	process_input(char *input)
 	ast = parse(input);
 	if (!ast)
 		return ;
-	execute_ast(ast);
+	status = prepare_heredocs(ast);
+	if (status == EXIT_SUCCESS)
+		execute_ast(ast);
+	close_prepared_heredocs(ast);
 	free_ast(ast);
 }
 

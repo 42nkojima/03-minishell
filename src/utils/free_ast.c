@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "constants.h"
+#include <unistd.h>
 
 void	free_argv(char **argv)
 {
@@ -34,6 +36,8 @@ void	free_redirects(t_redirect *redir)
 	while (redir)
 	{
 		next = redir->next;
+		if (redir->heredoc_fd != HEREDOC_FD_UNSET)
+			close(redir->heredoc_fd);
 		free(redir->file);
 		free(redir);
 		redir = next;

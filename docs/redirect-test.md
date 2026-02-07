@@ -378,5 +378,98 @@ abc
 - `bash`:
   - `stdout`: 空（`cat` は実行されない）
   - `stderr`: 空
-  - `exit status`: `1`
+  - `exit status`: `130`
+  - `files`: なし
+
+## 24. 複数 heredoc（最後が有効）
+- `Setup`:
+```bash
+: # なし
+```
+- `Command`:
+```bash
+cat <<A <<B
+from-A
+A
+from-B
+B
+```
+- `bash`:
+  - `stdout`: `from-B\n`
+  - `stderr`: 空
+  - `exit status`: `0`
+  - `files`: なし
+
+## 25. `<<` と `<` の混在（最後が heredoc）
+- `Setup`:
+```bash
+printf "FILE\n" > in_mix.txt
+```
+- `Command`:
+```bash
+cat <<A < in_mix.txt <<B
+from-A
+A
+from-B
+B
+```
+- `bash`:
+  - `stdout`: `from-B\n`
+  - `stderr`: 空
+  - `exit status`: `0`
+  - `files`: `in_mix.txt` は内容不変
+
+## 26. `<` の後に `<<`（heredoc が上書き）
+- `Setup`:
+```bash
+printf "FILE\n" > in_mix.txt
+```
+- `Command`:
+```bash
+cat < in_mix.txt <<A
+from-A
+A
+```
+- `bash`:
+  - `stdout`: `from-A\n`
+  - `stderr`: 空
+  - `exit status`: `0`
+  - `files`: `in_mix.txt` は内容不変
+
+## 27. 複数 `<<` の後に `<`（最後が `<`）
+- `Setup`:
+```bash
+printf "FILE\n" > in_mix.txt
+```
+- `Command`:
+```bash
+cat <<A <<B < in_mix.txt
+from-A
+A
+from-B
+B
+```
+- `bash`:
+  - `stdout`: `FILE\n`
+  - `stderr`: 空
+  - `exit status`: `0`
+  - `files`: `in_mix.txt` は内容不変
+
+## 28. パイプ + 複数 heredoc（heredoc が優先、最後が有効）
+- `Setup`:
+```bash
+: # なし
+```
+- `Command`:
+```bash
+printf "pipe\n" | cat <<A <<B
+from-A
+A
+from-B
+B
+```
+- `bash`:
+  - `stdout`: `from-B\n`
+  - `stderr`: 空
+  - `exit status`: `0`
   - `files`: なし
