@@ -37,6 +37,7 @@ typedef struct s_redirect
 {
 	t_redir_type			type;
 	char					*file;
+	int						heredoc_fd;
 	struct s_redirect		*next;
 }							t_redirect;
 

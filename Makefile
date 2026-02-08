@@ -6,7 +6,7 @@
 #    By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/29 10:14:46 by tshimizu          #+#    #+#              #
-#    Updated: 2026/02/01 16:30:39 by tshimizu         ###   ########.fr        #
+#    Updated: 2026/02/08 15:24:29 by tshimizu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -71,14 +71,19 @@ SRC_PARSE   = \
 			parse/syntax/ast_utils.c
 
 SRC_EXEC    = \
-			exec/executor.c \
-			exec/command.c \
-			exec/execute_ast.c\
+				exec/executor.c \
+				exec/command.c \
+				exec/exec_heredoc.c \
+				exec/exec_redirect.c \
+				exec/exec_stdio.c \
+				exec/execute_ast.c
 
 SRC_BUILTIN = builtin/echo.c\
 			        builtin/pwd.c\
 			        builtin/env.c\
 			        builtin/cd.c\
+			        builtin/export.c\
+			        builtin/export_print.c\
 
 SRC_MAIN    = main.c
 

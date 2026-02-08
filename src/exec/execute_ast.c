@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "executor.h"
-#include "minishell.h"
 
 extern char		**environ;
 
@@ -44,12 +43,25 @@ static pid_t	fork_pipe_child(t_ast_node *node, int fd[2], int is_left,
 static int	execute_cmd_node(t_ast_node *node, t_env **env)
 {
 	t_command	cmd;
+	int			saved[2];
+	int			status;
 
-	if (!node->data.cmd->argv[0])
-		return (EXIT_SUCCESS);
-	cmd.argv = node->data.cmd->argv;
-	cmd.envp = environ;
-	return (execute_command(&cmd, env));
+	if (save_stdio_fds(saved) != EXIT_SUCCESS)
+		return (EXIT_FAILURE);
+	status = apply_redirects(node->data.cmd->redirects);
+	if (status == EXIT_SUCCESS)
+	{
+		if (!node->data.cmd->argv[0])
+			status = EXIT_SUCCESS;
+		else
+		{
+			cmd.argv = node->data.cmd->argv;
+			cmd.envp = environ;
+			status = execute_command(&cmd, env);
+		}
+	}
+	restore_stdio_fds(saved);
+	return (status);
 }
 
 static int	execute_pipe_node(t_ast_node *node, t_env **env)

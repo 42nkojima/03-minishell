@@ -13,7 +13,7 @@
 #include "executor.h"
 #include "minishell.h"
 
-volatile sig_atomic_t	g_interrupt = 1;
+volatile sig_atomic_t	g_signal_status = 0;
 
 int	noop(void)
 {
@@ -23,6 +23,7 @@ int	noop(void)
 static void	process_input(char *input, t_env **env, int *last_status)
 {
 	t_ast_node	*ast;
+	int			status;
 
 	if (!*input)
 		return ;
@@ -30,7 +31,12 @@ static void	process_input(char *input, t_env **env, int *last_status)
 	ast = parse(input, *env, *last_status);
 	if (!ast)
 		return ;
-	*last_status = execute_ast(ast, env);
+	status = prepare_heredocs(ast);
+	if (status == EXIT_SUCCESS)
+		*last_status = execute_ast(ast, env);
+  else
+    *last_status = status;
+	close_prepared_heredocs(ast);
 	free_ast(ast);
 }
 
@@ -39,9 +45,9 @@ char	*read_prompt(t_prompt_status *status)
 	char	*input;
 
 	*status = PROMPT_OK;
-	g_interrupt = 0;
+	g_signal_status = 0;
 	input = readline("minishell$ ");
-	if (g_interrupt)
+	if (g_signal_status == SIGINT)
 	{
 		*status = PROMPT_INTERRUPT;
 		free(input);
@@ -78,7 +84,6 @@ bool	run_repl(t_env *env)
 
 void	sigint_handler(int signo)
 {
-	(void)signo;
-	g_interrupt = 1;
+	g_signal_status = signo;
 	rl_done = 1;
 }
