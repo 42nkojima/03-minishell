@@ -31,6 +31,8 @@ typedef enum e_prompt_status
 	PROMPT_EOF
 }	t_prompt_status;
 
+extern volatile sig_atomic_t	g_signal_status;
+
 bool	run_repl(t_env *env);
 void	sigint_handler(int signo);
 bool	assign_signal_handler(int signum, void (*handler)(int), int flags);
