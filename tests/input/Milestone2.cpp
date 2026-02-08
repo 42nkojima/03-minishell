@@ -11,10 +11,9 @@ extern "C"
 TEST(SignalTest, SigintHandlerTest)
 {
 	rl_done = 0;
-	extern volatile sig_atomic_t g_interrupt;
-	g_interrupt = 0;
+	g_signal_status = 0;
 	sigint_handler(SIGINT);
-	EXPECT_EQ(g_interrupt, 1);
+	EXPECT_EQ(g_signal_status, SIGINT);
 	EXPECT_EQ(rl_done, 1);
 }
 
