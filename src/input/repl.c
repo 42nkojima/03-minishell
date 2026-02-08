@@ -6,7 +6,7 @@
 /*   By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 12:44:57 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/02/08 07:16:34 by nkojima          ###   ########.fr       */
+/*   Updated: 2026/02/08 08:55:21 by nkojima          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,10 @@ static void	process_input(char *input, t_env **env, int *last_status)
 	if (!ast)
 		return ;
 	status = prepare_heredocs(ast);
-	if (status == EXIT_SUCCESS)
+	if (status != EXIT_SUCCESS)
+		*last_status = status;
+	else
 		*last_status = execute_ast(ast, env);
-	*last_status = status;
 	close_prepared_heredocs(ast);
 	free_ast(ast);
 }
@@ -60,7 +61,7 @@ char	*read_prompt(t_prompt_status *status)
 	return (input);
 }
 
-bool	run_repl(t_env *env)
+int	run_repl(t_env *env)
 {
 	char			*input;
 	t_prompt_status	status;
@@ -78,7 +79,7 @@ bool	run_repl(t_env *env)
 		process_input(input, &env, &last_status);
 		free(input);
 	}
-	return (true);
+	return (last_status);
 }
 
 void	sigint_handler(int signo)
