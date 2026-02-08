@@ -20,9 +20,14 @@ bool	is_operator(char c)
 static size_t	push_operator_token(t_token_list *list, t_token_type type,
 		char *symbol, size_t next_i)
 {
-	token_list_push(list, (t_token_init){.type = type, .value = ft_strdup(symbol),
-		.has_env = false, .single_quoted = false, .is_quoted = false,
-		.joins_prev = false});
+	token_list_push(list, (t_token_init){
+		.type = type,
+		.value = ft_strdup(symbol),
+		.has_env = false,
+		.single_quoted = false,
+		.is_quoted = false,
+		.joins_prev = false,
+	});
 	return (next_i);
 }
 

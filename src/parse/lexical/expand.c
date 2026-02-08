@@ -47,7 +47,7 @@ static bool	append_next_fragment(t_expand_buf *buffer, char *raw, size_t *i,
 static char	*expand_word_value(char *raw, t_expand_ctx *ctx)
 {
 	t_expand_buf	buffer;
-	size_t		i;
+	size_t			i;
 
 	if (!expand_buf_init(&buffer))
 		return (NULL);
