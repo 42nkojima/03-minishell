@@ -20,18 +20,17 @@ int	noop(void)
 	return (0);
 }
 
-static void	process_input(char *input, t_env **env)
+static void	process_input(char *input, t_env **env, int *last_status)
 {
 	t_ast_node	*ast;
 
-	(void)env;
 	if (!*input)
 		return ;
 	add_history(input);
-	ast = parse(input);
+	ast = parse(input, *env, *last_status);
 	if (!ast)
 		return ;
-	execute_ast(ast, env);
+	*last_status = execute_ast(ast, env);
 	free_ast(ast);
 }
 
@@ -60,8 +59,10 @@ bool	run_repl(t_env *env)
 {
 	char			*input;
 	t_prompt_status	status;
+	int				last_status;
 
 	rl_event_hook = noop;
+	last_status = 0;
 	while (true)
 	{
 		input = read_prompt(&status);
@@ -69,7 +70,7 @@ bool	run_repl(t_env *env)
 			continue ;
 		if (status == PROMPT_EOF)
 			break ;
-		process_input(input, &env);
+		process_input(input, &env, &last_status);
 		free(input);
 	}
 	return (true);

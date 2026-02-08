@@ -18,11 +18,13 @@ bool	add_token(t_token_list *list, t_token_init init)
 	list->tokens[list->count].value = init.value;
 	list->tokens[list->count].has_env = init.has_env;
 	list->tokens[list->count].single_quoted = init.single_quoted;
+	list->tokens[list->count].quoted = init.quoted;
+	list->tokens[list->count].glued_left = init.glued_left;
 	list->count++;
 	return (true);
 }
 
-t_token_list	*token_list_init(size_t count)
+static t_token_list	*token_list_init(size_t count)
 {
 	t_token_list	*list;
 
@@ -37,35 +39,46 @@ t_token_list	*token_list_init(size_t count)
 	return (list);
 }
 
-static size_t	skip_spaces(char *s, size_t i)
+static size_t	tokenize_one(t_token_list *list, char *input, size_t i,
+		bool glued_left)
 {
-	while (s[i] && ft_isspace(s[i]))
-		i++;
-	return (i);
+	if (is_quote(input[i]))
+		return (handle_quoted_word(list, input, i, glued_left));
+	if (is_operator(input[i]))
+		return (handle_operator(list, input, i));
+	return (handle_word(list, input, i, glued_left));
 }
 
-t_token_list	*tokenizer(char *input)
+static void	postprocess_tokens(t_token_list *list, t_env *env, int last_status)
+{
+	if (list->error != ERR_NONE)
+		return ;
+	expand_tokens(list, env, last_status);
+	finalize_tokens(list);
+}
+
+t_token_list	*tokenizer(char *input, t_env *env, int last_status)
 {
 	t_token_list	*list;
 	size_t			i;
-
+	size_t			before_skip;
+	bool			glued_left;
 	if (!input)
 		return (NULL);
 	list = token_list_init(ft_strlen(input) + 1);
 	if (!list)
 		return (NULL);
 	i = 0;
-	while (input[i])
+	while (input[i] && list->error == ERR_NONE)
 	{
-		i = skip_spaces(input, i);
-		if (!input[i] || list->error)
+		before_skip = i;
+		while (input[i] && ft_isspace(input[i]))
+			i++;
+		if (!input[i])
 			break ;
-		if (is_quote(input[i]))
-			i = handle_quoted_word(list, input, i);
-		else if (is_operator(input[i]))
-			i = handle_operator(list, input, i);
-		else
-			i = handle_word(list, input, i);
+		glued_left = (list->count > 0 && before_skip == i);
+		i = tokenize_one(list, input, i, glued_left);
 	}
+	postprocess_tokens(list, env, last_status);
 	return (list);
 }

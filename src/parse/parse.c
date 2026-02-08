@@ -12,12 +12,12 @@
 
 #include "minishell.h"
 
-t_ast_node	*parse(char *input)
+t_ast_node	*parse(char *input, t_env *env, int last_status)
 {
 	t_token_list	*token_list;
 	t_ast_node		*ast_root;
 
-	token_list = tokenizer(input);
+	token_list = tokenizer(input, env, last_status);
 	if (!token_list)
 		return (NULL);
 	if (token_list->error != ERR_NONE)

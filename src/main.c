@@ -67,6 +67,8 @@ t_env	*init_env(char *envp[])
 		env_add_back(&env_list, new_node);
 		i++;
 	}
+	set_env(&env_list, "FOO", "bar");
+	set_env(&env_list, "FOO_1", "baz");
 	return (env_list);
 }
 

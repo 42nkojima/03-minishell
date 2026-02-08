@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-size_t	handle_word(t_token_list *list, char *s, size_t i)
+size_t	handle_word(t_token_list *list, char *s, size_t i, bool glued_left)
 {
 	size_t	start;
 	bool	has_env;
@@ -22,12 +22,14 @@ size_t	handle_word(t_token_list *list, char *s, size_t i)
 	has_env = false;
 	while (s[i] && !ft_isspace(s[i]) && !is_operator(s[i]) && !is_quote(s[i]))
 	{
-		if (s[i] == '$' && (ft_isalpha(s[i + 1]) || s[i + 1] == '?'))
+		if (s[i] == '$' && (ft_isalpha(s[i + 1])
+				|| s[i + 1] == '_' || s[i + 1] == '?'))
 			has_env = true;
 		i++;
 	}
 	word = ft_substr(s, start, i - start);
 	add_token(list, (t_token_init){.type = WORD, .value = word,
-		.has_env = has_env, .single_quoted = false});
+		.has_env = has_env, .single_quoted = false, .quoted = false,
+		.glued_left = glued_left});
 	return (i);
 }
