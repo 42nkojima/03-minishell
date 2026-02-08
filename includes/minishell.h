@@ -39,7 +39,7 @@ void			free_redirects(t_redirect *redir);
 int				ft_isspace(int c);
 void			free_ast(t_ast_node *node);
 t_ast_node		*list_to_ast(t_token_list *token_list);
-t_ast_node		*parse(char *input);
+t_ast_node		*parse(char *input, t_env *env, int last_status);
 t_ast_node		*parse_pipeline(t_token *t, int l, int r);
 t_ast_node		*new_ast_node(t_node_type type);
 t_ast_node		*parse_cmd(t_token *t, int l, int r);

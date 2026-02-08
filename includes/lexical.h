@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexical.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/29 15:51:41 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/12/21 14:08:16 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/02/08 06:40:53 by nkojima          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ typedef struct s_token
 	char			*value;
 	bool			has_env;
 	bool			single_quoted;
+	bool			is_quoted;
+	bool			joins_prev;
 }					t_token;
 
 typedef enum e_lex_error
@@ -60,14 +62,20 @@ typedef struct s_token_init
 	char			*value;
 	bool			has_env;
 	bool			single_quoted;
+	bool			is_quoted;
+	bool			joins_prev;
 }					t_token_init;
 
-bool				is_quote(char c);
-bool				is_operator(char c);
-size_t				handle_quoted_word(t_token_list *list, char *s, size_t i);
-size_t				handle_operator(t_token_list *list, char *s, size_t i);
-size_t				handle_word(t_token_list *list, char *s, size_t i);
-t_token_list		*tokenizer(char *input);
-bool				add_token(t_token_list *list, t_token_init init);
+bool			is_quote(char c);
+bool			is_operator(char c);
+size_t			scan_quoted(t_token_list *list, char *s, size_t i,
+					bool joins_prev);
+size_t			scan_operator(t_token_list *list, char *s, size_t i);
+size_t			scan_word(t_token_list *list, char *s, size_t i,
+					bool joins_prev);
+t_token_list	*tokenizer(char *input, t_env *env, int last_status);
+void			token_list_push(t_token_list *list, t_token_init init);
+void			expand_tokens(t_token_list *list, t_env *env, int last_status);
+void			normalize_tokens(t_token_list *list);
 
 #endif // LEXICAL_H

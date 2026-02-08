@@ -17,27 +17,31 @@ bool	is_operator(char c)
 	return (c == '|' || c == '<' || c == '>');
 }
 
-size_t	handle_operator(t_token_list *list, char *s, size_t i)
+static size_t	push_operator_token(t_token_list *list, t_token_type type,
+		char *symbol, size_t next_i)
+{
+	token_list_push(list, (t_token_init){
+		.type = type,
+		.value = ft_strdup(symbol),
+		.has_env = false,
+		.single_quoted = false,
+		.is_quoted = false,
+		.joins_prev = false,
+	});
+	return (next_i);
+}
+
+size_t	scan_operator(t_token_list *list, char *s, size_t i)
 {
 	if (s[i] == '|')
-		return (add_token(list, (t_token_init){.type = PIPE,
-				.value = ft_strdup("|"), .has_env = false,
-				.single_quoted = false}), i + 1);
+		return (push_operator_token(list, PIPE, "|", i + 1));
 	if (s[i] == '<' && s[i + 1] && s[i + 1] == '<')
-		return (add_token(list, (t_token_init){.type = HEREDOC,
-				.value = ft_strdup("<<"), .has_env = false,
-				.single_quoted = false}), i + 2);
+		return (push_operator_token(list, HEREDOC, "<<", i + 2));
 	if (s[i] == '>' && s[i + 1] && s[i + 1] == '>')
-		return (add_token(list, (t_token_init){.type = REDIR_APPEND,
-				.value = ft_strdup(">>"), .has_env = false,
-				.single_quoted = false}), i + 2);
+		return (push_operator_token(list, REDIR_APPEND, ">>", i + 2));
 	if (s[i] == '<')
-		return (add_token(list, (t_token_init){.type = REDIR_IN,
-				.value = ft_strdup("<"), .has_env = false,
-				.single_quoted = false}), i + 1);
+		return (push_operator_token(list, REDIR_IN, "<", i + 1));
 	if (s[i] == '>')
-		return (add_token(list, (t_token_init){.type = REDIR_OUT,
-				.value = ft_strdup(">"), .has_env = false,
-				.single_quoted = false}), i + 1);
+		return (push_operator_token(list, REDIR_OUT, ">", i + 1));
 	return (i);
 }
