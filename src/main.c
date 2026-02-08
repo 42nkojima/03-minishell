@@ -6,7 +6,7 @@
 /*   By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 13:46:31 by nkojima           #+#    #+#             */
-/*   Updated: 2026/02/08 06:35:13 by nkojima          ###   ########.fr       */
+/*   Updated: 2026/02/08 08:55:49 by nkojima          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ t_env	*init_env(char *envp[])
 int	main(int argc, char *argv[], char *envp[])
 {
 	t_env	*env;
+	int		status;
 
 	(void)argc;
 	(void)argv;
@@ -88,7 +89,7 @@ int	main(int argc, char *argv[], char *envp[])
 		free_env_list(env);
 		return (1);
 	}
-	run_repl(env);
+	status = run_repl(env);
 	free_env_list(env);
-	return (0);
+	return (status);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   repl.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 12:48:38 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/01/31 14:54:07 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/02/08 08:55:24 by nkojima          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ typedef enum e_prompt_status
 
 extern volatile sig_atomic_t	g_signal_status;
 
-bool	run_repl(t_env *env);
+int		run_repl(t_env *env);
 void	sigint_handler(int signo);
 bool	assign_signal_handler(int signum, void (*handler)(int), int flags);
 
