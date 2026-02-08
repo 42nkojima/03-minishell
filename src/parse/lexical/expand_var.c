@@ -22,7 +22,7 @@ static bool	is_name_char(char c)
 	return (is_name_start(c) || ft_isdigit(c));
 }
 
-size_t	env_name_len(char *s, size_t i)
+size_t	env_key_len(char *s, size_t i)
 {
 	size_t	len;
 
@@ -34,22 +34,23 @@ size_t	env_name_len(char *s, size_t i)
 	return (len);
 }
 
-bool	append_env_value(t_strbuf *sb, char *raw, size_t i, t_env *env)
+bool	append_env_reference(t_expand_buf *buffer, char *raw, size_t i,
+		t_env *env)
 {
 	size_t	len;
 	char	*name;
 	char	*env_value;
 
-	len = env_name_len(raw, i + 1);
+	len = env_key_len(raw, i + 1);
 	name = ft_substr(raw, i + 1, len);
 	if (!name)
 		return (false);
 	env_value = get_env_value(env, name);
 	free(name);
-	return (sb_append_str(sb, env_value));
+	return (expand_buf_append_str(buffer, env_value));
 }
 
-bool	append_exit_status(t_strbuf *sb, int last_status)
+bool	append_status_value(t_expand_buf *buffer, int last_status)
 {
 	char	*status_str;
 	bool	ok;
@@ -57,7 +58,7 @@ bool	append_exit_status(t_strbuf *sb, int last_status)
 	status_str = ft_itoa(last_status);
 	if (!status_str)
 		return (false);
-	ok = sb_append_str(sb, status_str);
+	ok = expand_buf_append_str(buffer, status_str);
 	free(status_str);
 	return (ok);
 }

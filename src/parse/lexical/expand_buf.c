@@ -12,60 +12,60 @@
 
 #include "expand_internal.h"
 
-static bool	sb_reserve(t_strbuf *sb, size_t extra)
+static bool	expand_buf_reserve(t_expand_buf *buffer, size_t extra)
 {
 	size_t	need;
 	size_t	cap;
 	char	*new_buf;
 
-	need = sb->len + extra + 1;
-	cap = sb->cap;
+	need = buffer->len + extra + 1;
+	cap = buffer->cap;
 	while (cap < need)
 		cap *= 2;
-	if (cap == sb->cap)
+	if (cap == buffer->cap)
 		return (true);
 	new_buf = malloc(cap);
 	if (!new_buf)
 		return (false);
-	ft_memcpy(new_buf, sb->buf, sb->len + 1);
-	free(sb->buf);
-	sb->buf = new_buf;
-	sb->cap = cap;
+	ft_memcpy(new_buf, buffer->buf, buffer->len + 1);
+	free(buffer->buf);
+	buffer->buf = new_buf;
+	buffer->cap = cap;
 	return (true);
 }
 
-bool	sb_init(t_strbuf *sb)
+bool	expand_buf_init(t_expand_buf *buffer)
 {
-	sb->cap = 16;
-	sb->len = 0;
-	sb->buf = malloc(sb->cap);
-	if (!sb->buf)
+	buffer->cap = 16;
+	buffer->len = 0;
+	buffer->buf = malloc(buffer->cap);
+	if (!buffer->buf)
 		return (false);
-	sb->buf[0] = '\0';
+	buffer->buf[0] = '\0';
 	return (true);
 }
 
-bool	sb_append_char(t_strbuf *sb, char c)
+bool	expand_buf_append_char(t_expand_buf *buffer, char c)
 {
-	if (!sb_reserve(sb, 1))
+	if (!expand_buf_reserve(buffer, 1))
 		return (false);
-	sb->buf[sb->len] = c;
-	sb->len++;
-	sb->buf[sb->len] = '\0';
+	buffer->buf[buffer->len] = c;
+	buffer->len++;
+	buffer->buf[buffer->len] = '\0';
 	return (true);
 }
 
-bool	sb_append_str(t_strbuf *sb, char *s)
+bool	expand_buf_append_str(t_expand_buf *buffer, char *s)
 {
 	size_t	len;
 
 	if (!s)
 		return (true);
 	len = ft_strlen(s);
-	if (!sb_reserve(sb, len))
+	if (!expand_buf_reserve(buffer, len))
 		return (false);
-	ft_memcpy(sb->buf + sb->len, s, len);
-	sb->len += len;
-	sb->buf[sb->len] = '\0';
+	ft_memcpy(buffer->buf + buffer->len, s, len);
+	buffer->len += len;
+	buffer->buf[buffer->len] = '\0';
 	return (true);
 }

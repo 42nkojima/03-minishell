@@ -12,59 +12,61 @@
 
 #include "expand_internal.h"
 
-static bool	append_dollar(t_strbuf *sb, char *raw, size_t *i, t_expand_ctx *ctx)
+static bool	append_variable_ref(t_expand_buf *buffer, char *raw, size_t *i,
+		t_expand_ctx *ctx)
 {
 	size_t	name_len;
 
 	if (raw[*i + 1] == '?')
 	{
-		if (!append_exit_status(sb, ctx->last_status))
+		if (!append_status_value(buffer, ctx->last_status))
 			return (false);
 		*i += 2;
 		return (true);
 	}
-	name_len = env_name_len(raw, *i + 1);
+	name_len = env_key_len(raw, *i + 1);
 	if (name_len == 0)
-		return (sb_append_char(sb, raw[(*i)++]));
-	if (!append_env_value(sb, raw, *i, ctx->env))
+		return (expand_buf_append_char(buffer, raw[(*i)++]));
+	if (!append_env_reference(buffer, raw, *i, ctx->env))
 		return (false);
 	*i += name_len + 1;
 	return (true);
 }
 
-static bool	append_next(t_strbuf *sb, char *raw, size_t *i, t_expand_ctx *ctx)
+static bool	append_next_fragment(t_expand_buf *buffer, char *raw, size_t *i,
+		t_expand_ctx *ctx)
 {
 	if (raw[*i] == '$')
-		return (append_dollar(sb, raw, i, ctx));
-	if (!sb_append_char(sb, raw[*i]))
+		return (append_variable_ref(buffer, raw, i, ctx));
+	if (!expand_buf_append_char(buffer, raw[*i]))
 		return (false);
 	*i += 1;
 	return (true);
 }
 
-static char	*expand_value(char *raw, t_expand_ctx *ctx)
+static char	*expand_word_value(char *raw, t_expand_ctx *ctx)
 {
-	t_strbuf	sb;
+	t_expand_buf	buffer;
 	size_t		i;
 
-	if (!sb_init(&sb))
+	if (!expand_buf_init(&buffer))
 		return (NULL);
 	i = 0;
 	while (raw[i])
 	{
-		if (!append_next(&sb, raw, &i, ctx))
-			return (free(sb.buf), NULL);
+		if (!append_next_fragment(&buffer, raw, &i, ctx))
+			return (free(buffer.buf), NULL);
 	}
-	return (sb.buf);
+	return (buffer.buf);
 }
 
-static void	expand_one_token(t_token *token, t_expand_ctx *ctx)
+static void	expand_one_word(t_token *token, t_expand_ctx *ctx)
 {
 	char	*expanded;
 
 	if (token->type != WORD || !token->has_env || token->single_quoted)
 		return ;
-	expanded = expand_value(token->value, ctx);
+	expanded = expand_word_value(token->value, ctx);
 	if (!expanded)
 		return ;
 	free(token->value);
@@ -84,7 +86,7 @@ void	expand_tokens(t_token_list *list, t_env *env, int last_status)
 	i = 0;
 	while (i < list->count)
 	{
-		expand_one_token(&list->tokens[i], &ctx);
+		expand_one_word(&list->tokens[i], &ctx);
 		i++;
 	}
 }

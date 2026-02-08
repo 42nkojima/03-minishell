@@ -63,7 +63,7 @@ SRC_PARSE   = \
 			parse/lexical/expand.c \
 			parse/lexical/expand_buf.c \
 			parse/lexical/expand_var.c \
-			parse/lexical/finalize.c \
+			parse/lexical/normalize_tokens.c \
 			parse/parse.c\
 			parse/syntax/ast_build.c\
 			parse/syntax/ast_cmd.c\

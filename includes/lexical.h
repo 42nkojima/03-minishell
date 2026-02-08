@@ -32,8 +32,8 @@ typedef struct s_token
 	char			*value;
 	bool			has_env;
 	bool			single_quoted;
-	bool			quoted;
-	bool			glued_left;
+	bool			is_quoted;
+	bool			joins_prev;
 }					t_token;
 
 typedef enum e_lex_error
@@ -62,18 +62,18 @@ typedef struct s_token_init
 	char			*value;
 	bool			has_env;
 	bool			single_quoted;
-	bool			quoted;
-	bool			glued_left;
+	bool			is_quoted;
+	bool			joins_prev;
 }					t_token_init;
 
 bool			is_quote(char c);
 bool			is_operator(char c);
-size_t			handle_quoted_word(t_token_list *, char *, size_t, bool);
-size_t			handle_operator(t_token_list *list, char *s, size_t i);
-size_t			handle_word(t_token_list *, char *, size_t, bool);
+size_t			scan_quoted(t_token_list *list, char *s, size_t i, bool joins_prev);
+size_t			scan_operator(t_token_list *list, char *s, size_t i);
+size_t			scan_word(t_token_list *list, char *s, size_t i, bool joins_prev);
 t_token_list	*tokenizer(char *input, t_env *env, int last_status);
-bool			add_token(t_token_list *list, t_token_init init);
+void			token_list_push(t_token_list *list, t_token_init init);
 void			expand_tokens(t_token_list *list, t_env *env, int last_status);
-void			finalize_tokens(t_token_list *list);
+void			normalize_tokens(t_token_list *list);
 
 #endif // LEXICAL_H

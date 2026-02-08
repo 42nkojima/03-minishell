@@ -15,12 +15,12 @@
 
 # include "minishell.h"
 
-typedef struct s_strbuf
+typedef struct s_expand_buf
 {
 	char	*buf;
 	size_t	len;
 	size_t	cap;
-}				t_strbuf;
+}				t_expand_buf;
 
 typedef struct s_expand_ctx
 {
@@ -28,11 +28,12 @@ typedef struct s_expand_ctx
 	int		last_status;
 }				t_expand_ctx;
 
-bool	sb_init(t_strbuf *sb);
-bool	sb_append_char(t_strbuf *sb, char c);
-bool	sb_append_str(t_strbuf *sb, char *s);
-size_t	env_name_len(char *s, size_t i);
-bool	append_env_value(t_strbuf *sb, char *raw, size_t i, t_env *env);
-bool	append_exit_status(t_strbuf *sb, int last_status);
+bool	expand_buf_init(t_expand_buf *buffer);
+bool	expand_buf_append_char(t_expand_buf *buffer, char c);
+bool	expand_buf_append_str(t_expand_buf *buffer, char *s);
+size_t	env_key_len(char *s, size_t i);
+bool	append_env_reference(t_expand_buf *buffer, char *raw, size_t i,
+			t_env *env);
+bool	append_status_value(t_expand_buf *buffer, int last_status);
 
 #endif

@@ -17,25 +17,25 @@ bool	is_quote(char c)
 	return (c == '\'' || c == '"');
 }
 
-static bool	has_expandable_mark(char *s, size_t i, char quote)
+static bool	has_expand_ref(char *s, size_t i, char quote)
 {
 	return (quote == '"' && s[i] == '$' && (ft_isalpha(s[i + 1])
 			|| s[i + 1] == '_' || s[i + 1] == '?'));
 }
 
-static size_t	find_quote_end(char *s, size_t i, char quote, bool *has_env)
+static size_t	find_quote_close(char *s, size_t i, char quote, bool *has_env)
 {
 	while (s[i] && s[i] != quote)
 	{
-		if (has_expandable_mark(s, i, quote))
+		if (has_expand_ref(s, i, quote))
 			*has_env = true;
 		i++;
 	}
 	return (i);
 }
 
-size_t	handle_quoted_word(t_token_list *list, char *s, size_t i,
-		bool glued_left)
+size_t	scan_quoted(t_token_list *list, char *s, size_t i,
+		bool joins_prev)
 {
 	char	quote;
 	size_t	start;
@@ -46,16 +46,16 @@ size_t	handle_quoted_word(t_token_list *list, char *s, size_t i,
 	i++;
 	start = i;
 	has_env = false;
-	i = find_quote_end(s, i, quote, &has_env);
+	i = find_quote_close(s, i, quote, &has_env);
 	if (!s[i])
 	{
 		list->error = ERR_UNCLOSED_QUOTE;
 		return (i);
 	}
 	word = ft_substr(s, start, i - start);
-	add_token(list, (t_token_init){.type = WORD, .value = word,
+	token_list_push(list, (t_token_init){.type = WORD, .value = word,
 		.has_env = has_env, .single_quoted = quote == '\'',
-		.quoted = true,
-		.glued_left = glued_left});
+		.is_quoted = true,
+		.joins_prev = joins_prev});
 	return (i + 1);
 }

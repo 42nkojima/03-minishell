@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-size_t	handle_word(t_token_list *list, char *s, size_t i, bool glued_left)
+size_t	scan_word(t_token_list *list, char *s, size_t i, bool joins_prev)
 {
 	size_t	start;
 	bool	has_env;
@@ -28,8 +28,8 @@ size_t	handle_word(t_token_list *list, char *s, size_t i, bool glued_left)
 		i++;
 	}
 	word = ft_substr(s, start, i - start);
-	add_token(list, (t_token_init){.type = WORD, .value = word,
-		.has_env = has_env, .single_quoted = false, .quoted = false,
-		.glued_left = glued_left});
+	token_list_push(list, (t_token_init){.type = WORD, .value = word,
+		.has_env = has_env, .single_quoted = false, .is_quoted = false,
+		.joins_prev = joins_prev});
 	return (i);
 }
