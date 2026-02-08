@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 13:46:31 by nkojima           #+#    #+#             */
-/*   Updated: 2026/02/07 11:29:55 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/02/08 06:35:13 by nkojima          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,6 @@ t_env	*init_env(char *envp[])
 		env_add_back(&env_list, new_node);
 		i++;
 	}
-	set_env(&env_list, "FOO", "bar");
-	set_env(&env_list, "FOO_1", "baz");
 	return (env_list);
 }
 
