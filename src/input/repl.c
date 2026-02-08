@@ -6,7 +6,7 @@
 /*   By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 12:44:57 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/02/01 16:57:11 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/02/08 07:16:34 by nkojima          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,7 @@ static void	process_input(char *input, t_env **env, int *last_status)
 	status = prepare_heredocs(ast);
 	if (status == EXIT_SUCCESS)
 		*last_status = execute_ast(ast, env);
-  else
-    *last_status = status;
+	*last_status = status;
 	close_prepared_heredocs(ast);
 	free_ast(ast);
 }
