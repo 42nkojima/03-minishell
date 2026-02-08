@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/24 15:47:13 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/02/07 11:29:26 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/02/08 15:23:54 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,10 @@ static t_env	*new_env_node(char *key, char *value)
 	if (!node)
 		return (NULL);
 	node->key = ft_strdup(key);
-	node->value = ft_strdup(value);
+	if (value)
+		node->value = ft_strdup(value);
+	else
+		node->value = NULL;
 	node->next = NULL;
 	return (node);
 }
@@ -63,7 +66,10 @@ void	set_env(t_env **env, char *key, char *value)
 		if (ft_strcmp(cur->key, key) == 0)
 		{
 			free(cur->value);
-			cur->value = ft_strdup(value);
+			if (value)
+				cur->value = ft_strdup(value);
+			else
+				cur->value = NULL;
 			return ;
 		}
 		cur = cur->next;
