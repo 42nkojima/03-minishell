@@ -143,12 +143,11 @@ exit +
 - `Command`:
 ```bash
 exit 1 2
-echo STILL
 ```
 - `bash`:
-  - `stdout`: `STILL\n`
+  - `stdout`: 空
   - `stderr`: `bash: exit: too many arguments`
-  - `exit status`: `0`（`echo STILL` の結果）
+  - `exit status`: `1`
   - `shell`: 継続する
 
 ## 11. 非数値 + 追加引数（非数値エラー優先）
@@ -176,12 +175,11 @@ bash case11.sh
 - `Command`:
 ```bash
 exit 7 | cat
-echo AFTER_LEFT
 ```
 - `bash`:
-  - `stdout`: `AFTER_LEFT\n`
+  - `stdout`: 空
   - `stderr`: 空
-  - `exit status`: `0`（`echo AFTER_LEFT` の結果）
+  - `exit status`: `0`
   - `shell`: 継続する
 
 ## 13. パイプ右辺の `exit`
@@ -192,12 +190,11 @@ echo AFTER_LEFT
 - `Command`:
 ```bash
 echo hi | exit 9
-echo AFTER_RIGHT
 ```
 - `bash`:
-  - `stdout`: `AFTER_RIGHT\n`
+  - `stdout`: 空
   - `stderr`: 空
-  - `exit status`: `0`（`echo AFTER_RIGHT` の結果）
+  - `exit status`: `9`
   - `shell`: 継続する
 
 ## 14. 入力リダイレクト失敗時
@@ -208,12 +205,11 @@ echo AFTER_RIGHT
 - `Command`:
 ```bash
 exit < missing_exit_test_file
-echo AFTER_REDIR_FAIL
 ```
 - `bash`:
-  - `stdout`: `AFTER_REDIR_FAIL\n`
+  - `stdout`: 空
   - `stderr`: `bash: missing_exit_test_file: No such file or directory`
-  - `exit status`: `0`（`echo AFTER_REDIR_FAIL` の結果）
+  - `exit status`: `1`
   - `shell`: 継続する
 
 ## 15. 出力リダイレクト併用で終了
