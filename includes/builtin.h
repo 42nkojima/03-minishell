@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 23:11:17 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/02/08 15:23:36 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/02/10 14:53:02 by nkojima          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,6 @@ int					builtin_pwd(void);
 int					builtin_cd(char **argv, t_env **env);
 t_exit_status		builtin_env(char **argv, t_env *env);
 int					builtin_export(char **argv, t_env **env);
+int					builtin_exit(char **argv);
 
 #endif // BUILTIN_H
