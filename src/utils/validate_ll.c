@@ -52,7 +52,8 @@ bool validate_str_to_ll(const char *s, long long *out)
 	unsigned long long accumulator;
 	unsigned long long max_abs_value;
 	int sign;
-	if (!s || !*s)
+
+	if (!out || !s || !*s)
 		return (false);
 	sign = get_sign(&s);
 	if (!ft_isdigit(*s))
