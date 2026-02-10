@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+         #
+#    By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/29 10:14:46 by tshimizu          #+#    #+#              #
-#    Updated: 2026/02/08 15:24:29 by tshimizu         ###   ########.fr        #
+#    Updated: 2026/02/10 17:07:26 by nkojima          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,7 +50,8 @@ RMDIR       = rm -rf
 # ===============================
 SRC_UTILS   = utils/free.c\
 			utils/utils.c\
-			utils/free_ast.c
+			utils/free_ast.c\
+			utils/validate_ll.c
 
 SRC_INPUT   = input/repl.c\
 			  input/signal.c
@@ -84,6 +85,7 @@ SRC_BUILTIN = builtin/echo.c\
 			        builtin/cd.c\
 			        builtin/export.c\
 			        builtin/export_print.c\
+							builtin/exit.c
 
 SRC_MAIN    = main.c
 
