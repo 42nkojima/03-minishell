@@ -6,15 +6,17 @@
 /*   By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/10 15:52:11 by nkojima           #+#    #+#             */
-/*   Updated: 2026/02/10 17:10:10 by nkojima          ###   ########.fr       */
+/*   Updated: 2026/02/10 17:30:33 by nkojima          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <limits.h>
 
-static int get_sign(const char **s)
+static int	get_sign(const char **s)
 {
-	int sign;
+	int	sign;
+
 	sign = 1;
 	if (**s == '+' || **s == '-')
 	{
@@ -25,9 +27,14 @@ static int get_sign(const char **s)
 	return (sign);
 }
 
-static bool push_digit(unsigned long long *accumulator, unsigned long long limit, char c)
+static bool	push_digit(
+	unsigned long long *accumulator,
+	unsigned long long limit,
+	char c
+)
 {
-	unsigned long long digit;
+	unsigned long long	digit;
+
 	if (!ft_isdigit(c))
 		return (false);
 	digit = (unsigned long long)(c - '0');
@@ -37,7 +44,7 @@ static bool push_digit(unsigned long long *accumulator, unsigned long long limit
 	return (true);
 }
 
-static void set_value(long long *out, unsigned long long accumulator, int sign)
+static void	set_value(long long *out, unsigned long long accumulator, int sign)
 {
 	if (sign > 0)
 		*out = (long long)accumulator;
@@ -47,11 +54,11 @@ static void set_value(long long *out, unsigned long long accumulator, int sign)
 		*out = -(long long)accumulator;
 }
 
-bool validate_str_to_ll(const char *s, long long *out)
+bool	validate_str_to_ll(const char *s, long long *out)
 {
-	unsigned long long accumulator;
-	unsigned long long max_abs_value;
-	int sign;
+	unsigned long long	accumulator;
+	unsigned long long	max_abs_value;
+	int					sign;
 
 	if (!out || !s || !*s)
 		return (false);
