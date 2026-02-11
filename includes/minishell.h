@@ -36,7 +36,6 @@ void			free_split(char **arr);
 void			free_env_list(t_env *env);
 void			free_string_array(char **arr);
 void			free_redirects(t_redirect *redir);
-int				ft_isspace(int c);
 void			free_ast(t_ast_node *node);
 t_ast_node		*list_to_ast(t_token_list *token_list);
 t_ast_node		*parse(char *input, t_env *env, int last_status);

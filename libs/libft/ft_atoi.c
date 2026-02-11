@@ -12,11 +12,6 @@
 
 #include "libft.h"
 
-static int	ft_isspace(int c)
-{
-	return (c == ' ' || (c >= '\t' && c <= '\r'));
-}
-
 static const char	*skip_whitespace_and_sign(const char *str, int *sign)
 {
 	*sign = 1;
