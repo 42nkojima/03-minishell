@@ -6,7 +6,7 @@
 #    By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/29 10:14:46 by tshimizu          #+#    #+#              #
-#    Updated: 2026/02/10 17:07:26 by nkojima          ###   ########.fr        #
+#    Updated: 2026/02/10 17:40:45 by nkojima          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,7 +49,6 @@ RMDIR       = rm -rf
 #               SRC
 # ===============================
 SRC_UTILS   = utils/free.c\
-			utils/utils.c\
 			utils/free_ast.c\
 			utils/validate_ll.c
 

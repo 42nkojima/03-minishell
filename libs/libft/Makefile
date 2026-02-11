@@ -25,6 +25,7 @@ SRC_FILES = isalpha \
 			isalnum \
 			isascii \
 			isprint \
+			isspace \
 			strlen \
 			memset \
 			bzero \
