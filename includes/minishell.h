@@ -47,5 +47,6 @@ t_redir_type	token_to_redir(t_token_type type);
 bool			is_redir_target(t_token *t, int i);
 t_redirect		*extract_redirects(t_token *t, int l, int r);
 bool			has_redir_in_range(t_token *t, int l, int r);
+bool			validate_str_to_ll(const char *s, long long *out);
 
 #endif // MINISHELL_H

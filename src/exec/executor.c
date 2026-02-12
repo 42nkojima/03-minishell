@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/14 00:00:00 by nkojima           #+#    #+#             */
-/*   Updated: 2026/02/01 16:59:01 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/02/10 14:51:40 by nkojima          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static int	execute_builtin_command(t_command *cmd, t_env **env)
 	if (ft_strcmp(cmd->argv[0], "env") == 0)
 		return (builtin_env(cmd->argv, *env));
 	if (ft_strcmp(cmd->argv[0], "exit") == 0)
-		return (1);
+		return (builtin_exit(cmd->argv));
 	return (-1);
 }
 

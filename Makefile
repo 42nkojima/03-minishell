@@ -49,7 +49,8 @@ RMDIR       = rm -rf
 #               SRC
 # ===============================
 SRC_UTILS   = utils/free.c\
-			utils/free_ast.c
+			utils/free_ast.c\
+			utils/validate_ll.c
 
 SRC_INPUT   = input/repl.c\
 			  input/signal.c
@@ -83,6 +84,7 @@ SRC_BUILTIN = builtin/echo.c\
 			        builtin/cd.c\
 			        builtin/export.c\
 			        builtin/export_print.c\
+							builtin/exit.c
 
 SRC_MAIN    = main.c
 
