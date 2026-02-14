@@ -16,7 +16,7 @@ char	*get_env_value(t_env *env, char *key)
 {
 	while (env)
 	{
-		if (ft_strcmp(env->key, key) == 0)
+		if (ft_strcmp(env->key, key) == 0&&env->is_show==VISIBLE)
 			return (env->value);
 		env = env->next;
 	}
