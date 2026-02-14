@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "executor.h"
+#include "minishell.h"
 
 static int	pipe_fork_fail(int fd[2], pid_t left)
 {
@@ -56,6 +57,7 @@ static int	execute_cmd_node(t_ast_node *node, t_env **env)
 			cmd.argv = node->data.cmd->argv;
 			cmd.envp = env_to_array(*env);
 			status = execute_command(&cmd, env);
+            free_envp(cmd.envp);
 		}
 	}
 	restore_stdio_fds(saved);

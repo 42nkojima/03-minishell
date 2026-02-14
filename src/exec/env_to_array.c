@@ -18,6 +18,7 @@ static int count_visible_env(t_env *env)
 char **env_to_array(t_env *env)
 {
     char **envp;
+    char *val;
     t_env *cur;
     int count;
     int i;
@@ -33,7 +34,12 @@ char **env_to_array(t_env *env)
     {
         if (cur->is_show == VISIBLE)
         {
-            char *tmp = ft_strjoin("=", cur->value);
+            if (!cur->value) {
+                val = "";
+            }else{
+                val = cur->value;
+            }
+            char *tmp = ft_strjoin("=", val);
             if (!tmp) 
                 return NULL;
             envp[i] = ft_strjoin(cur->key, tmp);

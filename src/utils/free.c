@@ -72,7 +72,8 @@ void	free_string_array(char **arr)
 void free_envp(char **envp)
 {
     int i = 0;
-    if (!envp) return;
+    if (!envp) 
+        return;
     while (envp[i])
     {
         free(envp[i]);
