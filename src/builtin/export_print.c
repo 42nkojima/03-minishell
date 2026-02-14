@@ -50,6 +50,7 @@ bool	sort_env(t_env *env)
 	return (true);
 }
 
+
 static t_env	*copy_env_node(t_env *env)
 {
 	t_env	*new;
@@ -58,14 +59,21 @@ static t_env	*copy_env_node(t_env *env)
 	if (!new)
 		return (NULL);
 	new->key = ft_strdup(env->key);
+	if (!new->key)
+		return (free(new), NULL);
 	if (env->value)
+	{
 		new->value = ft_strdup(env->value);
+		if (!new->value)
+			return (free(new->key), free(new), NULL);
+	}
 	else
 		new->value = NULL;
 	new->is_show = env->is_show;
 	new->next = NULL;
 	return (new);
 }
+
 
 t_env	*copy_env(t_env *env)
 {
@@ -79,7 +87,7 @@ t_env	*copy_env(t_env *env)
 	{
 		new = copy_env_node(env);
 		if (!new)
-			return (NULL);
+			return (free_env_list(head), NULL);
 		if (!head)
 			head = new;
 		else
@@ -90,31 +98,30 @@ t_env	*copy_env(t_env *env)
 	return (head);
 }
 
+
 int	print_export(t_env *env)
 {
 	t_env	*copy;
+	t_env	*tmp;
 
-	if (!env)
-		return (SYSCALL_ERROR);
 	copy = copy_env(env);
 	if (!copy)
 		return (SYSCALL_ERROR);
 	sort_env(copy);
+	tmp = copy;
 	while (copy)
 	{
-		if (ft_strcmp(copy->key, "_") != 0)
+		if (ft_strcmp(copy->key, "_") != 0 && copy->is_show == VISIBLE)
 		{
 			ft_putstr_fd("declare -x ", 1);
 			ft_putstr_fd(copy->key, 1);
 			if (copy->value)
-			{
-				ft_putstr_fd("=\"", 1);
-				ft_putstr_fd(copy->value, 1);
-				ft_putstr_fd("\"", 1);
-			}
+				printf("=\"%s\"", copy->value);
 			ft_putchar_fd('\n', 1);
 		}
 		copy = copy->next;
 	}
+	free_env_list(tmp);
 	return (SYSCALL_SUCCESS);
 }
+

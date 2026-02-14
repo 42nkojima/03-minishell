@@ -68,3 +68,15 @@ void	free_string_array(char **arr)
 	}
 	free(arr);
 }
+
+void free_envp(char **envp)
+{
+    int i = 0;
+    if (!envp) return;
+    while (envp[i])
+    {
+        free(envp[i]);
+        i++;
+    }
+    free(envp);
+}

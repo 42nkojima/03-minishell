@@ -38,4 +38,7 @@ void	close_prepared_heredocs(t_ast_node *node);
 int		save_stdio_fds(int saved[2]);
 void	restore_stdio_fds(int saved[2]);
 
+// env_to_array.c
+char **env_to_array(t_env *env);
+
 #endif

@@ -37,6 +37,7 @@ void			free_env_list(t_env *env);
 void			free_string_array(char **arr);
 void			free_redirects(t_redirect *redir);
 void			free_ast(t_ast_node *node);
+void free_envp(char **envp);
 t_ast_node		*list_to_ast(t_token_list *token_list);
 t_ast_node		*parse(char *input, t_env *env, int last_status);
 t_ast_node		*parse_pipeline(t_token *t, int l, int r);

@@ -12,12 +12,23 @@
 
 #include "minishell.h"
 
+static char	*get_pwd_value(t_env *env, char *key)
+{
+	while (env)
+	{
+		if (ft_strcmp(env->key, key) == 0&&env->is_show==VISIBLE)
+			return (env->value);
+		env = env->next;
+	}
+	return (NULL);
+}
+
 char	*get_cd_target(char **argv, t_env *env)
 {
 	if (!argv[1])
-		return (get_env_value(env, "HOME"));
+		return (get_pwd_value(env, "HOME"));
 	if (ft_strcmp(argv[1], "-") == 0)
-		return (get_env_value(env, "OLDPWD"));
+		return (get_pwd_value(env, "OLDPWD"));
 	return (argv[1]);
 }
 

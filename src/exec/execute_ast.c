@@ -12,8 +12,6 @@
 
 #include "executor.h"
 
-extern char		**environ;
-
 static int	pipe_fork_fail(int fd[2], pid_t left)
 {
 	close(fd[0]);
@@ -56,7 +54,7 @@ static int	execute_cmd_node(t_ast_node *node, t_env **env)
 		else
 		{
 			cmd.argv = node->data.cmd->argv;
-			cmd.envp = environ;
+			cmd.envp = env_to_array(*env);
 			status = execute_command(&cmd, env);
 		}
 	}
