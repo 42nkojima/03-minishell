@@ -6,7 +6,7 @@
 /*   By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/08 15:23:26 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/02/14 10:25:09 by nkojima          ###   ########.fr       */
+/*   Updated: 2026/02/14 10:29:56 by nkojima          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ bool	sort_env(t_env *env)
 	return (true);
 }
 
-
 static t_env	*copy_env_node(t_env *env)
 {
 	t_env	*new;
@@ -74,7 +73,6 @@ static t_env	*copy_env_node(t_env *env)
 	return (new);
 }
 
-
 t_env	*copy_env(t_env *env)
 {
 	t_env	*head;
@@ -97,7 +95,6 @@ t_env	*copy_env(t_env *env)
 	}
 	return (head);
 }
-
 
 int	print_export(t_env *env)
 {
