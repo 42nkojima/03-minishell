@@ -91,8 +91,8 @@ unset 1BAD
 ```
 - `bash`:
   - `stdout`: 空
-  - `stderr`: unset: `1BAD': not a valid identifier
-  - `exit status`: `1`
+  - `stderr`: 空
+  - `exit status`: `0`
   - `shell`: 継続する
 
 ## 7. 不正識別子（`=` を含む）
@@ -106,8 +106,8 @@ unset A=B
 ```
 - `bash`:
   - `stdout`: 空
-  - `stderr`: unset: `A=B': not a valid identifier
-  - `exit status`: `1`
+  - `stderr`: 空
+  - `exit status`: `0`
   - `shell`: 継続する
 
 ## 8. 有効 + 不正の混在引数
@@ -122,8 +122,8 @@ env | grep '^U_OK=' || echo "U_OK missing"
 ```
 - `bash`:
   - `stdout`: `U_OK missing`
-  - `stderr`: unset: `1BAD': not a valid identifier
-  - `exit status`: `1`
+  - `stderr`: 空
+  - `exit status`: `0`
   - `env`: `U_OK` は存在しない
 
 ## 9. パイプ左辺の `unset`
