@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_print.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/08 15:23:26 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/02/08 15:23:28 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/02/14 10:25:09 by nkojima          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,15 +113,13 @@ int	print_export(t_env *env)
 	{
 		if (ft_strcmp(copy->key, "_") != 0 && copy->is_show == VISIBLE)
 		{
-			ft_putstr_fd("declare -x ", 1);
-			ft_putstr_fd(copy->key, 1);
+			printf("declare -x %s", copy->key);
 			if (copy->value)
 				printf("=\"%s\"", copy->value);
-			ft_putchar_fd('\n', 1);
+			printf("\n");
 		}
 		copy = copy->next;
 	}
 	free_env_list(tmp);
 	return (SYSCALL_SUCCESS);
 }
-

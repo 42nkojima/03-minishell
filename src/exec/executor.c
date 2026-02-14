@@ -6,7 +6,7 @@
 /*   By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/14 00:00:00 by nkojima           #+#    #+#             */
-/*   Updated: 2026/02/10 14:51:40 by nkojima          ###   ########.fr       */
+/*   Updated: 2026/02/14 10:01:23 by nkojima          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static int	execute_builtin_command(t_command *cmd, t_env **env)
 		return (builtin_env(cmd->argv, *env));
 	if (ft_strcmp(cmd->argv[0], "exit") == 0)
 		return (builtin_exit(cmd->argv));
-	return (builtin_exit(cmd->argv));
+	return (-1);
 }
 
 /*
