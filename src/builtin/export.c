@@ -10,8 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "constants.h"
-#include "libft.h"
 #include "minishell.h"
 
 int	is_valid_identifier(char *s)

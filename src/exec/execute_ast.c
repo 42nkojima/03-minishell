@@ -56,6 +56,12 @@ static int	execute_cmd_node(t_ast_node *node, t_env **env)
 		{
 			cmd.argv = node->data.cmd->argv;
 			cmd.envp = env_to_array(*env);
+			if (!cmd.envp)
+			{
+				ft_putendl_fd("minishell: failed to build envp", 2);
+				restore_stdio_fds(saved);
+				return (EXIT_FAILURE);
+			}
 			status = execute_command(&cmd, env);
             free_envp(cmd.envp);
 		}

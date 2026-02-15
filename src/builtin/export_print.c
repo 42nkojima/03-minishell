@@ -101,6 +101,8 @@ int	print_export(t_env *env)
 	t_env	*copy;
 	t_env	*tmp;
 
+	if (!env)
+		return (SYSCALL_SUCCESS);
 	copy = copy_env(env);
 	if (!copy)
 		return (SYSCALL_ERROR);
