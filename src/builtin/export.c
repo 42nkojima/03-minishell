@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <stdlib.h>
 
 int	is_valid_identifier(char *s)
 {
@@ -63,13 +64,13 @@ int	export_one(char *arg, t_env **env)
 	char	*value;
 
 	if (!parse_export(arg, &key, &value))
-		return (SYSCALL_ERROR);
+		return (EXIT_FAILURE);
 	if (!is_valid_identifier(key))
 	{
 		export_error(arg);
 		free(key);
 		free(value);
-		return (SYSCALL_ERROR);
+		return (EXIT_FAILURE);
 	}
 	set_env(env, key, value);
 	free(key);
@@ -84,12 +85,12 @@ int	builtin_export(char **argv, t_env **env)
 
 	if (!argv[1])
 		return (print_export(*env));
-	status = SYSCALL_SUCCESS;
+	status = EXIT_SUCCESS;
 	i = 1;
 	while (argv[i])
 	{
-		if (export_one(argv[i], env) != SYSCALL_SUCCESS)
-			status = SYSCALL_ERROR;
+		if (export_one(argv[i], env) != EXIT_SUCCESS)
+			status = EXIT_FAILURE;
 		i++;
 	}
 	return (status);
