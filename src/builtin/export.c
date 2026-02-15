@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/08 15:23:10 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/02/08 15:23:13 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/02/15 13:22:00 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	is_valid_identifier(char *s)
 	i = 1;
 	while (s[i])
 	{
-		if (!ft_isalpha(s[i])&&!ft_isdigit(s[i]) && s[i] != '_')
+		if (!ft_isalpha(s[i]) && !ft_isdigit(s[i]) && s[i] != '_')
 			return (0);
 		i++;
 	}
@@ -80,14 +80,17 @@ int	export_one(char *arg, t_env **env)
 int	builtin_export(char **argv, t_env **env)
 {
 	int	i;
+	int	status;
 
 	if (!argv[1])
 		return (print_export(*env));
+	status = SYSCALL_SUCCESS;
 	i = 1;
 	while (argv[i])
 	{
-		export_one(argv[i], env);
+		if (export_one(argv[i], env) != SYSCALL_SUCCESS)
+			status = SYSCALL_ERROR;
 		i++;
 	}
-	return (SYSCALL_SUCCESS);
+	return (status);
 }

@@ -1,58 +1,66 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env_to_array.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/02/15 13:20:45 by tshimizu          #+#    #+#             */
+/*   Updated: 2026/02/15 13:31:47 by tshimizu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-
-static int count_visible_env(t_env *env)
+static int	count_visible_env(t_env *env)
 {
-    int count = 0;
-    while (env)
-    {
-        if (env->is_show == VISIBLE && env->value != NULL)
-            count++;
-        env = env->next;
-    }
-    return count;
+	int	count;
+
+	count = 0;
+	while (env)
+	{
+		if (env->is_show == VISIBLE && env->value != NULL)
+			count++;
+		env = env->next;
+	}
+	return (count);
 }
 
-
-
-char **env_to_array(t_env *env)
+static char	*env_to_entry(t_env *cur)
 {
-    char **envp;
-    t_env *cur;
-    int count;
-    int i;
+	char	*tmp;
+	char	*entry;
 
-    count = count_visible_env(env);
-    envp = malloc(sizeof(char *) * (count + 1));
-    if (!envp)
-        return NULL;
-
-    i = 0;
-    cur = env;
-    while (cur)
-    {
-        if (cur->is_show == VISIBLE && cur->value != NULL)
-        {
-            char *tmp = ft_strjoin("=", cur->value);
-            if (!tmp)
-            {
-                envp[i] = NULL;
-                free_envp(envp);
-                return (NULL);
-            }
-            envp[i] = ft_strjoin(cur->key, tmp);
-            free(tmp);
-            if (!envp[i])
-            {
-                envp[i] = NULL;
-                free_envp(envp);
-                return (NULL);
-            }            
-            i++;
-        }
-        cur = cur->next;
-    }
-    envp[i] = NULL;
-    return envp;
+	tmp = ft_strjoin("=", cur->value);
+	if (!tmp)
+		return (NULL);
+	entry = ft_strjoin(cur->key, tmp);
+	free(tmp);
+	return (entry);
 }
 
+char	**env_to_array(t_env *env)
+{
+	char	**envp;
+	t_env	*cur;
+	int		i;
+
+	envp = malloc(sizeof(char *) * (count_visible_env(env) + 1));
+	if (!envp)
+		return (NULL);
+	i = 0;
+	cur = env;
+	while (cur)
+	{
+		if (cur->is_show == VISIBLE && cur->value != NULL)
+		{
+			envp[i] = env_to_entry(cur);
+			if (!envp[i])
+				return (envp[i] = NULL, free_envp(envp), NULL);
+			i++;
+		}
+		cur = cur->next;
+	}
+	envp[i] = NULL;
+	return (envp);
+}

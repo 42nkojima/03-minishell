@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/25 22:42:34 by nkojima           #+#    #+#             */
-/*   Updated: 2026/02/01 16:58:28 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/02/15 13:54:46 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,10 @@ static int	execute_cmd_node(t_ast_node *node, t_env **env)
 			cmd.argv = node->data.cmd->argv;
 			cmd.envp = env_to_array(*env);
 			if (!cmd.envp)
-			{
-				ft_putendl_fd("minishell: failed to build envp", 2);
-				restore_stdio_fds(saved);
-				return (EXIT_FAILURE);
-			}
+				return (ft_putendl_fd("minishell: failed to build envp", 2),
+					restore_stdio_fds(saved), EXIT_FAILURE);
 			status = execute_command(&cmd, env);
-            free_envp(cmd.envp);
+			free_envp(cmd.envp);
 		}
 	}
 	restore_stdio_fds(saved);

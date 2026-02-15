@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 11:21:28 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/02/01 16:03:37 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/02/15 13:22:14 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,15 +69,17 @@ void	free_string_array(char **arr)
 	free(arr);
 }
 
-void free_envp(char **envp)
+void	free_envp(char **envp)
 {
-    int i = 0;
-    if (!envp) 
-        return;
-    while (envp[i])
-    {
-        free(envp[i]);
-        i++;
-    }
-    free(envp);
+	int	i;
+
+	i = 0;
+	if (!envp)
+		return ;
+	while (envp[i])
+	{
+		free(envp[i]);
+		i++;
+	}
+	free(envp);
 }
