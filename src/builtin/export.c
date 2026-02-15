@@ -6,12 +6,12 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/08 15:23:10 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/02/08 15:23:13 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/02/15 13:22:00 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "constants.h"
 #include "minishell.h"
+#include <stdlib.h>
 
 int	is_valid_identifier(char *s)
 {
@@ -22,7 +22,7 @@ int	is_valid_identifier(char *s)
 	i = 1;
 	while (s[i])
 	{
-		if (!ft_isalpha(s[i]) && s[i] != '_')
+		if (!ft_isalpha(s[i]) && !ft_isdigit(s[i]) && s[i] != '_')
 			return (0);
 		i++;
 	}
@@ -64,13 +64,13 @@ int	export_one(char *arg, t_env **env)
 	char	*value;
 
 	if (!parse_export(arg, &key, &value))
-		return (SYSCALL_ERROR);
+		return (EXIT_FAILURE);
 	if (!is_valid_identifier(key))
 	{
 		export_error(arg);
 		free(key);
 		free(value);
-		return (SYSCALL_ERROR);
+		return (EXIT_FAILURE);
 	}
 	set_env(env, key, value);
 	free(key);
@@ -81,14 +81,17 @@ int	export_one(char *arg, t_env **env)
 int	builtin_export(char **argv, t_env **env)
 {
 	int	i;
+	int	status;
 
 	if (!argv[1])
 		return (print_export(*env));
+	status = EXIT_SUCCESS;
 	i = 1;
 	while (argv[i])
 	{
-		export_one(argv[i], env);
+		if (export_one(argv[i], env) != EXIT_SUCCESS)
+			status = EXIT_FAILURE;
 		i++;
 	}
-	return (SYSCALL_SUCCESS);
+	return (status);
 }

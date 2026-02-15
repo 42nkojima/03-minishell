@@ -6,13 +6,12 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/25 22:42:34 by nkojima           #+#    #+#             */
-/*   Updated: 2026/02/01 16:58:28 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/02/15 13:54:46 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
-
-extern char		**environ;
+#include "minishell.h"
 
 static int	pipe_fork_fail(int fd[2], pid_t left)
 {
@@ -56,8 +55,12 @@ static int	execute_cmd_node(t_ast_node *node, t_env **env)
 		else
 		{
 			cmd.argv = node->data.cmd->argv;
-			cmd.envp = environ;
+			cmd.envp = env_to_array(*env);
+			if (!cmd.envp)
+				return (ft_putendl_fd("minishell: failed to build envp", 2),
+					restore_stdio_fds(saved), EXIT_FAILURE);
 			status = execute_command(&cmd, env);
+			free_envp(cmd.envp);
 		}
 	}
 	restore_stdio_fds(saved);

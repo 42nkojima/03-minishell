@@ -75,7 +75,8 @@ SRC_EXEC    = \
 				exec/exec_heredoc.c \
 				exec/exec_redirect.c \
 				exec/exec_stdio.c \
-				exec/execute_ast.c
+				exec/execute_ast.c\
+				exec/env_to_array.c\
 
 SRC_BUILTIN = builtin/echo.c\
 			        builtin/pwd.c\
@@ -83,7 +84,8 @@ SRC_BUILTIN = builtin/echo.c\
 			        builtin/cd.c\
 			        builtin/export.c\
 			        builtin/export_print.c\
-							builtin/exit.c
+					builtin/exit.c\
+					builtin/unset.c\
 
 SRC_MAIN    = main.c
 

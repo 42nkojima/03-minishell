@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/14 00:00:00 by nkojima           #+#    #+#             */
-/*   Updated: 2026/02/01 16:55:53 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/02/15 13:19:47 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,8 @@ void	close_prepared_heredocs(t_ast_node *node);
 // exec_stdio.c
 int		save_stdio_fds(int saved[2]);
 void	restore_stdio_fds(int saved[2]);
+
+// env_to_array.c
+char	**env_to_array(t_env *env);
 
 #endif

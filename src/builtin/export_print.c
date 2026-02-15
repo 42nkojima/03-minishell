@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_print.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/08 15:23:26 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/02/08 15:23:28 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/02/14 10:29:56 by nkojima          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,14 @@ static t_env	*copy_env_node(t_env *env)
 	if (!new)
 		return (NULL);
 	new->key = ft_strdup(env->key);
+	if (!new->key)
+		return (free(new), NULL);
 	if (env->value)
+	{
 		new->value = ft_strdup(env->value);
+		if (!new->value)
+			return (free(new->key), free(new), NULL);
+	}
 	else
 		new->value = NULL;
 	new->is_show = env->is_show;
@@ -79,7 +85,7 @@ t_env	*copy_env(t_env *env)
 	{
 		new = copy_env_node(env);
 		if (!new)
-			return (NULL);
+			return (free_env_list(head), NULL);
 		if (!head)
 			head = new;
 		else
@@ -93,28 +99,26 @@ t_env	*copy_env(t_env *env)
 int	print_export(t_env *env)
 {
 	t_env	*copy;
+	t_env	*tmp;
 
 	if (!env)
-		return (SYSCALL_ERROR);
+		return (SYSCALL_SUCCESS);
 	copy = copy_env(env);
 	if (!copy)
 		return (SYSCALL_ERROR);
 	sort_env(copy);
+	tmp = copy;
 	while (copy)
 	{
-		if (ft_strcmp(copy->key, "_") != 0)
+		if (ft_strcmp(copy->key, "_") != 0 && copy->is_show == VISIBLE)
 		{
-			ft_putstr_fd("declare -x ", 1);
-			ft_putstr_fd(copy->key, 1);
+			printf("declare -x %s", copy->key);
 			if (copy->value)
-			{
-				ft_putstr_fd("=\"", 1);
-				ft_putstr_fd(copy->value, 1);
-				ft_putstr_fd("\"", 1);
-			}
-			ft_putchar_fd('\n', 1);
+				printf("=\"%s\"", copy->value);
+			printf("\n");
 		}
 		copy = copy->next;
 	}
+	free_env_list(tmp);
 	return (SYSCALL_SUCCESS);
 }
