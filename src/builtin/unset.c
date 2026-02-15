@@ -7,6 +7,8 @@ int	env_remove(t_env *env, char *key)
 	{
 		if (!ft_strcmp(env->key, key))
 		{
+            free(env->value);
+            env->value = NULL;
 			env->is_show = HIDDEN;
 			return SYSCALL_SUCCESS;
 		}

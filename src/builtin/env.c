@@ -72,17 +72,16 @@ void	set_env(t_env **env, char *key, char *value)
 	{
 		if (ft_strcmp(cur->key, key) == 0)
 		{
-			new_value = NULL;
 			if (value)
 			{
 				new_value = ft_strdup(value);
 				if (!new_value)
 					return;
+				free(cur->value);
+				cur->value = new_value;
 			}
-			free(cur->value);
-			cur->value = new_value;
-            cur->is_show = VISIBLE;
-			return;
+			cur->is_show = VISIBLE;
+			return ;
 		}
 		cur = cur->next;
 	}
