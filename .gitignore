@@ -5,7 +5,6 @@ objs/
 
 # Executable
 minishell
-tests/run_tests
 compile_commands.json
 
 # Debug files

@@ -6,7 +6,7 @@
 #    By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/29 10:14:46 by tshimizu          #+#    #+#              #
-#    Updated: 2026/02/12 11:31:21 by nkojima          ###   ########.fr        #
+#    Updated: 2026/02/14 15:59:00 by nkojima          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,6 @@ LDFLAGS += -L$(READLINE_PATH)/lib -lreadline
 NAME        = minishell
 SRC_DIR     = src
 LIBFT_DIR   = libs/libft
-TEST_DIR    = tests
 OBJ_DIR     = objs
 INC_DIR     = includes
 INCFLAG     = -I$(INC_DIR) -I$(LIBFT_DIR)
@@ -147,38 +146,25 @@ valgrind: re
 	valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --suppressions=readline.supp ./$(NAME)
 
 # ===============================
-#          RUN / TEST
+#          RUN / CLEAN
 # ===============================
 run: all
 	./$(NAME)
 
-test: all
-	@echo "$(YELLOW)Running GoogleTest...$(RESET)"
-	@$(MAKE) -C $(TEST_DIR) run
-
-test_verbose: all
-	@echo "$(YELLOW)Running GoogleTest (verbose)...$(RESET)"
-	@$(MAKE) -C $(TEST_DIR) run_verbose
-
-# ===============================
-#             CLEAN
-# ===============================
 clean:
 	@$(RM) $(OBJS)
 	@$(MAKE) -C $(LIBFT_DIR) clean
-	@$(MAKE) -C $(TEST_DIR) clean
-	@echo "$(GREEN)🧹 Cleaned object files, libft, and tests.$(RESET)"
+	@echo "$(GREEN)🧹 Cleaned object files, libft.$(RESET)"
 
 fclean:
 	@$(RMDIR) $(OBJ_DIR)
 	@$(RM) $(NAME)
 	@$(MAKE) -C $(LIBFT_DIR) fclean
-	@$(MAKE) -C $(TEST_DIR) fclean
-	@echo "$(GREEN)🧼 Cleaned executable, libft, and tests.$(RESET)"
+	@echo "$(GREEN)🧼 Cleaned executable, libft.$(RESET)"
 
 re: fclean all
 
 # ===============================
 #             PHONY
 # ===============================
-.PHONY: all clean fclean re asan debug valgrind run test test_verbose
+.PHONY: all clean fclean re asan debug valgrind run
