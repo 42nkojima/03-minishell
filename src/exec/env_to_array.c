@@ -40,12 +40,20 @@ char **env_to_array(t_env *env)
                 val = cur->value;
             }
             char *tmp = ft_strjoin("=", val);
-            if (!tmp) 
-                return NULL;
+            if (!tmp)
+            {
+                envp[i] = NULL;
+                free_envp(envp);
+                return (NULL);
+            }
             envp[i] = ft_strjoin(cur->key, tmp);
             free(tmp);
-            if (!envp[i]) 
-                return NULL;
+            if (!envp[i])
+            {
+                envp[i] = NULL;
+                free_envp(envp);
+                return (NULL);
+            }            
             i++;
         }
         cur = cur->next;

@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "constants.h"
+#include "libft.h"
 #include "minishell.h"
 
 int	is_valid_identifier(char *s)
@@ -22,7 +23,7 @@ int	is_valid_identifier(char *s)
 	i = 1;
 	while (s[i])
 	{
-		if (!ft_isalpha(s[i]) && s[i] != '_')
+		if (!ft_isalpha(s[i])&&!ft_isdigit(s[i]) && s[i] != '_')
 			return (0);
 		i++;
 	}

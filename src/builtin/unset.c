@@ -19,18 +19,22 @@ int	env_remove(t_env *env, char *key)
 int	builtin_unset(char **argv, t_env **env)
 {
 	int	status;
+    int i;
 
 	status = 0;
-    if (!is_valid_identifier(argv[1]))
-    {
-        ft_putstr_fd("minishell: unset: `", 2);
-        ft_putstr_fd(argv[1], 2);
-        ft_putendl_fd("': not a valid identifier", 2);
-        status = 1;
-    }
-    else
-    {
-        env_remove(*env, argv[1]);
-    }
+	i = 1;
+	while (argv[i])
+	{
+		if (!is_valid_identifier(argv[i]))
+		{
+			ft_putstr_fd("minishell: unset: `", 2);
+			ft_putstr_fd(argv[i], 2);
+			ft_putendl_fd("': not a valid identifier", 2);
+			status = 1;
+		}
+		else
+			env_remove(*env, argv[i]);
+		i++;
+	}
 	return (status);
 }
