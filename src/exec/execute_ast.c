@@ -22,10 +22,11 @@ static int	pipe_fork_fail(int fd[2], pid_t left)
 	return (EXIT_FAILURE);
 }
 
-static pid_t	fork_pipe_child(t_ast_node *node, int fd[2], int is_left,
-		t_env **env)
+static pid_t	fork_pipe_child(t_ast_node *pipe_node, int fd[2],
+		int is_left, t_env **env)
 {
 	pid_t	pid;
+	int		status;
 
 	pid = fork();
 	if (pid != SYSCALL_SUCCESS)
@@ -36,7 +37,13 @@ static pid_t	fork_pipe_child(t_ast_node *node, int fd[2], int is_left,
 		dup2(fd[0], STDIN_FILENO);
 	close(fd[0]);
 	close(fd[1]);
-	exit(execute_ast(node, env));
+	if (is_left)
+		status = execute_ast(pipe_node->left, env);
+	else
+		status = execute_ast(pipe_node->right, env);
+	free_ast(pipe_node);
+	free_env_list(*env);
+	exit(status);
 }
 
 static int	execute_cmd_node(t_ast_node *node, t_env **env)
@@ -76,10 +83,10 @@ static int	execute_pipe_node(t_ast_node *node, t_env **env)
 
 	if (pipe(fd) == SYSCALL_ERROR)
 		return (EXIT_FAILURE);
-	left = fork_pipe_child(node->left, fd, 1, env);
+	left = fork_pipe_child(node, fd, 1, env);
 	if (left == SYSCALL_ERROR)
 		return (pipe_fork_fail(fd, -1));
-	right = fork_pipe_child(node->right, fd, 0, env);
+	right = fork_pipe_child(node, fd, 0, env);
 	if (right == SYSCALL_ERROR)
 		return (pipe_fork_fail(fd, left));
 	close(fd[0]);
