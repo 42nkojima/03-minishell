@@ -78,6 +78,11 @@ int	run_repl(t_env *env)
 			break ;
 		process_input(input, &env, &last_status);
 		free(input);
+		if (last_status & EXIT_FLAG)
+		{
+			last_status = last_status & 0xFF;
+			break ;
+		}
 	}
 	return (last_status);
 }
