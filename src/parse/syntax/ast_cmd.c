@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	count_words_excluding_redirs(t_token *t, int l, int r)
+static int	count_words_excluding_redirs(t_token *t, int l, int r)
 {
 	int	count;
 
@@ -26,7 +26,7 @@ int	count_words_excluding_redirs(t_token *t, int l, int r)
 	return (count);
 }
 
-char	**extract_argv(t_token *t, int l, int r)
+static char	**extract_argv(t_token *t, int l, int r)
 {
 	char	**argv;
 	int		count;
@@ -46,7 +46,7 @@ char	**extract_argv(t_token *t, int l, int r)
 	return (argv);
 }
 
-t_cmd_data	*build_cmd_data(t_token *t, int l, int r)
+static t_cmd_data	*build_cmd_data(t_token *t, int l, int r)
 {
 	t_cmd_data	*cmd;
 

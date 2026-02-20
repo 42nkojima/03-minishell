@@ -26,7 +26,7 @@ t_ast_node	*new_ast_node(t_node_type type)
 	return (node);
 }
 
-t_ast_node	*new_pipe_node(t_ast_node *left, t_ast_node *right)
+static t_ast_node	*new_pipe_node(t_ast_node *left, t_ast_node *right)
 {
 	t_ast_node	*node;
 

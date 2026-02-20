@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-bool	swap_env_content(t_env *a, t_env *b)
+static bool	swap_env_content(t_env *a, t_env *b)
 {
 	char			*tmp_key;
 	char			*tmp_value;
@@ -30,7 +30,7 @@ bool	swap_env_content(t_env *a, t_env *b)
 	return (true);
 }
 
-bool	sort_env(t_env *env)
+static bool	sort_env(t_env *env)
 {
 	t_env	*i;
 	t_env	*j;
@@ -73,7 +73,7 @@ static t_env	*copy_env_node(t_env *env)
 	return (new);
 }
 
-t_env	*copy_env(t_env *env)
+static t_env	*copy_env(t_env *env)
 {
 	t_env	*head;
 	t_env	*tail;

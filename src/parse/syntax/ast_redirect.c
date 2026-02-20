@@ -13,7 +13,7 @@
 #include "minishell.h"
 #include "constants.h"
 
-t_redirect	*new_redirect(t_redir_type type, char *value)
+static t_redirect	*new_redirect(t_redir_type type, char *value)
 {
 	t_redirect	*redir;
 

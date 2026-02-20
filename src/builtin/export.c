@@ -13,7 +13,7 @@
 #include "minishell.h"
 #include <stdlib.h>
 
-int	is_valid_identifier(char *s)
+static int	is_valid_identifier(char *s)
 {
 	int	i;
 
@@ -29,14 +29,14 @@ int	is_valid_identifier(char *s)
 	return (1);
 }
 
-void	export_error(char *arg)
+static void	export_error(char *arg)
 {
 	ft_putstr_fd("minishell: export: `", 2);
 	ft_putstr_fd(arg, 2);
 	ft_putendl_fd("': not a valid identifier", 2);
 }
 
-int	parse_export(char *arg, char **key, char **value)
+static int	parse_export(char *arg, char **key, char **value)
 {
 	char	*eq;
 
@@ -58,7 +58,7 @@ int	parse_export(char *arg, char **key, char **value)
 	return (1);
 }
 
-int	export_one(char *arg, t_env **env)
+static int	export_one(char *arg, t_env **env)
 {
 	char	*key;
 	char	*value;

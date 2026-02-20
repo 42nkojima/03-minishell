@@ -44,7 +44,7 @@ void	free_redirects(t_redirect *redir)
 	}
 }
 
-void	free_cmd_data(t_cmd_data *cmd)
+static void	free_cmd_data(t_cmd_data *cmd)
 {
 	if (!cmd)
 		return ;

@@ -15,7 +15,7 @@
 
 volatile sig_atomic_t	g_signal_status = 0;
 
-int	noop(void)
+static int	noop(void)
 {
 	return (0);
 }
