@@ -6,7 +6,7 @@
 /*   By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/14 00:00:00 by nkojima           #+#    #+#             */
-/*   Updated: 2025/12/14 20:33:19 by nkojima          ###   ########.fr       */
+/*   Updated: 2026/02/20 15:43:13 by nkojima          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,6 @@ char	*find_command(char *cmd, char **envp)
 	if (!paths)
 		return (NULL);
 	result = search_in_paths(paths, cmd);
-	free_split(paths);
+	free_string_array(paths);
 	return (result);
 }
