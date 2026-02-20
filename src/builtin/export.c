@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/08 15:23:10 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/02/15 13:22:00 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/02/20 16:14:49 by nkojima          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <stdlib.h>
 
-static int	is_valid_identifier(char *s)
+int	is_valid_identifier(char *s)
 {
 	int	i;
 
