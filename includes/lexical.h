@@ -6,7 +6,7 @@
 /*   By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/29 15:51:41 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/02/08 06:40:53 by nkojima          ###   ########.fr       */
+/*   Updated: 2026/02/20 15:35:53 by nkojima          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <stdbool.h>
 # include <stdio.h>
 
-typedef enum s_token_type
+typedef enum e_token_type
 {
 	WORD,
 	PIPE,
