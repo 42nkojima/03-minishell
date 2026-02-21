@@ -22,6 +22,8 @@ typedef enum e_exit_status
 	EXIT_SIGNAL_BASE = 128
 }	t_exit_status;
 
+# define EXIT_FLAG 256
+
 // ファイルディスクリプタ
 typedef enum e_fd
 {

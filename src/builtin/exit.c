@@ -34,15 +34,15 @@ int	builtin_exit(char **argv)
 {
 	long long	code;
 
+	ft_putendl_fd("exit", FD_STDERR);
 	if (!argv[1])
-		exit(EXIT_SUCCESS);
+		return (EXIT_FLAG | EXIT_SUCCESS);
 	if (!validate_str_to_ll(argv[1], &code))
 	{
 		print_numeric_argument_error(argv[1]);
-		exit(EXIT_BUILTIN_MISUSE);
+		return (EXIT_FLAG | EXIT_BUILTIN_MISUSE);
 	}
 	if (has_too_many_args(argv))
 		return (print_too_many_arguments_error());
-	exit((unsigned char)code);
-	return (EXIT_SUCCESS);
+	return (EXIT_FLAG | (unsigned char)code);
 }
