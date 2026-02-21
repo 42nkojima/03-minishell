@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/08 15:23:10 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/02/15 13:22:00 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/02/20 16:14:49 by nkojima          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@ int	is_valid_identifier(char *s)
 	return (1);
 }
 
-void	export_error(char *arg)
+static void	export_error(char *arg)
 {
 	ft_putstr_fd("minishell: export: `", 2);
 	ft_putstr_fd(arg, 2);
 	ft_putendl_fd("': not a valid identifier", 2);
 }
 
-int	parse_export(char *arg, char **key, char **value)
+static int	parse_export(char *arg, char **key, char **value)
 {
 	char	*eq;
 
@@ -58,7 +58,7 @@ int	parse_export(char *arg, char **key, char **value)
 	return (1);
 }
 
-int	export_one(char *arg, t_env **env)
+static int	export_one(char *arg, t_env **env)
 {
 	char	*key;
 	char	*value;
