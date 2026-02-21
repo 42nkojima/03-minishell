@@ -110,7 +110,8 @@ make fclean   # remove object files and executable
 
 ## Resources
 
-- [name](url)
+- [シェル実装の課題を完走した](https://jun-networks.hatenablog.com/entry/2021/07/02/034002)
+- [minishellをどこから手を付けていいのか分からない人へ(pipex)](https://zenn.dev/grigri_grin/articles/54152e7b9e11f8)
 
 ### AI Usage
 
