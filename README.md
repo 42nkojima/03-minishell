@@ -1,33 +1,122 @@
-# 03-minishell
+*This project has been created as part of the 42 curriculum by tshimizu, nkojima.*
 
-1. 新しいコマンドを待機中にプロンプトを表示する。 `<- Milestone1`
-2. 動作する履歴機能を持つ。`<-Milestone1`
-3. 正しい実行ファイルを検索・起動する（PATH変数に基づくか、相対パスまたは絶対パスを使用）。`<- Milestone4`
-4. 受信したシグナルを示すために、グローバル変数を最大1つまで使用する。このアプローチの利点：これによりシグナルハンドラが主要なデータ構造にアクセスしないことが保証される。`<-Milestone2`
-5. 未閉じの引用符や、対象で必要とされない特殊文字（\（バックスラッシュ）や;（セミコロン）など）を解釈しない。`<-Milestone3`
-6. ’（シングルクォート）を処理し、引用されたシーケンス内のメタ文字をシェルが解釈しないようにする。`<-Milestone5`
-7. "（ダブルクォート）を処理し、$（ドル記号）を除く引用されたシーケンス内のメタ文字をシェルが解釈しないようにする。`<-Milestone5`
-8. 以下のリダイレクトを実装する：`<- Milestone7`
-   1.  < は入力をリダイレクトする。
-   2.  > は出力をリダイレクトする。
-   3. << は区切り文字を受け取り、その区切り文字を含む行が検出されるまで入力を読み込む。ただし、履歴を更新する必要はない！
-   4. >> は追加モードで出力をリダイレクトする。
-9.  パイプ（| 文字）を実装する。パイプライン内の各コマンドの出力は、パイプを介して次のコマンドの入力に接続される。`<-Milestone8`
-10.  環境変数（$ に続く文字列）を処理し、その値に展開する。`<-MileStone6`
-11.  $? を処理し、直近で実行されたフォアグラウンドパイプラインの終了ステータスに展開する。`<-Milestone6`
-12.  ctrl-C、ctrl-D、ctrl-\ を処理し、bash と同様の動作とする。`<-Milestone2`
-13.  対話モード時：
-14.  ctrl-C は新しい行にプロンプトを表示する。
-15.  ctrl-D はシェルを終了する。
-16.  Ctrl-\ は何も実行しない。
-17.  シェルは以下の組み込みコマンドを実装すること：`<-Milestone9`
-    1.  オプション -n 付き echo
-    2.  相対パスまたは絶対パスのみの cd
-    3.  オプションなしの pwd
-    4.  オプションなしの export
-    5.  オプションなしの unset
-    6.  オプションや引数なしの env
-    7.  オプションなしの exit
+# minishell
 
-readline()関数はメモリリークを引き起こす可能性がありますが、修正する必要はありません。
-ただし、これは自身のコード、つまりあなたが書いたコードにメモリリークが生じても構わないという意味ではありません。
+As beautiful as a shell.
+
+## Description
+
+Minishell is a simplified shell implementation written in C, inspired by bash. The goal of this project is to gain a deep understanding of how a Unix shell works under the hood — including process creation, file descriptor management, signal handling, and command parsing.
+
+The shell reads user input interactively, tokenizes and parses it into an abstract syntax tree (AST), expands environment variables, and executes commands with support for pipes, redirections, and builtin commands.
+
+## Features
+
+### Parsing
+- Tokenizer that splits input into words and operators
+- Single quote handling (`'...'`) — prevents all metacharacter interpretation
+- Double quote handling (`"..."`) — allows `$` expansion inside quotes
+- Environment variable expansion (`$VAR`, `$?`)
+- Token normalization (merging adjacent word tokens)
+
+### Execution
+- PATH-based command resolution
+- Relative and absolute path execution
+- Fork/exec pattern with proper exit status propagation
+- Pipeline support via `|` connecting stdout to stdin across commands
+
+### Redirections
+- `<` — redirect input from file
+- `>` — redirect output to file (truncate)
+- `>>` — redirect output to file (append)
+- `<<` — heredoc (read input until delimiter)
+
+### Builtins
+- `echo` with `-n` option
+- `cd` with relative or absolute path
+- `pwd`
+- `export` (display and set environment variables)
+- `unset`
+- `env`
+- `exit`
+
+### Signal Handling
+- `Ctrl-C` — displays a new prompt on a new line
+- `Ctrl-D` — exits the shell
+- `Ctrl-\` — ignored (no action)
+
+## Architecture
+
+### Processing Pipeline
+
+```mermaid
+flowchart LR
+    Input["readline()"] --> Tokenizer
+    Tokenizer --> Expander["Variable Expansion"]
+    Expander --> AST["AST Builder"]
+    AST --> Executor
+```
+
+The shell processes each line of input through the following stages:
+
+1. **Input** — `readline()` reads a line from the user with prompt display and history support.
+2. **Tokenization** — The input string is split into tokens (words, operators, quotes).
+3. **Expansion** — Environment variables (`$VAR`) and the exit status (`$?`) are expanded.
+4. **AST Construction** — Tokens are parsed into a binary tree with `NODE_CMD` and `NODE_PIPE` node types.
+5. **Execution** — The AST is traversed recursively. Pipes create child processes connected via `pipe()`, builtins run in the current process, and external commands are resolved via PATH and executed with `execve()`.
+
+### Source Structure
+
+```
+src/
+├── input/          REPL loop, signal handlers
+├── parse/
+│   ├── lexical/    Tokenizer, variable expansion, quote handling
+│   └── syntax/     AST construction from token stream
+├── exec/           Command execution, pipes, redirections, heredoc
+├── builtin/        Builtin command implementations
+└── utils/          Helper functions, environment list management
+```
+
+## Instructions
+
+### Prerequisites
+
+- **readline library** — required for interactive input and history
+  ```
+  brew install readline
+  ```
+
+### Build
+
+```bash
+make          # standard build
+make re       # clean rebuild
+make valgrind # launch the shell with valgrind
+```
+
+### Run
+
+```bash
+./minishell   # launch the shell
+```
+
+### Clean
+
+```bash
+make clean    # remove object files
+make fclean   # remove object files and executable
+```
+
+## Resources
+
+- [name](url)
+
+### AI Usage
+
+AI tools were used throughout the project for the following purposes:
+
+- **Learning & research** — Understanding bash specification details, POSIX shell semantics, and how specific edge cases should behave (e.g., quote handling rules, heredoc behavior, signal disposition in child processes).
+- **Debugging & troubleshooting** — Identifying edge cases in tokenization and expansion
+- **Test strategy & test cases** — Generating comprehensive edge-case scenarios for parsing, expansion, redirections, and builtin commands.
+- **Documentation** — Assistance in writing this README.
