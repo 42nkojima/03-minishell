@@ -3,31 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   free_ast.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: nkojima <nkojima@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 11:21:28 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/01/11 23:05:13 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/02/20 16:04:19 by nkojima          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "constants.h"
 #include <unistd.h>
-
-void	free_argv(char **argv)
-{
-	int	i;
-
-	if (!argv)
-		return ;
-	i = 0;
-	while (argv[i])
-	{
-		free(argv[i]);
-		i++;
-	}
-	free(argv);
-}
 
 void	free_redirects(t_redirect *redir)
 {
@@ -48,7 +33,7 @@ void	free_cmd_data(t_cmd_data *cmd)
 {
 	if (!cmd)
 		return ;
-	free_argv(cmd->argv);
+	free_string_array(cmd->argv);
 	free_redirects(cmd->redirects);
 	free(cmd);
 }
